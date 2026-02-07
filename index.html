@@ -1,268 +1,329 @@
-<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Grab Promo Simulator</title>
+    <title>Grab Simulator Pro - Custom Presets</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        :root {
-            --grab-green: #00B14F;
-            --grab-dark: #008a3d;
-            --grab-bg: #F7F9FA;
-        }
-        body { 
-            font-family: 'Plus Jakarta Sans', sans-serif; 
-            background-color: var(--grab-bg); 
-            color: #1A1D1F;
-        }
-        /* Custom Shadow agar tidak polos */
-        .grab-card-elevated {
-            background: white;
-            border-radius: 32px;
-            box-shadow: 0 12px 30px -10px rgba(0,0,0,0.08);
-            border: 1px solid #F1F3F5;
-        }
-        .grab-gradient-bg {
-            background: linear-gradient(135deg, #00B14F 0%, #008A3D 100%);
-        }
-        .merchant-dark-card {
-            background: #111315;
-            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.3);
-        }
-        /* Input styling */
-        .input-group {
-            background: #F4F6F8;
-            border: 2px solid transparent;
-            transition: all 0.2s;
-        }
-        .input-group:focus-within {
-            border-color: var(--grab-green);
-            background: white;
-        }
-        /* Slider styling */
-        input[type=range] {
-            accent-color: var(--grab-green);
-        }
+        :root { --grab-green: #00B14F; --grab-yellow: #FFD200; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: var(--grab-green); color: #1A1D1F; transition: background 0.5s ease; }
+        
+        .grab-card { background: white; border-radius: 28px; box-shadow: 0 20px 40px rgba(0,0,0,0.15); }
+        
+        /* Tab Slider Animation */
+        .tab-container { background: rgba(0,0,0,0.15); border-radius: 16px; position: relative; display: flex; padding: 4px; border: 1px solid rgba(255,255,255,0.1); }
+        .tab-slider { position: absolute; height: calc(100% - 8px); width: calc(50% - 4px); background: var(--grab-yellow); border-radius: 12px; transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1); z-index: 0; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .tab-btn { flex: 1; padding: 12px 0; font-size: 10px; font-weight: 800; text-transform: uppercase; z-index: 1; transition: color 0.3s; }
+        .tab-btn.active { color: black; }
+        .tab-btn.inactive { color: rgba(255,255,255,0.7); }
+
+        .input-box { background-color: #f8fafc; border: 2px solid #e2e8f0; transition: all 0.2s; border-radius: 18px; }
+        .input-box:focus-within { border-color: var(--grab-green); background-color: white; transform: translateY(-1px); }
+        
+        input:focus { outline: none; }
+        .merchant-card { background: #111827; color: white; border-radius: 28px; border-top: 4px solid var(--grab-yellow); transition: all 0.3s; }
+        
+        /* Custom Styling */
+        .btn-save { background: #f1f5f9; color: #64748b; font-size: 9px; font-weight: 800; padding: 4px 8px; border-radius: 8px; transition: all 0.2s; }
+        .btn-save:hover { background: var(--grab-green); color: white; }
     </style>
 </head>
-<body class="min-h-screen pb-20">
+<body class="min-h-screen pb-10" id="bodyBg">
 
-    <div class="max-w-md mx-auto p-6 space-y-8">
-        
-        <header class="flex flex-col items-center justify-center pt-4">
-            <div class="bg-white p-4 rounded-[24px] shadow-sm mb-4 border border-gray-100">
-                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Grab_logo_2021.svg" class="h-8" alt="Grab Logo">
-            </div>
-            <h1 class="text-2xl font-extrabold tracking-tight">Promo Optimizer</h1>
-            <p class="text-green-600 font-bold text-[10px] uppercase tracking-[0.3em]">Merchant Dashboard</p>
+    <div class="max-w-md mx-auto p-5 space-y-4">
+        <header class="text-center pt-4 pb-2 text-white font-black italic text-3xl tracking-tighter uppercase">
+            PROMO <span class="text-[var(--grab-yellow)]">CALCULATOR</span>
         </header>
 
-        <div class="grab-card-elevated p-8 space-y-6">
-            
-            <div class="space-y-2">
-                <label class="text-[11px] font-extrabold text-gray-400 uppercase tracking-widest block ml-1">Pilih Skema Kampanye</label>
-                <div class="relative">
-                    <select id="schemaSelect" class="w-full p-4 bg-gray-50 border-2 border-gray-100 rounded-[20px] font-bold text-gray-700 outline-none appearance-none cursor-pointer focus:border-green-500 transition-all" onchange="applySchema()">
-                        <option value="diskon-puas">🔥 Diskon Puas Cuan (35%)</option>
-                        <option value="booster">🚀 Diskon Puas Booster (50%)</option>
-                        <option value="brand-week">⭐ Brand Week Festival (40%)</option>
-                        <option value="custom">⚙️ Atur Manual (Custom)</option>
-                    </select>
-                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-40">▼</div>
-                </div>
-            </div>
+        <div class="tab-container">
+            <div id="slider" class="tab-slider"></div>
+            <button onclick="switchCategory('full')" id="btnFull" class="tab-btn active">Full Funded</button>
+            <button onclick="switchCategory('co')" id="btnCo" class="tab-btn inactive">Co-Funded</button>
+        </div>
 
-            <div class="grid grid-cols-2 gap-4">
-                <div class="col-span-2 input-group p-4 rounded-[20px]">
-                    <label class="text-[10px] font-extrabold text-green-600 uppercase mb-1 block">Harga Jual Offline (Target Net)</label>
-                    <div class="flex items-center">
-                        <span class="text-xl font-bold text-gray-400 mr-2">Rp</span>
-                        <input type="number" id="hOff" value="25000" class="bg-transparent w-full text-2xl font-black outline-none" oninput="hitung()">
+        <div class="grab-card p-6 space-y-4">
+            <div id="priceSection" class="grid grid-cols-2 gap-3 transition-all duration-300">
+                <div class="input-box p-3 text-center border-2">
+                    <label id="priceLabel" class="text-[9px] font-black text-gray-400 uppercase block mb-1 tracking-widest">Harga Offline</label>
+                    <div class="flex items-center justify-center font-black">
+                        <span class="text-xs text-gray-300 mr-1">Rp</span>
+                        <input type="text" id="mainInput" value="25.000" class="bg-transparent w-full text-xl outline-none text-center" oninput="formatAndCalc(this)">
                     </div>
                 </div>
-                <div class="input-group p-3 rounded-[20px]">
-                    <label class="text-[9px] font-extrabold text-gray-400 uppercase block">Komisi (%)</label>
-                    <input type="number" id="kPct" value="20" class="bg-transparent w-full font-bold text-lg outline-none" oninput="hitung()">
-                </div>
-                <div class="input-group p-3 rounded-[20px]">
-                    <label class="text-[9px] font-extrabold text-blue-400 uppercase block">Ongkir (Buyer)</label>
-                    <input type="number" id="vOng" value="12000" class="bg-transparent w-full font-bold text-lg text-blue-600 outline-none" oninput="hitung()">
+                <div id="appPriceBox" class="bg-green-50 p-3 rounded-2xl text-center border-2 border-green-100">
+                    <label class="text-[9px] font-black text-green-600 uppercase block mb-1 tracking-widest">Harga di App</label>
+                    <div class="flex items-center justify-center font-black text-green-700">
+                        <span class="text-xs mr-1">Rp</span>
+                        <input type="text" id="resAppInput" class="bg-transparent w-full text-xl outline-none text-center" readonly>
+                    </div>
                 </div>
             </div>
 
-            <div class="bg-green-50 rounded-[24px] p-5 border border-green-100 space-y-4">
+            <div class="input-box p-3 flex justify-between items-center px-5">
+                <label class="text-[10px] font-black text-gray-500 uppercase italic">Komisi (%)</label>
+                <input type="number" id="kPct" value="32" class="bg-transparent text-right font-black text-lg w-16 outline-none text-green-600" oninput="hitung()">
+            </div>
+
+            <div class="space-y-3 p-4 bg-gray-50 rounded-2xl border border-gray-100 relative">
                 <div class="flex justify-between items-center">
-                    <span class="text-[10px] font-black text-green-700 uppercase">Subsidi & Voucher</span>
-                    <span id="fundLabel" class="bg-white px-3 py-1 rounded-full text-[9px] font-bold text-green-600 shadow-sm border border-green-200 uppercase">Full Grab</span>
+                    <label class="text-[10px] font-black text-green-600 uppercase italic">Skema Diskon</label>
+                    <button onclick="savePreset()" class="btn-save uppercase">💾 Simpan Preset</button>
                 </div>
+                
+                <select id="schemaSelect" class="w-full text-[10px] font-black bg-white border border-gray-200 p-2 rounded-xl outline-none shadow-sm" onchange="applySchema()"></select>
+
                 <div class="grid grid-cols-2 gap-3">
-                    <div class="bg-white p-3 rounded-xl border border-green-100">
-                        <label class="text-[8px] font-bold text-gray-400 uppercase block italic mb-1">Diskon %</label>
-                        <input type="number" id="vDisk" class="w-full font-black text-green-600 outline-none" oninput="hitung()">
+                    <div class="bg-white p-2 px-3 rounded-xl border border-gray-200">
+                        <span class="text-[8px] font-bold text-gray-400 uppercase block italic">Diskon (%)</span>
+                        <input type="number" id="vDisk" value="30" class="w-full font-black text-green-600 outline-none" oninput="hitung()">
                     </div>
-                    <div class="bg-white p-3 rounded-xl border border-green-100">
-                        <label class="text-[8px] font-bold text-gray-400 uppercase block italic mb-1">Maks Potongan</label>
-                        <input type="number" id="mDisk" class="w-full font-black text-green-600 outline-none" oninput="hitung()">
+                    <div class="bg-white p-2 px-3 rounded-xl border border-gray-200">
+                        <span class="text-[8px] font-bold text-gray-400 uppercase block italic">Maks Rp</span>
+                        <input type="text" id="mDisk" value="55.000" class="w-full font-black text-green-600 outline-none" oninput="formatAndCalc(this)">
                     </div>
                 </div>
                 
-                <div class="space-y-2 px-1">
-                    <div class="flex justify-between items-center">
-                        <span class="text-[10px] font-bold text-orange-600 uppercase italic">Beban Patungan Seller</span>
-                        <span id="sBurdenLab" class="text-xs font-black text-orange-700">0%</span>
+                <div id="coFundControl" class="hidden pt-3 border-t border-gray-200 flex justify-between items-center px-2">
+                    <label class="text-[10px] font-black text-orange-600 uppercase italic">Co-Fund Seller (%)</label>
+                    <div class="flex items-center gap-1 bg-white border border-orange-200 rounded-lg px-2 py-1">
+                        <input type="number" id="sBurdenInput" value="35" class="w-10 text-center font-black text-orange-600 outline-none" oninput="hitung()">
+                        <span class="text-[10px] font-bold text-orange-400">%</span>
                     </div>
-                    <input type="range" id="sBurden" min="0" max="100" value="0" class="w-full" oninput="hitung()">
+                </div>
+                <div class="flex justify-between items-center px-2 text-[9px] font-bold text-gray-400 uppercase">
+                    <span>Min. Order Skema:</span>
+                    <input type="text" id="minOInput" value="15.000" class="bg-transparent text-right font-black text-gray-700 w-16 outline-none" oninput="formatAndCalc(this)">
+                </div>
+            </div>
+
+            <div id="ongkirBox" class="input-box p-3 flex justify-between items-center px-5 border-blue-100">
+                <label class="text-[10px] font-black text-blue-500 uppercase tracking-widest italic">Ongkir Buyer</label>
+                <div class="flex items-center">
+                    <span class="text-xs font-bold text-blue-300 mr-1">Rp</span>
+                    <input type="text" id="vOng" value="12.000" class="bg-transparent text-right font-black text-lg w-24 text-blue-600 outline-none" oninput="formatAndCalc(this)">
                 </div>
             </div>
         </div>
 
-        <div class="merchant-dark-card rounded-[32px] p-8 text-white relative overflow-hidden">
-            <div class="relative z-10 space-y-6">
-                <div class="flex justify-between items-center">
-                    <div class="flex items-center gap-2">
-                        <div class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></div>
-                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Sisi Merchant</span>
-                    </div>
+        <div id="merchantCard" class="merchant-card p-7 shadow-2xl space-y-4">
+            <div>
+                <p class="text-[10px] font-black text-[var(--grab-yellow)] uppercase tracking-[0.2em]">Hasil Akhir Merchant</p>
+                <h2 id="resNet" class="text-4xl font-black text-[var(--grab-yellow)] tracking-tighter italic mt-1">Rp 0</h2>
+            </div>
+            <div class="pt-4 border-t border-white/10 space-y-3">
+                <div class="flex justify-between text-[10px] font-bold uppercase italic opacity-70">
+                    <span>Komisi Grab</span>
+                    <span id="resKomisi">-Rp 0</span>
                 </div>
-                <div class="flex justify-between items-end">
-                    <div class="space-y-1">
-                        <p class="text-[10px] font-medium text-gray-400 uppercase">Harga Jual Di Aplikasi</p>
-                        <h2 id="resApp" class="text-4xl font-black tracking-tighter italic">Rp 0</h2>
-                    </div>
-                    <div class="text-right">
-                        <p class="text-[10px] font-medium text-gray-400 uppercase">Diterima Bersih</p>
-                        <h3 id="resNet" class="text-2xl font-black text-green-400">Rp 0</h3>
-                    </div>
+                <div id="rowBurd" class="hidden flex justify-between text-[10px] font-bold text-orange-400 uppercase italic">
+                    <span>Beban Co-Fund Promo</span>
+                    <span id="resBurd">-Rp 0</span>
                 </div>
-                <div class="pt-4 border-t border-white/10 space-y-2">
-                    <div class="flex justify-between text-[10px] font-bold opacity-50 uppercase italic tracking-wider">
-                        <span>Potongan Komisi</span>
-                        <span id="resKomisi">-Rp 0</span>
+                <div id="investStats" class="hidden pt-2 border-t border-white/5 space-y-2">
+                    <div class="flex justify-between text-[11px] font-black text-red-400 uppercase tracking-tighter">
+                        <span>Investasi Merchant</span>
+                        <span id="totalInv">Rp 0</span>
                     </div>
-                    <div id="rowBurd" class="flex justify-between text-[10px] font-bold text-orange-500 uppercase italic tracking-wider hidden">
-                        <span>Patungan Promo</span>
-                        <span id="resBurd">-Rp 0</span>
+                    <div class="flex justify-between text-[11px] font-black text-red-400 uppercase">
+                        <span>Biaya Promo (%)</span>
+                        <span id="invPct">0%</span>
                     </div>
                 </div>
             </div>
-            <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-600/20 rounded-full blur-[60px]"></div>
         </div>
 
-        <div id="cardBuyer" class="grab-gradient-bg rounded-[32px] p-8 text-white shadow-2xl relative overflow-hidden transition-all duration-300">
-            <div class="relative z-10 space-y-6">
-                <div class="flex justify-between items-center">
-                    <span class="text-[10px] font-black uppercase tracking-widest opacity-70 italic">Sisi Customer</span>
-                    <span id="promoStat" class="text-[9px] font-black bg-white/20 px-3 py-1 rounded-full border border-white/30 uppercase tracking-tighter">Promo Aktif</span>
+        <div id="cardBuyer" class="grab-card p-6 border-b-8 border-[var(--grab-yellow)]">
+            <div class="space-y-3">
+                <div class="flex justify-between items-center border-b border-gray-100 pb-2">
+                    <span class="text-[10px] font-black uppercase text-gray-400 italic">Rincian Pembeli</span>
+                    <span id="promoStat" class="text-[9px] font-black bg-[var(--grab-yellow)] px-2 py-0.5 rounded uppercase">Aktif</span>
                 </div>
-                <div class="space-y-4">
-                    <div class="flex justify-between text-sm">
-                        <span class="opacity-80">Harga Menu</span>
-                        <span id="bMenu" class="font-bold">Rp 0</span>
+                <div class="space-y-1.5 text-xs font-bold text-gray-600 uppercase text-[9px]">
+                    <div class="flex justify-between font-black">
+                        <span id="buyerPriceLabel">Harga di App</span>
+                        <span id="bMenu">Rp 0</span>
                     </div>
-                    <div class="flex justify-between text-sm italic font-black text-yellow-300">
-                        <span>Voucher Diskon</span>
+                    <div class="flex justify-between text-red-500 italic font-black">
+                        <span>Potongan Diskon</span>
                         <span id="bDisk">-Rp 0</span>
                     </div>
-                    <div class="flex justify-between text-sm opacity-80 border-b border-white/10 pb-3">
-                        <span>Biaya Pengantaran</span>
-                        <span id="bOng" class="font-bold">Rp 0</span>
+                    <div id="rowBuyerOng" class="flex justify-between border-b border-gray-50 pb-2">
+                        <span>Ongkos Kirim</span>
+                        <span id="bOng">Rp 0</span>
                     </div>
-                    <div class="flex justify-between items-center pt-2">
-                        <div>
-                            <span class="text-xs font-black uppercase tracking-widest block leading-none">Total Bayar</span>
-                            <span class="text-[9px] opacity-70 font-medium italic">Termasuk Pajak & Ongkir</span>
-                        </div>
-                        <span id="bTotal" class="text-4xl font-black tracking-tighter">Rp 0</span>
-                    </div>
+                </div>
+                <div class="pt-2 flex justify-between items-center">
+                    <span class="text-xs font-black uppercase text-gray-800 leading-none">Total<br>Checkout</span>
+                    <span id="bTotal" class="text-4xl font-black text-[var(--grab-green)] tracking-tighter">Rp 0</span>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        const SCHEMAS = {
-            'diskon-puas': { v: 35, m: 40000, min: 15000, burden: 0, label: 'Full Grab' },
-            'booster': { v: 50, m: 55000, min: 20000, burden: 20, label: 'Co-Fund (Seller 20%)' },
-            'brand-week': { v: 40, m: 60000, min: 80000, burden: 50, label: 'Co-Fund (Seller 50%)' },
-            'custom': { v: 0, m: 0, min: 0, burden: 0, label: 'Custom' }
+        let currentMode = 'full';
+        let customPresets = JSON.parse(localStorage.getItem('grab_presets')) || {
+            full: { 
+                'puas-cuan': { name: '🔥 Diskon Puas Cuan', k: 32, v: 30, m: 55000, min: 15000 },
+                'booster-hemat': { name: '🚀 Booster Hemat', k: 38, v: 35, m: 55000, min: 15000 },
+                'booster-ekstra': { name: '⭐ Booster Ekstra', k: 38, v: 35, m: 80000, min: 35000 }
+            },
+            co: { 
+                'co-standard': { name: '🤝 Co-Funded Standard', k: 20, v: 20, m: 50000, min: 10000, burden: 35 } 
+            }
         };
 
-        function applySchema() {
-            const val = document.getElementById('schemaSelect').value;
-            const config = SCHEMAS[val];
-            if (!config) return;
+        function formatNumber(n) {
+            return n.replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+        }
 
-            if (val !== 'custom') {
+        function parseNumber(n) {
+            return parseFloat(n.toString().replace(/\./g, "")) || 0;
+        }
+
+        function formatAndCalc(el) {
+            el.value = formatNumber(el.value);
+            hitung();
+        }
+
+        function switchCategory(mode) {
+            currentMode = mode;
+            const slider = document.getElementById('slider');
+            const btnFull = document.getElementById('btnFull');
+            const btnCo = document.getElementById('btnCo');
+            const body = document.getElementById('bodyBg');
+
+            if(mode === 'full') {
+                slider.style.transform = 'translateX(0)';
+                btnFull.className = 'tab-btn active';
+                btnCo.className = 'tab-btn inactive';
+                body.style.background = '#00B14F';
+                
+                document.getElementById('appPriceBox').style.display = 'block';
+                document.getElementById('priceSection').classList.add('grid-cols-2');
+                document.getElementById('priceLabel').innerText = 'Harga Offline';
+                document.getElementById('ongkirBox').style.display = 'flex';
+                document.getElementById('coFundControl').classList.add('hidden');
+                document.getElementById('investStats').classList.add('hidden');
+            } else {
+                slider.style.transform = 'translateX(100%)';
+                btnFull.className = 'tab-btn inactive';
+                btnCo.className = 'tab-btn active';
+                body.style.background = '#008a3d';
+                
+                document.getElementById('appPriceBox').style.display = 'none';
+                document.getElementById('priceSection').classList.remove('grid-cols-2');
+                document.getElementById('priceLabel').innerText = 'Total Order (Basket Size)';
+                document.getElementById('ongkirBox').style.display = 'none';
+                document.getElementById('coFundControl').classList.remove('hidden');
+                document.getElementById('investStats').classList.remove('hidden');
+            }
+            renderSchemaDropdown();
+            applySchema();
+        }
+
+        function renderSchemaDropdown() {
+            const select = document.getElementById('schemaSelect');
+            select.innerHTML = '';
+            for (let key in customPresets[currentMode]) {
+                let opt = document.createElement('option');
+                opt.value = key; opt.innerText = customPresets[currentMode][key].name;
+                select.appendChild(opt);
+            }
+            let customOpt = document.createElement('option');
+            customOpt.value = 'custom'; customOpt.innerText = '⚙️ INPUT MANUAL';
+            select.appendChild(customOpt);
+        }
+
+        function applySchema() {
+            const key = document.getElementById('schemaSelect').value;
+            if (key !== 'custom') {
+                const config = customPresets[currentMode][key];
+                document.getElementById('kPct').value = config.k;
                 document.getElementById('vDisk').value = config.v;
-                document.getElementById('mDisk').value = config.m;
-                document.getElementById('sBurden').value = config.burden;
-                document.getElementById('fundLabel').innerText = config.label;
+                document.getElementById('mDisk').value = formatNumber(config.m.toString());
+                document.getElementById('minOInput').value = formatNumber(config.min.toString());
+                if(currentMode === 'co') document.getElementById('sBurdenInput').value = config.burden;
             }
             hitung();
         }
 
+        function savePreset() {
+            const name = prompt("Masukkan Nama Preset:");
+            if (!name) return;
+            const id = "custom_" + Date.now();
+            const config = {
+                name: "⭐ " + name,
+                k: parseFloat(document.getElementById('kPct').value),
+                v: parseFloat(document.getElementById('vDisk').value),
+                m: parseNumber(document.getElementById('mDisk').value),
+                min: parseNumber(document.getElementById('minOInput').value),
+                burden: currentMode === 'co' ? parseFloat(document.getElementById('sBurdenInput').value) : 0
+            };
+            customPresets[currentMode][id] = config;
+            localStorage.setItem('grab_presets', JSON.stringify(customPresets));
+            renderSchemaDropdown();
+            document.getElementById('schemaSelect').value = id;
+            alert("Preset berhasil disimpan!");
+        }
+
         function hitung() {
-            const hOff = parseFloat(document.getElementById('hOff').value) || 0;
+            const mainVal = parseNumber(document.getElementById('mainInput').value);
             const kPct = (parseFloat(document.getElementById('kPct').value) || 0) / 100;
-            const vOng = parseFloat(document.getElementById('vOng').value) || 0;
+            const vOng = parseNumber(document.getElementById('vOng').value);
             const vDiskPct = (parseFloat(document.getElementById('vDisk').value) || 0) / 100;
-            const mDisk = parseFloat(document.getElementById('mDisk').value) || 0;
-            const sBurdPct = (parseFloat(document.getElementById('sBurden').value) || 0) / 100;
-            const schema = document.getElementById('schemaSelect').value;
-            
-            // Get min order based on current schema
-            const minOrder = (schema !== 'custom') ? SCHEMAS[schema].min : 0;
+            const mDisk = parseNumber(document.getElementById('mDisk').value);
+            const sBurdPct = (parseFloat(document.getElementById('sBurdenInput').value) || 0) / 100;
+            const minO = parseNumber(document.getElementById('minOInput').value);
 
-            // Seller Calc
-            const hApp = Math.ceil(hOff / (1 - kPct || 0.01));
-            const nomKomisi = hApp * kPct;
+            let hApp, nomDisk, nett, nomKomisi, nomBurd;
 
-            // Buyer & Promo
-            let nomDisk = 0;
-            const cardBuyer = document.getElementById('cardBuyer');
-            const promoStat = document.getElementById('promoStat');
-
-            if (hApp >= minOrder) {
-                nomDisk = Math.min(hApp * vDiskPct, mDisk);
-                cardBuyer.style.filter = "grayscale(0)";
-                cardBuyer.style.opacity = "1";
-                promoStat.innerText = "Promo Aktif";
-                promoStat.classList.replace("bg-red-500", "bg-white/20");
+            if (currentMode === 'full') {
+                hApp = Math.ceil(mainVal / (1 - kPct || 0.01));
+                nomDisk = (hApp >= minO) ? Math.min(hApp * vDiskPct, mDisk) : 0;
+                nomKomisi = hApp * kPct;
+                nomBurd = 0;
+                nett = hApp - nomKomisi;
+                document.getElementById('resAppInput').value = formatNumber(hApp.toString());
+                document.getElementById('rowBurd').classList.add('hidden');
+                document.getElementById('buyerPriceLabel').innerText = 'Harga di App';
+                document.getElementById('rowBuyerOng').style.display = 'flex';
             } else {
-                nomDisk = 0;
-                cardBuyer.style.filter = "grayscale(0.6)";
-                cardBuyer.style.opacity = "0.8";
-                promoStat.innerText = "Min Belanja Kurang";
-                promoStat.classList.add("bg-red-500");
+                hApp = mainVal;
+                nomDisk = (hApp >= minO) ? Math.min(hApp * vDiskPct, mDisk) : 0;
+                nomBurd = nomDisk * sBurdPct; 
+                const sisa = hApp - nomBurd;
+                nomKomisi = sisa * kPct; 
+                nett = sisa - nomKomisi;
+                
+                document.getElementById('rowBurd').classList.remove('hidden');
+                document.getElementById('buyerPriceLabel').innerText = 'Total Pesanan';
+                document.getElementById('rowBuyerOng').style.display = 'none';
+                
+                const totalInv = nomKomisi + nomBurd;
+                document.getElementById('totalInv').innerText = "Rp " + Math.round(totalInv).toLocaleString('id-ID').replace(/,/g, ".");
+                document.getElementById('invPct').innerText = (mainVal > 0 ? ((totalInv / mainVal) * 100).toFixed(1) : 0) + "%";
             }
 
-            // Patungan impact on seller
-            const nomBurd = nomDisk * sBurdPct;
-            document.getElementById('sBurdenLab').innerText = Math.round(sBurdPct * 100) + "%";
-            
-            const rowBurd = document.getElementById('rowBurd');
-            if (nomBurd > 0) rowBurd.classList.remove('hidden');
-            else rowBurd.classList.add('hidden');
-
-            const netSeller = hApp - nomKomisi - nomBurd;
-            const totalBuyer = (hApp - nomDisk) + vOng;
-
-            // Format UI
-            const fmt = (v) => "Rp " + Math.round(v).toLocaleString('id-ID');
-            document.getElementById('resApp').innerText = fmt(hApp);
+            const fmt = (v) => "Rp " + Math.round(v).toLocaleString('id-ID').replace(/,/g, ".");
+            document.getElementById('resNet').innerText = fmt(nett);
             document.getElementById('resKomisi').innerText = "- " + fmt(nomKomisi);
             document.getElementById('resBurd').innerText = "- " + fmt(nomBurd);
-            document.getElementById('resNet').innerText = fmt(netSeller);
             
             document.getElementById('bMenu').innerText = fmt(hApp);
             document.getElementById('bDisk').innerText = "- " + fmt(nomDisk);
             document.getElementById('bOng').innerText = fmt(vOng);
-            document.getElementById('bTotal').innerText = fmt(Math.max(0, totalBuyer));
+            document.getElementById('bTotal').innerText = fmt(Math.max(0, (hApp - nomDisk) + (currentMode === 'full' ? vOng : 0)));
+            
+            const promoStat = document.getElementById('promoStat');
+            promoStat.innerText = nomDisk > 0 ? "Aktif" : (hApp < minO ? "Min Order Kurang" : "Non-Aktif");
+            promoStat.style.backgroundColor = nomDisk > 0 ? "var(--grab-yellow)" : "#ff4d4d";
+            promoStat.style.color = nomDisk > 0 ? "#000" : "#fff";
         }
 
-        window.onload = applySchema;
+        window.onload = () => switchCategory('full');
     </script>
 </body>
 </html>
