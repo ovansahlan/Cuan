@@ -19,20 +19,40 @@
             background: linear-gradient(135deg, var(--grab-green) 0%, #008a3d 100%);
             min-height: 100vh;
             display: flex;
-            flex-direction: column; /* Pastikan alur ke bawah */
-            align-items: center;
-            justify-content: flex-start; /* Mulai dari atas agar scroll enak */
-            padding: 24px 0;
+            justify-content: center;
+            padding: 20px 0;
             margin: 0;
         }
 
-        /* Container Pembungkus agar semua lebarnya SAMA */
+        /* WRAPPER UTAMA: Kunci Simetri */
         .main-wrapper {
-            width: 90%; /* Memberi nafas di sisi layar HP */
-            max-width: 400px; /* Batas lebar agar tetap rapi */
+            width: 92%;
+            max-width: 380px; /* Lebar standar yang aman untuk semua HP */
             display: flex;
             flex-direction: column;
-            gap: 20px; /* Jarak antar elemen */
+            gap: 18px;
+        }
+
+        /* HEADER FIX: Menghindari teks terlalu panjang */
+        .header-container {
+            text-align: left; /* Aligntment kiri agar senada dengan shadow kartu */
+            padding-left: 4px;
+        }
+
+        .brand-text {
+            font-size: 2.8rem;
+            line-height: 0.9;
+            font-weight: 900;
+            text-transform: uppercase;
+            font-style: italic;
+            color: #fff;
+            display: flex;
+            flex-direction: column; /* Stack kata agar tidak terlalu lebar */
+        }
+
+        .brand-sub {
+            color: var(--grab-yellow);
+            filter: drop-shadow(2px 2px 0px rgba(0,0,0,0.5));
         }
 
         .elite-card { 
@@ -40,7 +60,9 @@
             border: 3px solid #000; 
             box-shadow: 6px 6px 0px #000;
             border-radius: 28px;
-            padding: 24px;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .dark-elite-card {
@@ -48,7 +70,9 @@
             border: 3px solid #000;
             box-shadow: 6px 6px 0px rgba(0,0,0,0.5);
             border-radius: 28px;
-            padding: 24px;
+            padding: 20px;
+            width: 100%;
+            box-sizing: border-box;
         }
 
         .tab-box { 
@@ -59,6 +83,7 @@
             display: flex; 
             border: 2px solid #000;
         }
+
         .tab-indicator { 
             position: absolute; 
             height: calc(100% - 8px); 
@@ -67,39 +92,43 @@
             border-radius: 16px; 
             transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55); 
             z-index: 0; 
-            border: 1.5px solid #000;
+            border: 2px solid #000;
         }
+
         .tab-btn { flex: 1; padding: 12px 0; font-size: 11px; font-weight: 800; text-transform: uppercase; z-index: 1; color: white; text-align: center; }
         .tab-btn.active { color: black !important; }
 
         .input-group-elite { 
             background: #f8fafc; 
             border: 2.5px solid #e2e8f0; 
-            border-radius: 22px; 
+            border-radius: 20px; 
             transition: all 0.2s ease;
             display: flex;
             flex-direction: column;
             justify-content: center;
+            min-height: 80px;
         }
+
         .input-group-elite:focus-within { 
             border-color: #000; 
             box-shadow: 4px 4px 0px #000;
             background: white;
         }
 
-        .label-pitch { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; color: #64748b; }
-        .value-pitch { font-size: 1.3rem; font-weight: 800; color: #000; }
+        .label-pitch { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; color: #64748b; margin-bottom: 2px; }
+        .value-pitch { font-size: 1.25rem; font-weight: 800; color: #000; }
         
         input:focus { outline: none; }
 
         .app-highlight-box {
             background: var(--grab-dark-green);
             border: 2.5px solid #000;
-            border-radius: 22px;
+            border-radius: 20px;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
             display: flex;
             flex-direction: column;
             justify-content: center;
+            min-height: 80px;
         }
     </style>
 </head>
@@ -107,12 +136,13 @@
 
     <div class="main-wrapper">
         
-        <header class="text-center space-y-1">
-            <div class="inline-block bg-black text-white text-[8px] font-black px-3 py-1 rounded-full uppercase tracking-[0.2em]">Official Merchant Tool</div>
-            <h1 class="text-4xl font-black text-white tracking-tighter uppercase italic drop-shadow-[3px_3px_0px_rgba(0,0,0,0.3)] leading-none pt-2">
-                Merchant<span class="text-[var(--grab-yellow)]">Calculator</span>
+        <div class="header-container">
+            <div class="inline-block bg-black text-white text-[8px] font-black px-3 py-1 rounded-full uppercase tracking-[0.2em] mb-3">Merchant Analytics</div>
+            <h1 class="brand-text">
+                <span>Merchant</span>
+                <span class="brand-sub">Calculator</span>
             </h1>
-        </header>
+        </div>
 
         <div class="tab-box">
             <div id="tabSlider" class="tab-indicator"></div>
@@ -121,16 +151,16 @@
         </div>
 
         <div class="elite-card space-y-4">
-            <div id="priceRow" class="grid grid-cols-2 gap-3 transition-all duration-300">
-                <div id="inputBoxMain" class="input-group-elite p-3 text-center">
-                    <label id="priceLabel" class="label-pitch block mb-1">Harga Offline</label>
+            <div id="priceRow" class="grid grid-cols-2 gap-3 transition-all">
+                <div id="inputBoxMain" class="input-group-elite p-2 text-center">
+                    <label id="priceLabel" class="label-pitch">Offline Price</label>
                     <div class="flex items-center justify-center font-black">
-                        <span class="text-sm opacity-30 mr-1 italic">Rp</span>
+                        <span class="text-xs opacity-30 mr-1 italic">Rp</span>
                         <input type="text" id="mainVal" class="bg-transparent w-full value-pitch outline-none text-center" oninput="formatAndCalc(this)">
                     </div>
                 </div>
-                <div id="appBox" class="app-highlight-box p-3 text-center">
-                    <label class="text-[9px] font-black text-green-400 uppercase tracking-widest block mb-1">Harga Jual App</label>
+                <div id="appBox" class="app-highlight-box p-2 text-center">
+                    <label class="text-[8px] font-black text-green-400 uppercase tracking-widest mb-1">App Listing Price</label>
                     <div class="flex items-center justify-center text-white italic font-black">
                         <span class="text-xs mr-1 opacity-50">Rp</span>
                         <input type="text" id="resApp" value="0" class="bg-transparent w-full value-pitch outline-none text-center !text-white italic" readonly>
@@ -139,13 +169,13 @@
             </div>
 
             <div id="commSection" class="grid grid-cols-2 gap-3">
-                <div id="commBox" class="input-group-elite p-3 text-center">
-                    <label class="label-pitch block mb-1 italic">Komisi (%)</label>
+                <div id="commBox" class="input-group-elite p-2 text-center">
+                    <label class="label-pitch italic">Commission %</label>
                     <input type="number" id="kPct" class="bg-transparent w-full value-pitch text-center text-green-600 outline-none" oninput="updateVal('kPct', this.value)">
                 </div>
-                <div id="roundBox" class="input-group-elite p-3 text-center flex flex-col justify-center border-yellow-200">
-                    <label class="label-pitch block mb-1 text-yellow-600">Rounding</label>
-                    <select id="roundType" class="bg-transparent w-full font-black text-sm text-center outline-none" onchange="updateVal('roundType', this.value)">
+                <div id="roundBox" class="input-group-elite p-2 text-center border-yellow-200">
+                    <label class="label-pitch text-yellow-600">Rounding</label>
+                    <select id="roundType" class="bg-transparent w-full font-black text-xs text-center outline-none" onchange="updateVal('roundType', this.value)">
                         <option value="none">Normal</option>
                         <option value="100">Ratusan</option>
                         <option value="1000">Ribuan</option>
@@ -157,93 +187,93 @@
             <div class="p-4 bg-slate-50 rounded-[24px] border-2 border-black space-y-4">
                 <div class="flex justify-between items-center px-1">
                     <label class="label-pitch text-green-600 italic">Campaign</label>
-                    <button onclick="savePreset()" class="px-2 py-1 bg-black text-white text-[8px] font-black rounded-lg active:scale-95 transition-all uppercase">💾 Simpan</button>
+                    <button onclick="savePreset()" class="px-2 py-1 bg-black text-white text-[8px] font-black rounded-lg active:scale-95 transition-all uppercase">💾 SAVE</button>
                 </div>
                 
                 <select id="schemaSelect" class="w-full text-xs font-black bg-white border-2 border-black p-3 rounded-xl outline-none shadow-[3px_3px_0px_rgba(0,0,0,0.1)]" onchange="applySchema(this.value)"></select>
 
                 <div class="grid grid-cols-2 gap-3">
                     <div class="bg-white p-3 rounded-xl border-2 border-slate-200 text-center">
-                        <span class="text-[9px] font-black text-slate-400 uppercase block mb-1">Discount (%)</span>
-                        <input type="number" id="vDisk" class="w-full text-xl font-black text-green-600 text-center outline-none" oninput="updateVal('vDisk', this.value)">
+                        <span class="text-[9px] font-black text-slate-400 uppercase block">Discount %</span>
+                        <input type="number" id="vDisk" class="w-full text-lg font-black text-green-600 text-center outline-none" oninput="updateVal('vDisk', this.value)">
                     </div>
                     <div class="bg-white p-3 rounded-xl border-2 border-slate-200 text-center">
-                        <span class="text-[9px] font-black text-slate-400 uppercase block mb-1">Maks Disc</span>
-                        <input type="text" id="mDisk" class="w-full text-xl font-black text-green-600 text-center outline-none" oninput="formatAndCalc(this, 'mDisk')">
+                        <span class="text-[9px] font-black text-slate-400 uppercase block">Max Disc</span>
+                        <input type="text" id="mDisk" class="w-full text-lg font-black text-green-600 text-center outline-none" oninput="formatAndCalc(this, 'mDisk')">
                     </div>
                 </div>
 
-                <div id="coFundRow" class="hidden pt-2 border-t-2 border-slate-200">
+                <div id="coFundRow" class="hidden pt-1 border-t-2 border-slate-200">
                     <div class="flex justify-between items-center px-2 bg-orange-50 p-2 rounded-xl border-2 border-orange-200">
-                        <label class="label-pitch text-orange-600">Merchant (%)</label>
-                        <input type="number" id="sBurden" class="w-12 text-center text-xl font-black text-orange-600 bg-white border border-orange-300 rounded outline-none" oninput="updateVal('sBurden', this.value)">
+                        <label class="label-pitch text-orange-600">Merchant %</label>
+                        <input type="number" id="sBurden" class="w-12 text-center text-lg font-black text-orange-600 bg-white border border-orange-300 rounded outline-none" oninput="updateVal('sBurden', this.value)">
                     </div>
                 </div>
 
                 <div class="flex justify-between items-center px-4 py-3 border-[3px] border-black bg-white rounded-2xl shadow-[4px_4px_0px_#00B14F]">
-                    <span class="label-pitch text-black">Min. Order</span>
+                    <span class="label-pitch text-black mb-0">Min. Order</span>
                     <input type="text" id="minO" class="bg-transparent text-right font-black text-xl w-32 outline-none text-green-600" oninput="formatAndCalc(this, 'minO')">
                 </div>
             </div>
 
-            <div id="ongkirBox" class="bg-[var(--grab-yellow)] p-2 px-6 rounded-full flex justify-between items-center border-[2.5px] border-black shadow-[4px_4px_0px_#000]">
-                <label class="text-[10px] font-black text-black uppercase italic">Ongkir Buyer</label>
+            <div id="ongkirBox" class="bg-[var(--grab-yellow)] p-2 px-6 rounded-full flex justify-between items-center border-[2px] border-black shadow-[3px_3px_0px_#000]">
+                <label class="text-[9px] font-black text-black uppercase italic">Shipping Fee</label>
                 <div class="flex items-center">
-                    <span class="text-xs font-bold text-black opacity-30 mr-1 italic">Rp</span>
-                    <input type="text" id="vOng" class="bg-transparent text-right font-black text-lg w-20 text-black outline-none" oninput="formatAndCalc(this, 'vOng')">
+                    <span class="text-xs font-bold text-black opacity-30 mr-1">Rp</span>
+                    <input type="text" id="vOng" class="bg-transparent text-right font-black text-base w-20 text-black outline-none" oninput="formatAndCalc(this, 'vOng')">
                 </div>
             </div>
         </div>
 
-        <div id="merchantCard" class="dark-elite-card space-y-4">
+        <div id="merchantCard" class="dark-elite-card space-y-3">
             <div class="text-center">
-                <p class="text-[10px] font-black text-[var(--grab-yellow)] uppercase tracking-[0.3em] opacity-80">Profit Bersih (Net)</p>
-                <h2 id="resNet" class="text-4xl font-black text-[var(--grab-yellow)] tracking-tighter italic">Rp 0</h2>
+                <p class="text-[9px] font-black text-[var(--grab-yellow)] uppercase tracking-[0.3em] opacity-80">Net Profit</p>
+                <h2 id="resNet" class="text-4xl font-black text-[var(--grab-yellow)] tracking-tighter italic leading-none">Rp 0</h2>
             </div>
             
             <div class="pt-3 border-t border-white/10 space-y-2">
-                <div class="flex justify-between items-center text-[10px] font-black uppercase text-slate-400 italic">
+                <div class="flex justify-between items-center text-[9px] font-black uppercase text-slate-400 italic">
                     <span>Platform Fee</span>
-                    <span id="resKomisi" class="text-white text-xs">-Rp 0</span>
+                    <span id="resKomisi" class="text-white">Rp 0</span>
                 </div>
-                <div id="resBurdRow" class="hidden flex justify-between items-center text-[10px] font-black uppercase text-orange-400 italic">
-                    <span>Promo Contribution</span>
-                    <span id="resBurd" class="text-white text-xs">-Rp 0</span>
+                <div id="resBurdRow" class="hidden flex justify-between items-center text-[9px] font-black uppercase text-orange-400 italic">
+                    <span>Promo Burden</span>
+                    <span id="resBurd" class="text-white">Rp 0</span>
                 </div>
                 <div id="investStats" class="hidden pt-2 border-t border-white/5 space-y-2">
                     <div class="flex justify-between items-end">
-                        <span class="text-[9px] font-black text-red-500 uppercase tracking-widest">Total Investasi</span>
-                        <span id="totalInv" class="text-base font-black text-white italic">Rp 0</span>
+                        <span class="text-[9px] font-black text-red-500 uppercase tracking-widest">Total Inv</span>
+                        <span id="totalInv" class="text-sm font-black text-white italic">Rp 0</span>
                     </div>
                     <div class="flex items-center gap-3">
-                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                        <div class="flex-1 h-1.5 bg-white/10 rounded-full overflow-hidden">
                             <div id="invBar" class="h-full bg-red-500 transition-all duration-1000" style="width: 0%"></div>
                         </div>
-                        <span id="invPct" class="text-xs font-black text-red-500">0%</span>
+                        <span id="invPct" class="text-[10px] font-black text-red-500">0%</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <div id="cardBuyer" class="elite-card border-b-[12px] border-[var(--grab-yellow)] space-y-4">
+        <div id="cardBuyer" class="elite-card border-b-[10px] border-[var(--grab-yellow)] space-y-3">
             <div class="flex justify-between items-center border-b-2 border-black pb-2">
-                <span class="text-[10px] font-black uppercase text-slate-400 italic">Simulasi Pembeli</span>
-                <span id="promoStat" class="text-[9px] font-black bg-black text-white px-3 py-1 rounded-full uppercase italic">Active</span>
+                <span class="text-[9px] font-black uppercase text-slate-400 italic">Customer Receipt</span>
+                <span id="promoStat" class="text-[8px] font-black bg-black text-white px-3 py-1 rounded-full uppercase italic">Active</span>
             </div>
             <div class="space-y-1">
                 <div class="flex justify-between text-xs font-bold text-slate-500 uppercase italic">
-                    <span id="bLabel">Menu Price</span>
-                    <span id="bMenu" class="text-black font-black">Rp 0</span>
+                    <span id="bLabel">Price</span>
+                    <span id="bMenu" class="text-black font-black text-sm">Rp 0</span>
                 </div>
                 <div class="flex justify-between text-xs font-bold text-red-600 uppercase italic">
                     <span>Discount</span>
-                    <span id="bDisk" class="font-black">-Rp 0</span>
+                    <span id="bDisk" class="font-black text-sm">Rp 0</span>
                 </div>
                 <div id="bOngRow" class="flex justify-between text-xs font-bold text-slate-500 uppercase italic">
                     <span>Delivery</span>
-                    <span id="bOng" class="text-black font-black">Rp 0</span>
+                    <span id="bOng" class="text-black font-black text-sm">Rp 0</span>
                 </div>
-                <div class="pt-3 border-t-2 border-dashed border-slate-300 flex justify-between items-center">
+                <div class="pt-2 border-t-2 border-dashed border-slate-300 flex justify-between items-center">
                     <span class="text-xs font-black uppercase text-black">Total Bayar</span>
                     <span id="bTotal" class="text-3xl font-black text-[var(--grab-green)] tracking-tighter">Rp 0</span>
                 </div>
@@ -253,12 +283,12 @@
     </div>
 
     <script>
+        // Logika JavaScript tetap sama seperti versi sebelumnya untuk menjaga fungsionalitas
         let currentMode = 'full';
         const state = {
             full: { mainVal: "25.000", kPct: 32, vDisk: 30, mDisk: "55.000", minO: "15.000", vOng: "12.000", roundType: "none", schema: "puas-cuan" },
             co: { mainVal: "60.000", kPct: 20, vDisk: 55, mDisk: "50.000", minO: "60.000", vOng: "0", sBurden: 75, schema: "brand-week" }
         };
-
         const DEFAULT_SCHEMAS = {
             full: { 
                 'puas-cuan': { name: '🔥 Diskon Puas Cuan', k: 32, v: 30, m: 55000, min: 15000 },
@@ -270,29 +300,23 @@
                 'co-standard': { name: '🤝 Co-Funded Standard', k: 20, v: 20, m: 50000, min: 10000, burden: 35 } 
             }
         };
-
-        let customPresets = JSON.parse(localStorage.getItem('grab_presets_separated_v2')) || JSON.parse(JSON.stringify(DEFAULT_SCHEMAS));
-
+        let customPresets = JSON.parse(localStorage.getItem('grab_presets_vSeparated')) || JSON.parse(JSON.stringify(DEFAULT_SCHEMAS));
         const fNum = (n) => n.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         const pNum = (n) => parseFloat(n.toString().replace(/\./g, "")) || 0;
-
         function formatAndCalc(el, field = 'mainVal') {
             el.value = fNum(el.value);
             state[currentMode][field] = el.value;
             hitung();
         }
-
         function updateVal(field, val) {
             state[currentMode][field] = val;
             hitung();
         }
-
         function switchCategory(mode) {
             currentMode = mode;
             const slider = document.getElementById('tabSlider');
             const btnFull = document.getElementById('btnFull');
             const btnCo = document.getElementById('btnCo');
-
             document.getElementById('mainVal').value = state[mode].mainVal;
             document.getElementById('kPct').value = state[mode].kPct;
             document.getElementById('vDisk').value = state[mode].vDisk;
@@ -301,37 +325,35 @@
             document.getElementById('vOng').value = state[mode].vOng;
             document.getElementById('roundType').value = state[mode].roundType;
             if(mode === 'co') document.getElementById('sBurden').value = state[mode].sBurden;
-
             if(mode === 'full') {
                 slider.style.transform = 'translateX(0)';
                 btnFull.classList.add('active'); btnCo.classList.remove('active');
                 document.getElementById('appBox').classList.remove('hidden');
                 document.getElementById('priceRow').classList.add('grid-cols-2');
-                document.getElementById('priceLabel').innerText = 'Harga Offline';
+                document.getElementById('priceLabel').innerText = 'Offline Price';
                 document.getElementById('ongkirBox').classList.remove('hidden');
                 document.getElementById('bOngRow').classList.remove('hidden');
                 document.getElementById('coFundRow').classList.add('hidden');
                 document.getElementById('investStats').classList.add('hidden');
-                document.getElementById('commBox').className = 'input-group-elite p-3 text-center col-span-1';
+                document.getElementById('commBox').className = 'input-group-elite p-2 text-center col-span-1';
                 document.getElementById('roundBox').classList.remove('hidden');
-                document.getElementById('bLabel').innerText = 'Menu Price';
+                document.getElementById('bLabel').innerText = 'Price';
             } else {
                 slider.style.transform = 'translateX(100%)';
                 btnFull.classList.remove('active'); btnCo.classList.add('active');
                 document.getElementById('appBox').classList.add('hidden');
                 document.getElementById('priceRow').classList.remove('grid-cols-2');
-                document.getElementById('priceLabel').innerText = 'Avg. Basket Size';
+                document.getElementById('priceLabel').innerText = 'Total Basket Size';
                 document.getElementById('ongkirBox').classList.add('hidden');
                 document.getElementById('bOngRow').classList.add('hidden');
                 document.getElementById('coFundRow').classList.remove('hidden');
                 document.getElementById('investStats').classList.remove('hidden');
-                document.getElementById('commBox').className = 'input-group-elite p-3 text-center col-span-2 shadow-inner';
+                document.getElementById('commBox').className = 'input-group-elite p-2 text-center col-span-2 shadow-inner';
                 document.getElementById('roundBox').classList.add('hidden');
-                document.getElementById('bLabel').innerText = 'Value Per Order';
+                document.getElementById('bLabel').innerText = 'Basket Value';
             }
             renderSchemaDropdown();
         }
-
         function renderSchemaDropdown() {
             const select = document.getElementById('schemaSelect');
             select.innerHTML = '';
@@ -341,12 +363,11 @@
                 select.appendChild(opt);
             }
             let customOpt = document.createElement('option');
-            customOpt.value = 'custom'; customOpt.innerText = '-- MANUAL CONFIG --';
+            customOpt.value = 'custom'; customOpt.innerText = '-- CUSTOM --';
             select.appendChild(customOpt);
             select.value = state[currentMode].schema;
             hitung();
         }
-
         function applySchema(key) {
             state[currentMode].schema = key;
             if (key !== 'custom') {
@@ -356,7 +377,6 @@
                 state[currentMode].mDisk = fNum(config.m);
                 state[currentMode].minO = fNum(config.min);
                 if(currentMode === 'co') state[currentMode].sBurden = config.burden;
-
                 document.getElementById('kPct').value = state[currentMode].kPct;
                 document.getElementById('vDisk').value = state[currentMode].vDisk;
                 document.getElementById('mDisk').value = state[currentMode].mDisk;
@@ -365,23 +385,14 @@
             }
             hitung();
         }
-
         function savePreset() {
-            const name = prompt("Campaign Name:"); if (!name) return;
+            const name = prompt("Name:"); if (!name) return;
             const id = "p_" + Date.now();
-            customPresets[currentMode][id] = {
-                name: "⭐ " + name,
-                k: parseFloat(document.getElementById('kPct').value) || 0,
-                v: parseFloat(document.getElementById('vDisk').value) || 0,
-                m: pNum(state[currentMode].mDisk),
-                min: pNum(state[currentMode].minO),
-                burden: currentMode === 'co' ? parseFloat(document.getElementById('sBurden').value) : 0
-            };
-            localStorage.setItem('grab_presets_separated_v2', JSON.stringify(customPresets));
+            customPresets[currentMode][id] = { name: "⭐ " + name, k: parseFloat(document.getElementById('kPct').value) || 0, v: parseFloat(document.getElementById('vDisk').value) || 0, m: pNum(state[currentMode].mDisk), min: pNum(state[currentMode].minO), burden: currentMode === 'co' ? parseFloat(document.getElementById('sBurden').value) : 0 };
+            localStorage.setItem('grab_presets_vSeparated', JSON.stringify(customPresets));
             state[currentMode].schema = id;
             renderSchemaDropdown();
         }
-
         function hitung() {
             const mainVal = pNum(state[currentMode].mainVal);
             const kPct = (parseFloat(state[currentMode].kPct) || 0) / 100;
@@ -391,16 +402,13 @@
             const minO = pNum(state[currentMode].minO);
             const sBurdPct = (parseFloat(state[currentMode].sBurden) || 0) / 100;
             const roundType = state[currentMode].roundType;
-
             let hApp, nomDisk, nett, nomKomisi, nomBurd;
-
             if (currentMode === 'full') {
                 let rawApp = Math.ceil(mainVal / (1 - kPct || 0.01));
                 if (roundType === "100") hApp = Math.round(rawApp / 100) * 100;
                 else if (roundType === "1000") hApp = Math.round(rawApp / 1000) * 1000;
                 else if (roundType === "up") hApp = Math.ceil(rawApp / 1000) * 1000;
                 else hApp = rawApp;
-
                 nomDisk = (hApp >= minO) ? Math.min(hApp * vDiskPct, mDisk) : 0;
                 nomKomisi = hApp * kPct; nomBurd = 0; nett = hApp - nomKomisi;
                 document.getElementById('resApp').value = fNum(hApp);
@@ -414,25 +422,22 @@
                 document.getElementById('resBurdRow').classList.remove('hidden');
                 const totalInv = nomKomisi + nomBurd;
                 const invRatio = (mainVal > 0 ? (totalInv / mainVal) * 100 : 0);
-                document.getElementById('totalInv').innerText = "Rp " + fNum(Math.round(totalInv));
+                document.getElementById('totalInv').innerText = "- Rp " + fNum(Math.round(totalInv));
                 document.getElementById('invPct').innerText = invRatio.toFixed(1) + "%";
                 document.getElementById('invBar').style.width = Math.min(invRatio, 100) + "%";
             }
-
             const fmtRp = (v) => "Rp " + fNum(Math.round(v));
             document.getElementById('resNet').innerText = fmtRp(nett);
-            document.getElementById('resKomisi').innerText = "- " + fmtRp(nomKomisi);
-            document.getElementById('resBurd').innerText = "- " + fmtRp(nomBurd);
+            document.getElementById('resKomisi').innerText = "- Rp " + fNum(Math.round(nomKomisi));
+            document.getElementById('resBurd').innerText = "- Rp " + fNum(Math.round(nomBurd));
             document.getElementById('bMenu').innerText = fmtRp(hApp);
-            document.getElementById('bDisk').innerText = "- " + fmtRp(nomDisk);
+            document.getElementById('bDisk').innerText = "- Rp " + fNum(Math.round(nomDisk));
             document.getElementById('bOng').innerText = fmtRp(vOng);
             document.getElementById('bTotal').innerText = fmtRp(Math.max(0, (hApp - nomDisk) + (currentMode === 'full' ? vOng : 0)));
-            
-            const promoBadge = document.getElementById('promoStat');
-            promoBadge.innerText = nomDisk > 0 ? "ACTIVE" : "NOT ACTIVE";
-            promoBadge.style.background = nomDisk > 0 ? "black" : "#ef4444";
+            const promoStat = document.getElementById('promoStat');
+            promoStat.innerText = nomDisk > 0 ? "Active" : "Not Active";
+            promoStat.style.background = nomDisk > 0 ? "black" : "#ef4444";
         }
-
         window.onload = () => switchCategory('full');
     </script>
 </body>
