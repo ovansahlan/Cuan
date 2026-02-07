@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MerchantCalculator Elite - Strategic Pitch Tool</title>
+    <title>MerchantCalculator Elite</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
     <style>
@@ -17,15 +17,18 @@
         body { 
             font-family: 'Plus Jakarta Sans', sans-serif; 
             background: linear-gradient(135deg, var(--grab-green) 0%, #008a3d 100%);
-            min-height: screen;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
-        /* Neubrutalism Elevation */
         .elite-card { 
             background: #ffffff; 
             border: 3px solid #000; 
             box-shadow: 8px 8px 0px #000;
             border-radius: 32px;
+            width: 100%;
         }
 
         .dark-elite-card {
@@ -33,9 +36,9 @@
             border: 3px solid #000;
             box-shadow: 8px 8px 0px rgba(0,0,0,0.5);
             border-radius: 32px;
+            width: 100%;
         }
 
-        /* Tab Animation */
         .tab-box { 
             background: rgba(0,0,0,0.2); 
             padding: 4px; 
@@ -54,15 +57,18 @@
             z-index: 0; 
             border: 2px solid #000;
         }
-        .tab-btn { flex: 1; padding: 14px 0; font-size: 11px; font-weight: 800; text-transform: uppercase; z-index: 1; color: white; letter-spacing: 1px; }
+        .tab-btn { flex: 1; padding: 14px 0; font-size: 11px; font-weight: 800; text-transform: uppercase; z-index: 1; color: white; letter-spacing: 1px; text-align: center; }
         .tab-btn.active { color: black !important; }
 
-        /* Interactive Inputs */
         .input-group-elite { 
             background: #f8fafc; 
             border: 2.5px solid #e2e8f0; 
             border-radius: 24px; 
             transition: all 0.2s ease;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
         .input-group-elite:focus-within { 
             border-color: #000; 
@@ -71,32 +77,33 @@
             background: white;
         }
 
-        .label-pitch { font-size: 11px; font-weight: 800; text-transform: uppercase; letter-spacing: 1.5px; color: #64748b; }
-        .value-pitch { font-size: 1.75rem; font-weight: 800; color: #000; }
+        .label-pitch { font-size: 11px; font-weight: 900; text-transform: uppercase; letter-spacing: 1px; color: #1e293b; }
+        .value-pitch { font-size: 1.4rem; font-weight: 800; color: #000; }
         
         input:focus { outline: none; }
 
-        /* High Contrast App Box */
         .app-highlight-box {
             background: var(--grab-dark-green);
             border: 2.5px solid #000;
             border-radius: 24px;
             box-shadow: inset 0 2px 4px rgba(0,0,0,0.3);
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
 
-        /* Custom Scrollbar for Select */
-        select { cursor: pointer; }
+        select { cursor: pointer; text-align-last: center; }
     </style>
 </head>
-<body class="pb-16" id="bodyWrapper">
+<body id="bodyWrapper">
 
-    <div class="max-w-md mx-auto p-6 space-y-8">
+    <div class="w-full max-w-md p-6 space-y-6">
         <header class="text-center space-y-2">
-            <div class="inline-block bg-black text-white text-[10px] font-black px-4 py-1 rounded-full uppercase tracking-[0.3em] mb-2">Merchant Partner Tool</div>
-            <h1 class="text-4xl font-black text-white tracking-tighter uppercase italic drop-shadow-[4px_4px_0px_rgba(0,0,0,0.3)]">
+            <div class="inline-block bg-black text-white text-[9px] font-black px-4 py-1 rounded-full uppercase tracking-[0.3em] mb-1">Official Merchant Tool</div>
+            <h1 class="text-4xl font-black text-white tracking-tighter uppercase italic drop-shadow-[3px_3px_0px_rgba(0,0,0,0.3)]">
                 Merchant<span class="text-[var(--grab-yellow)]">Calculator</span>
             </h1>
-            <p class="text-white/80 text-[10px] font-bold">OPTIMALKAN PROFIT STRATEGI PROMO ANDA</p>
         </header>
 
         <div class="tab-box">
@@ -105,32 +112,32 @@
             <button onclick="switchCategory('co')" id="btnCo" class="tab-btn">Co-Funded</button>
         </div>
 
-        <div class="elite-card p-6 space-y-6">
-            <div id="priceRow" class="grid grid-cols-2 gap-4 transition-all duration-300">
-                <div id="inputBoxMain" class="input-group-elite p-4 text-center">
-                    <label id="priceLabel" class="label-pitch block mb-2">Harga Offline</label>
+        <div class="elite-card p-6 space-y-5">
+            <div id="priceRow" class="grid grid-cols-2 gap-3 transition-all duration-300">
+                <div id="inputBoxMain" class="input-group-elite p-3 text-center">
+                    <label id="priceLabel" class="label-pitch block mb-1">Harga Offline</label>
                     <div class="flex items-center justify-center">
-                        <span class="text-lg opacity-20 mr-1 font-black italic">Rp</span>
+                        <span class="text-sm opacity-30 mr-1 font-black italic">Rp</span>
                         <input type="text" id="mainVal" class="bg-transparent w-full value-pitch outline-none text-center" oninput="formatAndCalc(this)">
                     </div>
                 </div>
-                <div id="appBox" class="app-highlight-box p-4 text-center flex flex-col justify-center">
-                    <label class="text-[9px] font-black text-green-400 uppercase tracking-[0.2em] block mb-2">Harga Jual App</label>
+                <div id="appBox" class="app-highlight-box p-3 text-center">
+                    <label class="text-[9px] font-black text-green-400 uppercase tracking-widest block mb-1">Harga Jual App</label>
                     <div class="flex items-center justify-center text-white italic">
-                        <span class="text-sm mr-1 opacity-50">Rp</span>
+                        <span class="text-xs mr-1 opacity-50 font-bold">Rp</span>
                         <input type="text" id="resApp" value="0" class="bg-transparent w-full value-pitch outline-none text-center !text-white italic" readonly>
                     </div>
                 </div>
             </div>
 
-            <div id="commSection" class="grid grid-cols-2 gap-4">
-                <div id="commBox" class="input-group-elite p-4 text-center">
-                    <label class="label-pitch block mb-1">Platform Fee (%)</label>
+            <div id="commSection" class="grid grid-cols-2 gap-3">
+                <div id="commBox" class="input-group-elite p-3 text-center">
+                    <label class="label-pitch block mb-1 italic">Komisi (%)</label>
                     <input type="number" id="kPct" class="bg-transparent w-full value-pitch text-center text-green-600 outline-none" oninput="updateVal('kPct', this.value)">
                 </div>
-                <div id="roundBox" class="input-group-elite p-4 text-center flex flex-col justify-center border-yellow-200">
+                <div id="roundBox" class="input-group-elite p-3 text-center flex flex-col justify-center border-yellow-200">
                     <label class="label-pitch block mb-1 text-yellow-600">Rounding</label>
-                    <select id="roundType" class="bg-transparent w-full font-black text-base text-center outline-none" onchange="updateVal('roundType', this.value)">
+                    <select id="roundType" class="bg-transparent w-full font-black text-sm text-center outline-none" onchange="updateVal('roundType', this.value)">
                         <option value="none">Normal</option>
                         <option value="100">Ratusan</option>
                         <option value="1000">Ribuan</option>
@@ -139,118 +146,105 @@
                 </div>
             </div>
 
-            <div class="p-6 bg-slate-50 rounded-[32px] border-2 border-slate-200 space-y-5 shadow-inner">
+            <div class="p-5 bg-slate-50 rounded-[32px] border-2 border-black space-y-4 shadow-inner">
                 <div class="flex justify-between items-center px-1">
-                    <label class="label-pitch text-green-600">Campaign Strategy</label>
-                    <button onclick="savePreset()" class="px-4 py-1.5 bg-black text-white text-[9px] font-black rounded-xl hover:bg-slate-800 transition-all uppercase shadow-md active:scale-90">💾 Simpan Preset</button>
+                    <label class="label-pitch text-green-600 italic">Campaign Strategy</label>
+                    <button onclick="savePreset()" class="px-3 py-1 bg-black text-white text-[8px] font-black rounded-lg active:scale-90 transition-all">💾 SIMPAN</button>
                 </div>
                 
-                <select id="schemaSelect" class="w-full text-sm font-extrabold bg-white border-2 border-black p-4 rounded-2xl outline-none shadow-[4px_4px_0px_#cbd5e1] focus:shadow-none transition-all" onchange="applySchema(this.value)"></select>
+                <select id="schemaSelect" class="w-full text-sm font-extrabold bg-white border-2 border-black p-3 rounded-2xl outline-none shadow-[3px_3px_0px_#000]" onchange="applySchema(this.value)"></select>
 
-                <div class="grid grid-cols-2 gap-4">
-                    <div class="bg-white p-4 rounded-2xl border-2 border-slate-200 text-center shadow-sm">
-                        <span class="text-[10px] font-black text-slate-400 uppercase block mb-1 tracking-wider">Discount (%)</span>
-                        <input type="number" id="vDisk" class="w-full text-2xl font-black text-green-600 text-center outline-none" oninput="updateVal('vDisk', this.value)">
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white p-3 rounded-xl border-2 border-slate-200 text-center">
+                        <span class="text-[9px] font-black text-slate-400 uppercase block mb-1">Discount (%)</span>
+                        <input type="number" id="vDisk" class="w-full text-xl font-black text-green-600 text-center outline-none" oninput="updateVal('vDisk', this.value)">
                     </div>
-                    <div class="bg-white p-4 rounded-2xl border-2 border-slate-200 text-center shadow-sm">
-                        <span class="text-[10px] font-black text-slate-400 uppercase block mb-1 tracking-wider">Maks Disc</span>
-                        <input type="text" id="mDisk" class="w-full text-2xl font-black text-green-600 text-center outline-none" oninput="formatAndCalc(this, 'mDisk')">
+                    <div class="bg-white p-3 rounded-xl border-2 border-slate-200 text-center">
+                        <span class="text-[9px] font-black text-slate-400 uppercase block mb-1">Maks Disc</span>
+                        <input type="text" id="mDisk" class="w-full text-xl font-black text-green-600 text-center outline-none" oninput="formatAndCalc(this, 'mDisk')">
                     </div>
                 </div>
 
-                <div id="coFundRow" class="hidden pt-4 border-t-2 border-slate-200 animate-pulse">
-                    <div class="flex justify-between items-center px-2 bg-orange-50 p-4 rounded-2xl border-2 border-orange-200">
+                <div id="coFundRow" class="hidden pt-2 border-t-2 border-slate-200">
+                    <div class="flex justify-between items-center px-2 bg-orange-50 p-3 rounded-xl border-2 border-orange-200">
                         <label class="label-pitch text-orange-600">Merchant Co-Fund (%)</label>
-                        <input type="number" id="sBurden" class="w-20 text-center text-2xl font-black text-orange-600 bg-white border-2 border-orange-300 rounded-xl outline-none" oninput="updateVal('sBurden', this.value)">
+                        <input type="number" id="sBurden" class="w-16 text-center text-xl font-black text-orange-600 bg-white border border-orange-300 rounded-lg outline-none" oninput="updateVal('sBurden', this.value)">
                     </div>
                 </div>
 
-                <div class="flex justify-between items-center px-5 py-4 border-[3.5px] border-black bg-white rounded-2xl shadow-[6px_6px_0px_#00B14F] hover:shadow-none transition-all">
-                    <span class="label-pitch text-black">Min. Order Syarat</span>
-                    <input type="text" id="minO" class="bg-transparent text-right font-black text-2xl w-32 outline-none text-green-600" oninput="formatAndCalc(this, 'minO')">
+                <div class="flex justify-between items-center px-4 py-3 border-[3px] border-black bg-white rounded-2xl shadow-[5px_5px_0px_#00B14F]">
+                    <span class="label-pitch text-black">Min. Order</span>
+                    <input type="text" id="minO" class="bg-transparent text-right font-black text-xl w-32 outline-none text-green-600" oninput="formatAndCalc(this, 'minO')">
                 </div>
             </div>
 
-            <div id="ongkirBox" class="bg-[var(--grab-yellow)] p-3 px-8 rounded-full flex justify-between items-center border-[3px] border-black shadow-[6px_6px_0px_#000] hover:translate-y-1 hover:shadow-none transition-all cursor-pointer">
-                <label class="text-[11px] font-black text-black uppercase italic tracking-[0.2em]">Shipping Fee</label>
+            <div id="ongkirBox" class="bg-[var(--grab-yellow)] p-2 px-6 rounded-full flex justify-between items-center border-[2.5px] border-black shadow-[4px_4px_0px_#000]">
+                <label class="text-[10px] font-black text-black uppercase italic">Ongkir Buyer</label>
                 <div class="flex items-center">
                     <span class="text-xs font-bold text-black opacity-30 mr-1 italic">Rp</span>
-                    <input type="text" id="vOng" class="bg-transparent text-right font-black text-xl w-24 text-black outline-none" oninput="formatAndCalc(this, 'vOng')">
+                    <input type="text" id="vOng" class="bg-transparent text-right font-black text-lg w-20 text-black outline-none" oninput="formatAndCalc(this, 'vOng')">
                 </div>
             </div>
         </div>
 
-        <div id="merchantCard" class="dark-elite-card p-8 text-white space-y-6 relative overflow-hidden">
-            <div class="relative z-10 space-y-2">
-                <p class="text-[11px] font-black text-[var(--grab-yellow)] uppercase tracking-[0.4em] italic opacity-80">Final Net Profit</p>
-                <div class="flex items-baseline gap-2">
-                    <span class="text-xl font-bold opacity-50 italic">Rp</span>
-                    <h2 id="resNet" class="text-5xl font-black text-[var(--grab-yellow)] tracking-tighter italic">0</h2>
-                </div>
-                <p class="text-[10px] text-slate-500 font-bold uppercase">Estimasi dana cair ke rekening Merchant</p>
+        <div id="merchantCard" class="dark-elite-card p-7 text-white space-y-5 relative overflow-hidden">
+            <div class="text-center space-y-1">
+                <p class="text-[10px] font-black text-[var(--grab-yellow)] uppercase tracking-[0.3em] opacity-80">Net Profit Merchant</p>
+                <h2 id="resNet" class="text-4xl font-black text-[var(--grab-yellow)] tracking-tighter italic">Rp 0</h2>
             </div>
             
-            <div class="relative z-10 pt-6 border-t border-white/10 space-y-4">
-                <div class="flex justify-between items-center text-[11px] font-black uppercase tracking-widest text-slate-400">
-                    <span>Grab Platform Fee</span>
-                    <span id="resKomisi" class="text-white text-base">-Rp 0</span>
+            <div class="pt-4 border-t border-white/10 space-y-3">
+                <div class="flex justify-between items-center text-[10px] font-black uppercase text-slate-400 italic">
+                    <span>Platform Fee</span>
+                    <span id="resKomisi" class="text-white text-sm">-Rp 0</span>
                 </div>
-                <div id="resBurdRow" class="hidden flex justify-between items-center text-[11px] font-black uppercase tracking-widest text-orange-400">
-                    <span>Merchant Promo Contribution</span>
-                    <span id="resBurd" class="text-white text-base">-Rp 0</span>
+                <div id="resBurdRow" class="hidden flex justify-between items-center text-[10px] font-black uppercase text-orange-400 italic">
+                    <span>Merchant Contribution</span>
+                    <span id="resBurd" class="text-white text-sm">-Rp 0</span>
                 </div>
-                <div id="investStats" class="hidden pt-4 space-y-3">
-                    <div class="flex justify-between items-end border-t border-white/5 pt-4">
-                        <span class="text-[10px] font-black text-red-500 uppercase tracking-widest">Total Investment Cost</span>
-                        <span id="totalInv" class="text-xl font-black text-white italic">Rp 0</span>
+                <div id="investStats" class="hidden pt-3 border-t border-white/5 space-y-2">
+                    <div class="flex justify-between items-end">
+                        <span class="text-[9px] font-black text-red-500 uppercase tracking-widest">Total Investment</span>
+                        <span id="totalInv" class="text-lg font-black text-white italic">Rp 0</span>
                     </div>
-                    <div class="flex items-center gap-4">
-                        <div class="flex-1 h-3 bg-white/10 rounded-full overflow-hidden border border-white/5">
-                            <div id="invBar" class="h-full bg-red-500 shadow-[0_0_15px_rgba(239,68,68,0.5)] transition-all duration-1000" style="width: 0%"></div>
+                    <div class="flex items-center gap-3">
+                        <div class="flex-1 h-2 bg-white/10 rounded-full overflow-hidden">
+                            <div id="invBar" class="h-full bg-red-500 transition-all duration-1000" style="width: 0%"></div>
                         </div>
-                        <span id="invPct" class="text-lg font-black text-red-500 italic">0%</span>
+                        <span id="invPct" class="text-sm font-black text-red-500">0%</span>
                     </div>
                 </div>
             </div>
-            <div class="absolute -right-16 -bottom-16 w-48 h-48 bg-green-500 opacity-10 rounded-full blur-[60px]"></div>
         </div>
 
-        <div id="cardBuyer" class="elite-card p-8 border-b-[14px] border-[var(--grab-yellow)] space-y-6">
-            <div class="flex justify-between items-center border-b-4 border-black pb-4">
-                <span class="text-[11px] font-black uppercase text-slate-400 italic tracking-[0.2em]">Consumer Experience</span>
-                <span id="promoStat" class="text-[10px] font-black bg-black text-white px-5 py-1.5 rounded-full uppercase italic tracking-widest">PROMO ACTIVE</span>
+        <div id="cardBuyer" class="elite-card p-7 border-b-[12px] border-[var(--grab-yellow)] space-y-4">
+            <div class="flex justify-between items-center border-b-2 border-black pb-3">
+                <span class="text-[10px] font-black uppercase text-slate-400 italic tracking-[0.1em]">Consumer Overview</span>
+                <span id="promoStat" class="text-[9px] font-black bg-black text-white px-4 py-1 rounded-full uppercase italic">Active</span>
             </div>
-            <div class="space-y-4">
-                <div class="flex justify-between text-base font-bold text-slate-500 uppercase tracking-tighter italic">
+            <div class="space-y-2">
+                <div class="flex justify-between text-xs font-bold text-slate-500 uppercase tracking-tighter italic">
                     <span id="bLabel">Menu Price</span>
                     <span id="bMenu" class="text-black font-black">Rp 0</span>
                 </div>
-                <div class="flex justify-between text-base font-bold text-red-600 uppercase tracking-tighter italic">
-                    <span>Voucher Discount</span>
+                <div class="flex justify-between text-xs font-bold text-red-600 uppercase tracking-tighter italic">
+                    <span>Discount</span>
                     <span id="bDisk" class="font-black">-Rp 0</span>
                 </div>
-                <div id="bOngRow" class="flex justify-between text-base font-bold text-slate-500 uppercase tracking-tighter italic">
-                    <span>Delivery Fee</span>
+                <div id="bOngRow" class="flex justify-between text-xs font-bold text-slate-500 uppercase tracking-tighter italic">
+                    <span>Delivery</span>
                     <span id="bOng" class="text-black font-black">Rp 0</span>
                 </div>
-                <div class="pt-6 border-t-4 border-dashed border-slate-200 flex justify-between items-center">
-                    <div>
-                        <span class="text-sm font-black uppercase text-black tracking-widest">Total Checkout</span>
-                        <p class="text-[9px] text-slate-400 font-bold uppercase italic">Final Payment</p>
-                    </div>
-                    <span id="bTotal" class="text-5xl font-black text-[var(--grab-green)] tracking-tighter">Rp 0</span>
+                <div class="pt-4 border-t-2 border-dashed border-slate-300 flex justify-between items-center">
+                    <span class="text-xs font-black uppercase text-black tracking-widest">Total Payment</span>
+                    <span id="bTotal" class="text-3xl font-black text-[var(--grab-green)] tracking-tighter">Rp 0</span>
                 </div>
             </div>
         </div>
-        
-        <footer class="text-center text-white/40 text-[9px] font-bold uppercase tracking-[0.3em] py-4">
-            Strategized for Merchant Success &bull; 2026
-        </footer>
     </div>
 
     <script>
         let currentMode = 'full';
-        
         const state = {
             full: { mainVal: "25.000", kPct: 32, vDisk: 30, mDisk: "55.000", minO: "15.000", vOng: "12.000", roundType: "none", schema: "puas-cuan" },
             co: { mainVal: "60.000", kPct: 20, vDisk: 55, mDisk: "50.000", minO: "60.000", vOng: "0", sBurden: 75, schema: "brand-week" }
@@ -268,7 +262,7 @@
             }
         };
 
-        let customPresets = JSON.parse(localStorage.getItem('grab_presets_vElite')) || JSON.parse(JSON.stringify(DEFAULT_SCHEMAS));
+        let customPresets = JSON.parse(localStorage.getItem('grab_presets_vSeparated')) || JSON.parse(JSON.stringify(DEFAULT_SCHEMAS));
 
         const fNum = (n) => n.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
         const pNum = (n) => parseFloat(n.toString().replace(/\./g, "")) || 0;
@@ -289,7 +283,7 @@
             const slider = document.getElementById('tabSlider');
             const btnFull = document.getElementById('btnFull');
             const btnCo = document.getElementById('btnCo');
-            const body = document.getElementById('bodyWrapper');
+            const inputBoxMain = document.getElementById('inputBoxMain');
 
             document.getElementById('mainVal').value = state[mode].mainVal;
             document.getElementById('kPct').value = state[mode].kPct;
@@ -303,31 +297,31 @@
             if(mode === 'full') {
                 slider.style.transform = 'translateX(0)';
                 btnFull.classList.add('active'); btnCo.classList.remove('active');
-                body.style.background = 'linear-gradient(135deg, var(--grab-green) 0%, #008a3d 100%)';
                 document.getElementById('appBox').classList.remove('hidden');
                 document.getElementById('priceRow').classList.add('grid-cols-2');
+                inputBoxMain.className = 'input-group-elite p-3 text-center col-span-1';
                 document.getElementById('priceLabel').innerText = 'Harga Offline';
                 document.getElementById('ongkirBox').classList.remove('hidden');
                 document.getElementById('bOngRow').classList.remove('hidden');
                 document.getElementById('coFundRow').classList.add('hidden');
                 document.getElementById('investStats').classList.add('hidden');
-                document.getElementById('commBox').className = 'input-group-elite p-4 text-center col-span-1';
+                document.getElementById('commBox').className = 'input-group-elite p-3 text-center col-span-1';
                 document.getElementById('roundBox').classList.remove('hidden');
                 document.getElementById('bLabel').innerText = 'Menu Price';
             } else {
                 slider.style.transform = 'translateX(100%)';
                 btnFull.classList.remove('active'); btnCo.classList.add('active');
-                body.style.background = 'linear-gradient(135deg, #004d22 0%, #002b13 100%)';
                 document.getElementById('appBox').classList.add('hidden');
                 document.getElementById('priceRow').classList.remove('grid-cols-2');
+                inputBoxMain.className = 'input-group-elite p-4 text-center border-dashed border-2 border-orange-500 col-span-2 shadow-inner';
                 document.getElementById('priceLabel').innerText = 'Avg. Basket Size';
                 document.getElementById('ongkirBox').classList.add('hidden');
                 document.getElementById('bOngRow').classList.add('hidden');
                 document.getElementById('coFundRow').classList.remove('hidden');
                 document.getElementById('investStats').classList.remove('hidden');
-                document.getElementById('commBox').className = 'input-group-elite p-4 text-center col-span-2 shadow-inner';
+                document.getElementById('commBox').className = 'input-group-elite p-3 text-center col-span-2';
                 document.getElementById('roundBox').classList.add('hidden');
-                document.getElementById('bLabel').innerText = 'Order Value';
+                document.getElementById('bLabel').innerText = 'Value Per Order';
             }
             renderSchemaDropdown();
         }
@@ -341,7 +335,7 @@
                 select.appendChild(opt);
             }
             let customOpt = document.createElement('option');
-            customOpt.value = 'custom'; customOpt.innerText = '-- CUSTOM CONFIGURATION --';
+            customOpt.value = 'custom'; customOpt.innerText = '-- MANUAL CONFIG --';
             select.appendChild(customOpt);
             select.value = state[currentMode].schema;
             hitung();
@@ -367,7 +361,7 @@
         }
 
         function savePreset() {
-            const name = prompt("Nama Preset Baru:"); if (!name) return;
+            const name = prompt("Campaign Name:"); if (!name) return;
             const id = "p_" + Date.now();
             customPresets[currentMode][id] = {
                 name: "⭐ " + name,
@@ -377,7 +371,7 @@
                 min: pNum(state[currentMode].minO),
                 burden: currentMode === 'co' ? parseFloat(document.getElementById('sBurden').value) : 0
             };
-            localStorage.setItem('grab_presets_vElite', JSON.stringify(customPresets));
+            localStorage.setItem('grab_presets_vSeparated', JSON.stringify(customPresets));
             state[currentMode].schema = id;
             renderSchemaDropdown();
         }
@@ -419,19 +413,19 @@
                 document.getElementById('invBar').style.width = Math.min(invRatio, 100) + "%";
             }
 
-            const fmtRp = (v) => fNum(Math.round(v));
+            const fmtRp = (v) => "Rp " + fNum(Math.round(v));
             document.getElementById('resNet').innerText = fmtRp(nett);
-            document.getElementById('resKomisi').innerText = "- Rp " + fmtRp(nomKomisi);
-            document.getElementById('resBurd').innerText = "- Rp " + fmtRp(nomBurd);
-            document.getElementById('bMenu').innerText = "Rp " + fmtRp(hApp);
-            document.getElementById('bDisk').innerText = "- Rp " + fmtRp(nomDisk);
-            document.getElementById('bOng').innerText = "Rp " + fmtRp(vOng);
-            document.getElementById('bTotal').innerText = "Rp " + fmtRp(Math.max(0, (hApp - nomDisk) + (currentMode === 'full' ? vOng : 0)));
+            document.getElementById('resKomisi').innerText = "- " + fmtRp(nomKomisi);
+            document.getElementById('resBurd').innerText = "- " + fmtRp(nomBurd);
+            document.getElementById('bMenu').innerText = fmtRp(hApp);
+            document.getElementById('bDisk').innerText = "- " + fmtRp(nomDisk);
+            document.getElementById('bOng').innerText = fmtRp(vOng);
+            document.getElementById('bTotal').innerText = fmtRp(Math.max(0, (hApp - nomDisk) + (currentMode === 'full' ? vOng : 0)));
             
-            const pStat = document.getElementById('promoStat');
-            pStat.innerText = nomDisk > 0 ? "PROMO ACTIVE" : "CONDITION NOT MET";
-            pStat.style.background = nomDisk > 0 ? "var(--grab-yellow)" : "#ef4444";
-            pStat.style.color = nomDisk > 0 ? "black" : "white";
+            const promoStat = document.getElementById('promoStat');
+            promoStat.innerText = nomDisk > 0 ? "ACTIVE" : "NOT ACTIVE";
+            promoStat.style.background = nomDisk > 0 ? "var(--grab-yellow)" : "#ef4444";
+            promoStat.style.color = nomDisk > 0 ? "black" : "white";
         }
 
         window.onload = () => switchCategory('full');
