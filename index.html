@@ -1,0 +1,268 @@
+<meta name='viewport' content='width=device-width, initial-scale=1'/><!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Grab Promo Simulator</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --grab-green: #00B14F;
+            --grab-dark: #008a3d;
+            --grab-bg: #F7F9FA;
+        }
+        body { 
+            font-family: 'Plus Jakarta Sans', sans-serif; 
+            background-color: var(--grab-bg); 
+            color: #1A1D1F;
+        }
+        /* Custom Shadow agar tidak polos */
+        .grab-card-elevated {
+            background: white;
+            border-radius: 32px;
+            box-shadow: 0 12px 30px -10px rgba(0,0,0,0.08);
+            border: 1px solid #F1F3F5;
+        }
+        .grab-gradient-bg {
+            background: linear-gradient(135deg, #00B14F 0%, #008A3D 100%);
+        }
+        .merchant-dark-card {
+            background: #111315;
+            box-shadow: 0 20px 40px -15px rgba(0,0,0,0.3);
+        }
+        /* Input styling */
+        .input-group {
+            background: #F4F6F8;
+            border: 2px solid transparent;
+            transition: all 0.2s;
+        }
+        .input-group:focus-within {
+            border-color: var(--grab-green);
+            background: white;
+        }
+        /* Slider styling */
+        input[type=range] {
+            accent-color: var(--grab-green);
+        }
+    </style>
+</head>
+<body class="min-h-screen pb-20">
+
+    <div class="max-w-md mx-auto p-6 space-y-8">
+        
+        <header class="flex flex-col items-center justify-center pt-4">
+            <div class="bg-white p-4 rounded-[24px] shadow-sm mb-4 border border-gray-100">
+                <img src="https://upload.wikimedia.org/wikipedia/commons/b/b1/Grab_logo_2021.svg" class="h-8" alt="Grab Logo">
+            </div>
+            <h1 class="text-2xl font-extrabold tracking-tight">Promo Optimizer</h1>
+            <p class="text-green-600 font-bold text-[10px] uppercase tracking-[0.3em]">Merchant Dashboard</p>
+        </header>
+
+        <div class="grab-card-elevated p-8 space-y-6">
+            
+            <div class="space-y-2">
+                <label class="text-[11px] font-extrabold text-gray-400 uppercase tracking-widest block ml-1">Pilih Skema Kampanye</label>
+                <div class="relative">
+                    <select id="schemaSelect" class="w-full p-4 bg-gray-50 border-2 border-gray-100 rounded-[20px] font-bold text-gray-700 outline-none appearance-none cursor-pointer focus:border-green-500 transition-all" onchange="applySchema()">
+                        <option value="diskon-puas">🔥 Diskon Puas Cuan (35%)</option>
+                        <option value="booster">🚀 Diskon Puas Booster (50%)</option>
+                        <option value="brand-week">⭐ Brand Week Festival (40%)</option>
+                        <option value="custom">⚙️ Atur Manual (Custom)</option>
+                    </select>
+                    <div class="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none opacity-40">▼</div>
+                </div>
+            </div>
+
+            <div class="grid grid-cols-2 gap-4">
+                <div class="col-span-2 input-group p-4 rounded-[20px]">
+                    <label class="text-[10px] font-extrabold text-green-600 uppercase mb-1 block">Harga Jual Offline (Target Net)</label>
+                    <div class="flex items-center">
+                        <span class="text-xl font-bold text-gray-400 mr-2">Rp</span>
+                        <input type="number" id="hOff" value="25000" class="bg-transparent w-full text-2xl font-black outline-none" oninput="hitung()">
+                    </div>
+                </div>
+                <div class="input-group p-3 rounded-[20px]">
+                    <label class="text-[9px] font-extrabold text-gray-400 uppercase block">Komisi (%)</label>
+                    <input type="number" id="kPct" value="20" class="bg-transparent w-full font-bold text-lg outline-none" oninput="hitung()">
+                </div>
+                <div class="input-group p-3 rounded-[20px]">
+                    <label class="text-[9px] font-extrabold text-blue-400 uppercase block">Ongkir (Buyer)</label>
+                    <input type="number" id="vOng" value="12000" class="bg-transparent w-full font-bold text-lg text-blue-600 outline-none" oninput="hitung()">
+                </div>
+            </div>
+
+            <div class="bg-green-50 rounded-[24px] p-5 border border-green-100 space-y-4">
+                <div class="flex justify-between items-center">
+                    <span class="text-[10px] font-black text-green-700 uppercase">Subsidi & Voucher</span>
+                    <span id="fundLabel" class="bg-white px-3 py-1 rounded-full text-[9px] font-bold text-green-600 shadow-sm border border-green-200 uppercase">Full Grab</span>
+                </div>
+                <div class="grid grid-cols-2 gap-3">
+                    <div class="bg-white p-3 rounded-xl border border-green-100">
+                        <label class="text-[8px] font-bold text-gray-400 uppercase block italic mb-1">Diskon %</label>
+                        <input type="number" id="vDisk" class="w-full font-black text-green-600 outline-none" oninput="hitung()">
+                    </div>
+                    <div class="bg-white p-3 rounded-xl border border-green-100">
+                        <label class="text-[8px] font-bold text-gray-400 uppercase block italic mb-1">Maks Potongan</label>
+                        <input type="number" id="mDisk" class="w-full font-black text-green-600 outline-none" oninput="hitung()">
+                    </div>
+                </div>
+                
+                <div class="space-y-2 px-1">
+                    <div class="flex justify-between items-center">
+                        <span class="text-[10px] font-bold text-orange-600 uppercase italic">Beban Patungan Seller</span>
+                        <span id="sBurdenLab" class="text-xs font-black text-orange-700">0%</span>
+                    </div>
+                    <input type="range" id="sBurden" min="0" max="100" value="0" class="w-full" oninput="hitung()">
+                </div>
+            </div>
+        </div>
+
+        <div class="merchant-dark-card rounded-[32px] p-8 text-white relative overflow-hidden">
+            <div class="relative z-10 space-y-6">
+                <div class="flex justify-between items-center">
+                    <div class="flex items-center gap-2">
+                        <div class="w-2 h-2 bg-indigo-500 rounded-full animate-pulse"></div>
+                        <span class="text-[10px] font-black text-gray-400 uppercase tracking-widest">Sisi Merchant</span>
+                    </div>
+                </div>
+                <div class="flex justify-between items-end">
+                    <div class="space-y-1">
+                        <p class="text-[10px] font-medium text-gray-400 uppercase">Harga Jual Di Aplikasi</p>
+                        <h2 id="resApp" class="text-4xl font-black tracking-tighter italic">Rp 0</h2>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-[10px] font-medium text-gray-400 uppercase">Diterima Bersih</p>
+                        <h3 id="resNet" class="text-2xl font-black text-green-400">Rp 0</h3>
+                    </div>
+                </div>
+                <div class="pt-4 border-t border-white/10 space-y-2">
+                    <div class="flex justify-between text-[10px] font-bold opacity-50 uppercase italic tracking-wider">
+                        <span>Potongan Komisi</span>
+                        <span id="resKomisi">-Rp 0</span>
+                    </div>
+                    <div id="rowBurd" class="flex justify-between text-[10px] font-bold text-orange-500 uppercase italic tracking-wider hidden">
+                        <span>Patungan Promo</span>
+                        <span id="resBurd">-Rp 0</span>
+                    </div>
+                </div>
+            </div>
+            <div class="absolute -right-10 -bottom-10 w-40 h-40 bg-indigo-600/20 rounded-full blur-[60px]"></div>
+        </div>
+
+        <div id="cardBuyer" class="grab-gradient-bg rounded-[32px] p-8 text-white shadow-2xl relative overflow-hidden transition-all duration-300">
+            <div class="relative z-10 space-y-6">
+                <div class="flex justify-between items-center">
+                    <span class="text-[10px] font-black uppercase tracking-widest opacity-70 italic">Sisi Customer</span>
+                    <span id="promoStat" class="text-[9px] font-black bg-white/20 px-3 py-1 rounded-full border border-white/30 uppercase tracking-tighter">Promo Aktif</span>
+                </div>
+                <div class="space-y-4">
+                    <div class="flex justify-between text-sm">
+                        <span class="opacity-80">Harga Menu</span>
+                        <span id="bMenu" class="font-bold">Rp 0</span>
+                    </div>
+                    <div class="flex justify-between text-sm italic font-black text-yellow-300">
+                        <span>Voucher Diskon</span>
+                        <span id="bDisk">-Rp 0</span>
+                    </div>
+                    <div class="flex justify-between text-sm opacity-80 border-b border-white/10 pb-3">
+                        <span>Biaya Pengantaran</span>
+                        <span id="bOng" class="font-bold">Rp 0</span>
+                    </div>
+                    <div class="flex justify-between items-center pt-2">
+                        <div>
+                            <span class="text-xs font-black uppercase tracking-widest block leading-none">Total Bayar</span>
+                            <span class="text-[9px] opacity-70 font-medium italic">Termasuk Pajak & Ongkir</span>
+                        </div>
+                        <span id="bTotal" class="text-4xl font-black tracking-tighter">Rp 0</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const SCHEMAS = {
+            'diskon-puas': { v: 35, m: 40000, min: 15000, burden: 0, label: 'Full Grab' },
+            'booster': { v: 50, m: 55000, min: 20000, burden: 20, label: 'Co-Fund (Seller 20%)' },
+            'brand-week': { v: 40, m: 60000, min: 80000, burden: 50, label: 'Co-Fund (Seller 50%)' },
+            'custom': { v: 0, m: 0, min: 0, burden: 0, label: 'Custom' }
+        };
+
+        function applySchema() {
+            const val = document.getElementById('schemaSelect').value;
+            const config = SCHEMAS[val];
+            if (!config) return;
+
+            if (val !== 'custom') {
+                document.getElementById('vDisk').value = config.v;
+                document.getElementById('mDisk').value = config.m;
+                document.getElementById('sBurden').value = config.burden;
+                document.getElementById('fundLabel').innerText = config.label;
+            }
+            hitung();
+        }
+
+        function hitung() {
+            const hOff = parseFloat(document.getElementById('hOff').value) || 0;
+            const kPct = (parseFloat(document.getElementById('kPct').value) || 0) / 100;
+            const vOng = parseFloat(document.getElementById('vOng').value) || 0;
+            const vDiskPct = (parseFloat(document.getElementById('vDisk').value) || 0) / 100;
+            const mDisk = parseFloat(document.getElementById('mDisk').value) || 0;
+            const sBurdPct = (parseFloat(document.getElementById('sBurden').value) || 0) / 100;
+            const schema = document.getElementById('schemaSelect').value;
+            
+            // Get min order based on current schema
+            const minOrder = (schema !== 'custom') ? SCHEMAS[schema].min : 0;
+
+            // Seller Calc
+            const hApp = Math.ceil(hOff / (1 - kPct || 0.01));
+            const nomKomisi = hApp * kPct;
+
+            // Buyer & Promo
+            let nomDisk = 0;
+            const cardBuyer = document.getElementById('cardBuyer');
+            const promoStat = document.getElementById('promoStat');
+
+            if (hApp >= minOrder) {
+                nomDisk = Math.min(hApp * vDiskPct, mDisk);
+                cardBuyer.style.filter = "grayscale(0)";
+                cardBuyer.style.opacity = "1";
+                promoStat.innerText = "Promo Aktif";
+                promoStat.classList.replace("bg-red-500", "bg-white/20");
+            } else {
+                nomDisk = 0;
+                cardBuyer.style.filter = "grayscale(0.6)";
+                cardBuyer.style.opacity = "0.8";
+                promoStat.innerText = "Min Belanja Kurang";
+                promoStat.classList.add("bg-red-500");
+            }
+
+            // Patungan impact on seller
+            const nomBurd = nomDisk * sBurdPct;
+            document.getElementById('sBurdenLab').innerText = Math.round(sBurdPct * 100) + "%";
+            
+            const rowBurd = document.getElementById('rowBurd');
+            if (nomBurd > 0) rowBurd.classList.remove('hidden');
+            else rowBurd.classList.add('hidden');
+
+            const netSeller = hApp - nomKomisi - nomBurd;
+            const totalBuyer = (hApp - nomDisk) + vOng;
+
+            // Format UI
+            const fmt = (v) => "Rp " + Math.round(v).toLocaleString('id-ID');
+            document.getElementById('resApp').innerText = fmt(hApp);
+            document.getElementById('resKomisi').innerText = "- " + fmt(nomKomisi);
+            document.getElementById('resBurd').innerText = "- " + fmt(nomBurd);
+            document.getElementById('resNet').innerText = fmt(netSeller);
+            
+            document.getElementById('bMenu').innerText = fmt(hApp);
+            document.getElementById('bDisk').innerText = "- " + fmt(nomDisk);
+            document.getElementById('bOng').innerText = fmt(vOng);
+            document.getElementById('bTotal').innerText = fmt(Math.max(0, totalBuyer));
+        }
+
+        window.onload = applySchema;
+    </script>
+</body>
+</html>
