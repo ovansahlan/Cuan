@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>PitchPro v27.5 | Bug-Free Edition</title>
+    <title>Merchant Calculator | Elite Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -29,14 +29,14 @@
 
         .vs-card { border: 2.5px solid transparent; border-radius: 14px; padding: 10px 6px; position: relative; transition: 0.4s; background: rgba(255,255,255,0.05); }
         .vs-card.winner { background: rgba(255, 210, 0, 0.2); border-color: var(--grab-yellow); box-shadow: 0 0 25px rgba(255, 210, 0, 0.4); }
-        .winner-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--grab-yellow); color: black; font-size: 8px; font-weight: 900; padding: 2px 8px; border-radius: 20px; border: 2px solid black; display: none; z-index: 10; }
+        .winner-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--grab-yellow); color: black; font-size: 8px; font-weight: 900; padding: 2px 8px; border-radius: 20px; border: 1.5px solid black; display: none; z-index: 10; }
         .vs-card.winner .winner-badge { display: block; animation: bounce 0.5s infinite alternate; }
 
         .input-group { display: grid; grid-template-columns: 35px 1fr 35px; align-items: center; background: white; border: 2px solid #e2e8f0; border-radius: 10px; height: 40px; }
         .input-side { font-weight: 900; font-size: 11px; color: #94a3b8; display: flex; justify-content: center; align-items: center; }
         .input-pro { border: none; font-size: 1.2rem; font-weight: 900; width: 100%; text-align: center; outline: none; background: transparent; color: #1a1a1a; }
 
-        #detailOverlay { position: fixed; top: 120px; left: 50%; transform: translateX(-50%) translateY(20px); width: 90%; max-width: 400px; background: rgba(0, 0, 0, 0.98); backdrop-filter: blur(20px); border-radius: 24px; padding: 25px; z-index: 300; opacity: 0; pointer-events: none; transition: 0.3s ease-out; border: 1px solid rgba(255,255,255,0.2); }
+        #detailOverlay { position: fixed; top: 120px; left: 50%; transform: translateX(-50%) translateY(20px); width: 90%; max-width: 400px; background: rgba(0, 0, 0, 0.98); backdrop-filter: blur(20px); border-radius: 24px; padding: 25px; z-index: 100; opacity: 0; pointer-events: none; transition: 0.3s ease-out; border: 1px solid rgba(255,255,255,0.2); }
         #detailOverlay.active { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
 
         .label-bold { font-size: 10px; font-weight: 900; text-transform: uppercase; color: #334155; margin-bottom: 4px; display: flex; align-items: center; gap: 5px; }
@@ -50,9 +50,9 @@
     <header class="gradient-header flex justify-between items-center">
         <div class="flex items-center gap-1.5">
             <div class="w-6 h-6 bg-black rounded flex items-center justify-center font-black text-white italic text-xs shadow-sm">G</div>
-            <p class="font-black text-sm tracking-tighter uppercase text-slate-800">PITCHPRO <span class="text-[var(--grab-green)]">ELITE</span></p>
+            <p class="font-black text-sm tracking-tighter uppercase text-slate-800">MERCHANT <span class="text-[var(--grab-green)]">CALCULATOR</span></p>
         </div>
-        <div class="bg-emerald-100 text-[var(--grab-green)] px-2.5 py-0.5 rounded-full text-[8px] font-black uppercase tracking-tight italic">Pitch Ready</div>
+        <div class="bg-emerald-100 text-[var(--grab-green)] px-2.5 py-0.5 rounded-full text-[8px] font-black uppercase tracking-tight italic">Elite Edition</div>
     </header>
 
     <section class="spotlight-dashboard">
@@ -131,7 +131,7 @@
                     <div class="winner-badge">WINNER 🏆</div>
                     <p class="text-[8px] font-black opacity-60 text-white uppercase mb-2">NORMAL</p>
                     <div class="space-y-1">
-                        <div class="flex flex-col"><span class="text-[6px] text-white/30 uppercase">Tayang</span><p id="vsAppNormal" class="text-[12px] font-black text-white/40">Rp 0</p></div>
+                        <div class="flex flex-col"><span class="text-[6px] text-white/30 uppercase">Harga Tayang</span><p id="vsAppNormal" class="text-[12px] font-black text-white/40">Rp 0</p></div>
                         <div class="flex flex-col"><span class="text-[7px] text-white/60 font-bold uppercase">Konsumen Bayar</span><p id="vsPayNormal" class="text-lg font-black text-white/90">Rp 0</p></div>
                     </div>
                 </div>
@@ -139,7 +139,7 @@
                     <div class="winner-badge">WINNER 🏆</div>
                     <p id="vsPromoLabel" class="text-[8px] font-black text-[var(--grab-yellow)] uppercase mb-2">PROMO</p>
                     <div class="space-y-1">
-                        <div class="flex flex-col"><span class="text-[6px] text-white/30 uppercase">Tayang</span><p id="vsAppPromo" class="text-[12px] font-black text-white/40">Rp 0</p></div>
+                        <div class="flex flex-col"><span class="text-[6px] text-white/30 uppercase">Harga Tayang</span><p id="vsAppPromo" class="text-[12px] font-black text-white/40">Rp 0</p></div>
                         <div class="flex flex-col"><span class="text-[7px] text-[var(--grab-yellow)]/60 font-bold uppercase">Konsumen Bayar</span><p id="vsPayPromo" class="text-2xl font-black text-[var(--grab-yellow)]">Rp 0</p></div>
                     </div>
                 </div>
@@ -148,17 +148,12 @@
     </main>
 
     <footer class="gradient-footer text-center">
-        <p class="text-[8px] font-black opacity-40 text-slate-800 uppercase tracking-widest italic">© 2026 PitchPro | Verified Precision System</p>
+        <p class="text-[8px] font-black opacity-40 text-slate-800 uppercase tracking-widest italic">© 2026 Merchant Calculator | Drive Your Sales</p>
     </footer>
 
 <script>
     let sTier = 'hemat', currentSchema = 'normal', isRounded = true, subMode = 'val';
-    // PUSAT DATA HITUNGAN
-    const calcData = { 
-        off: 0, sub: 0, commPct: 20, 
-        list: 0, disc: 0, net: 0, pay: 0,
-        sf: 0, mf: 0
-    };
+    const calcData = { off: 0, sub: 0, commPct: 20, list: 0, disc: 0, net: 0, pay: 0, sf: 0, mf: 0 };
     const state = { mainVal: "25.000", kPct: 20, vDisk: 0, mDisk: "0", minO: "0", subVal: "0" };
 
     const PRESETS = {
@@ -170,8 +165,6 @@
     function hitung() {
         const off = pNum(state.mainVal), commPromo = pNum(state.kPct), subRaw = pNum(state.subVal);
         const adj = subMode === 'val' ? subRaw : (off * subRaw / 100);
-        
-        // 1. DATA PUSAT (Promo Side)
         let listPromo = (off - adj) / (1 - (commPromo/100));
         if (isRounded) listPromo = Math.ceil(listPromo/100)*100;
         const discPromo = (listPromo >= pNum(state.minO)) ? Math.min(listPromo * pNum(state.vDisk)/100, pNum(state.mDisk)) : 0;
@@ -182,16 +175,13 @@
         calcData.sf = listPromo * 0.20; calcData.mf = listPromo * (Math.max(0, commPromo - 20)/100);
         calcData.net = listPromo - calcData.sf - calcData.mf;
 
-        // UI Dashboard
         document.getElementById('resApp').innerText = "Rp " + fNum(Math.round(listPromo));
         document.getElementById('resTP').innerText = "Rp " + fNum(Math.round(payPromo));
         document.getElementById('resNet').innerText = "Rp " + fNum(Math.round(calcData.net));
 
-        // 2. NORMAL Pembanding Dasar
         let listNormal = (off - adj) / (1 - (20/100));
         if (isRounded) listNormal = Math.ceil(listNormal/100)*100;
         
-        // UI VS Panel
         const promoLabel = currentSchema === 'normal' ? 'Normal' : (currentSchema === 'puas-cuan' ? 'Cuan' : 'Booster');
         document.getElementById('vsTitle').innerText = `NORMAL VS ${promoLabel.toUpperCase()}`;
         document.getElementById('vsAppNormal').innerText = "Rp " + fNum(Math.round(listNormal));
@@ -203,49 +193,23 @@
         const isNormalWin = listNormal < payPromo;
         document.getElementById('cardNormal').classList.toggle('winner', isNormalWin);
         document.getElementById('cardPromo').classList.toggle('winner', !isNormalWin);
-
         ['resApp', 'resNet', 'resTP'].forEach(id => { const el = document.getElementById(id); el.classList.remove('value-pulse'); void el.offsetWidth; el.classList.add('value-pulse'); });
     }
 
     function showDetail(e, type) {
         e.stopPropagation();
-        const overlay = document.getElementById('detailOverlay');
-        const content = document.getElementById('overlayContent');
+        const overlay = document.getElementById('detailOverlay'), content = document.getElementById('overlayContent');
         let html = '';
-
-        if(type === 'app') {
-            html = `<h3 class="text-xs font-black text-grab-yellow mb-4 uppercase text-center italic tracking-widest">Detail App Price</h3>
-                <div class="space-y-4 text-white text-xs">
-                    <div class="flex justify-between"><span>Offline Basis</span><span class="font-black">Rp ${fNum(calcData.off)}</span></div>
-                    <div class="flex justify-between"><span>Merchant Adjust</span><span class="font-black">Rp ${fNum(calcData.sub)}</span></div>
-                    <div class="flex justify-between"><span>Grab Comm (${calcData.commPct}%)</span><span class="font-black">Rp ${fNum(Math.round(calcData.sf + calcData.mf))}</span></div>
-                    <div class="pt-4 border-t border-white/20 flex justify-between text-xl font-black text-white"><span>HARGA TAYANG</span><span>Rp ${fNum(Math.round(calcData.list))}</span></div>
-                </div>`;
-        } else if(type === 'cust') {
-            html = `<h3 class="text-xs font-black text-emerald-400 mb-4 uppercase text-center italic tracking-widest">Detail Customer Pay</h3>
-                <div class="space-y-4 text-white text-xs">
-                    <div class="flex justify-between"><span>Harga Tayang</span><span class="font-black">Rp ${fNum(Math.round(calcData.list))}</span></div>
-                    <div class="flex justify-between text-red-400"><span>Subsidi Campaign</span><span class="font-black">- Rp ${fNum(Math.round(calcData.disc))}</span></div>
-                    <div class="pt-4 border-t border-white/20 flex justify-between text-xl font-black text-emerald-400"><span>TOTAL BAYAR</span><span>Rp ${fNum(Math.round(calcData.pay))}</span></div>
-                </div>`;
-        } else {
-            html = `<h3 class="text-xs font-black text-emerald-500 mb-4 uppercase text-center italic tracking-widest">Merchant Profit</h3>
-                <div class="space-y-4 text-white text-xs">
-                    <div class="flex justify-between"><span>Service Fee (20%)</span><span class="font-black">- Rp ${fNum(Math.round(calcData.sf))}</span></div>
-                    <div class="flex justify-between"><span>Marketing Fee (${Math.max(0, calcData.commPct-20)}%)</span><span class="font-black">- Rp ${fNum(Math.round(calcData.mf))}</span></div>
-                    <div class="flex justify-between text-emerald-400"><span>Subsidi Promo Grab</span><span class="font-black text-sm">FREE ✅</span></div>
-                    <div class="pt-4 border-t border-white/20 flex justify-between text-xl font-black text-emerald-500"><span>PROFIT BERSIH</span><span>Rp ${fNum(Math.round(calcData.net))}</span></div>
-                </div>`;
-        }
+        if(type === 'app') html = `<h3 class="text-xs font-black text-grab-yellow mb-4 uppercase text-center italic tracking-widest">Detail App Price</h3><div class="space-y-4 text-white text-xs"><div class="flex justify-between"><span>Offline Basis</span><span class="font-black">Rp ${fNum(calcData.off)}</span></div><div class="flex justify-between"><span>Merchant Adjust</span><span class="font-black">Rp ${fNum(calcData.sub)}</span></div><div class="flex justify-between"><span>Grab Comm (${calcData.commPct}%)</span><span class="font-black">Rp ${fNum(Math.round(calcData.sf + calcData.mf))}</span></div><div class="pt-4 border-t border-white/20 flex justify-between text-xl font-black text-white"><span>HARGA TAYANG</span><span>Rp ${fNum(Math.round(calcData.list))}</span></div></div>`;
+        else if(type === 'cust') html = `<h3 class="text-xs font-black text-emerald-400 mb-4 uppercase text-center italic tracking-widest">Detail Customer Pay</h3><div class="space-y-4 text-white text-xs"><div class="flex justify-between"><span>Harga Tayang</span><span class="font-black">Rp ${fNum(Math.round(calcData.list))}</span></div><div class="flex justify-between text-red-400"><span>Subsidi Campaign</span><span class="font-black">- Rp ${fNum(Math.round(calcData.disc))}</span></div><div class="pt-4 border-t border-white/20 flex justify-between text-xl font-black text-emerald-400"><span>TOTAL BAYAR</span><span>Rp ${fNum(Math.round(calcData.pay))}</span></div></div>`;
+        else html = `<h3 class="text-xs font-black text-emerald-500 mb-4 uppercase text-center italic tracking-widest">Merchant Profit</h3><div class="space-y-4 text-white text-xs"><div class="flex justify-between"><span>Service Fee (20%)</span><span class="font-black">- Rp ${fNum(Math.round(calcData.sf))}</span></div><div class="flex justify-between"><span>Marketing Fee (${Math.max(0, calcData.commPct-20)}%)</span><span class="font-black">- Rp ${fNum(Math.round(calcData.mf))}</span></div><div class="flex justify-between text-emerald-400"><span>Subsidi Promo Grab</span><span class="font-black text-sm">FREE ✅</span></div><div class="pt-4 border-t border-white/20 flex justify-between text-xl font-black text-emerald-500"><span>PROFIT BERSIH</span><span>Rp ${fNum(Math.round(calcData.net))}</span></div></div>`;
         content.innerHTML = html; overlay.classList.add('active');
     }
 
     function selectSchema(key) {
         currentSchema = key;
-        document.getElementById('schemeTitle').innerText = PRESETS[key].name;
         document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
         document.getElementById(`chip-${key}`).classList.add('active');
-        
         const conf = PRESETS[key];
         const ts = document.getElementById('tierSection');
         if (conf.tiers) {
@@ -257,6 +221,7 @@
             ts.classList.add('hidden');
             state.kPct = conf.k; state.vDisk = conf.v; state.minO = "0"; state.mDisk = "0";
         }
+        document.getElementById('schemeTitle').innerText = conf.name;
         renderBenefits(); updateUI();
     }
 
@@ -270,13 +235,7 @@
     const pNum = (n) => parseFloat(n.toString().replace(/\./g, "")) || 0;
 
     function updateUI() {
-        document.getElementById('mainVal').value = state.mainVal;
-        document.getElementById('kPct').value = state.kPct;
-        document.getElementById('vDisk').value = state.vDisk;
-        document.getElementById('mDisk').value = state.mDisk;
-        document.getElementById('minO').value = state.minO;
-        document.getElementById('subVal').value = state.subVal;
-        hitung();
+        document.getElementById('mainVal').value = state.mainVal; document.getElementById('kPct').value = state.kPct; document.getElementById('vDisk').value = state.vDisk; document.getElementById('mDisk').value = state.mDisk; document.getElementById('minO').value = state.minO; document.getElementById('subVal').value = state.subVal; hitung();
     }
 
     function closeOverlay() { document.getElementById('detailOverlay').classList.remove('active'); }
