@@ -2,266 +2,266 @@
 <html lang="id">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Merchant Calculator</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>PitchPro v26.7 | Elegant Gradient</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
-        :root { --grab-green: #00B14F; --grab-yellow: #FFD200; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; background-color: var(--grab-green); color: #000; display: flex; flex-direction: column; }
-        
-        .glass-card { background: white; border: 3px solid #000; box-shadow: 10px 10px 0px #000; border-radius: 4px; }
-        .nav-bar { background: white; border-bottom: 4px solid #000; }
+        :root { --grab-green: #00B14F; --grab-yellow: #FFD200; --grab-dark: #004d22; }
+        body { 
+            font-family: 'Inter', sans-serif; 
+            background: linear-gradient(135deg, #004d22 0%, #00B14F 50%, #008a3d 100%);
+            color: white; display: flex; flex-direction: column; height: 100vh; overflow: hidden;
+        }
+        header, section, footer { flex-shrink: 0; }
+        main { flex-grow: 1; padding: 0.4rem 0.75rem; display: flex; flex-direction: column; gap: 0.35rem; overflow: hidden; }
 
-        /* Floating Indicator Scheme Menu */
-        #strategyContainer { position: relative; }
-        #activePointer {
-            position: absolute; left: -5px; width: calc(100% + 10px); background: var(--grab-yellow);
-            border: 3px solid #000; border-radius: 14px; z-index: 0;
-            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-            box-shadow: -6px 0px 0px #000;
-        }
-        .strat-item { position: relative; z-index: 1; margin-bottom: 8px; }
-        .strat-btn { 
-            background: transparent; padding: 14px; border: 3px solid #000; border-radius: 14px;
-            font-size: 12px; font-weight: 900; text-align: justify; transition: all 0.3s ease; 
-            width: 100%; text-transform: uppercase; color: #000;
-        }
-        .strat-item.active .strat-btn { border-color: transparent; }
-        .strat-item:not(.active) .strat-btn { background: #f8fafc; opacity: 0.5; }
-
-        /* Snappy Tier Buttons */
-        .tier-btn { 
-            border: 2.5px solid #000; padding: 10px; border-radius: 12px; font-size: 10px; font-weight: 900; 
-            background: white; flex: 1; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        .tier-btn:active { transform: scale(0.95); }
-        .tier-btn.active { 
-            background: #000 !important; color: #FFF !important; 
-            transform: scale(1.05); box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        /* Elegant Light Gradient Header */
+        .gradient-header {
+            background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%);
+            padding: 0.4rem 1rem;
+            border-bottom: 1px solid rgba(0,0,0,0.05);
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
         }
 
-        /* Input Styling */
-        .input-box { border: 3px solid #000; border-radius: 18px; padding: 12px 18px; font-size: 1.4rem; font-weight: 900; background: white; width: 100%; }
-        .label-micro { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.8; margin-bottom: 5px; display: block; }
-        
-        .benefit-item { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 800; color: #059669; animation: slideIn 0.3s ease-out both; }
-        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+        /* Elegant Light Gradient Footer */
+        .gradient-footer {
+            background: linear-gradient(0deg, #FFFFFF 0%, #F8FAFC 100%);
+            padding: 0.5rem 1rem;
+            border-top: 1px solid rgba(0,0,0,0.05);
+        }
 
-        .inner-toggle { font-size: 10px; font-weight: 900; padding: 6px 12px; border-radius: 10px; border: 2.5px solid #000; background: #E2E8F0; }
-        .inner-toggle.active { background: var(--grab-yellow); }
+        .spotlight-dashboard {
+            background: white; padding: 0.6rem 0.5rem; border-bottom: 4px solid var(--grab-yellow);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2); color: #1a1a1a;
+        }
+        .dash-col { cursor: pointer; border-radius: 12px; padding: 2px; }
 
-        .tab-btn { padding: 12px; font-size: 11px; font-weight: 800; flex: 1; text-transform: uppercase; }
-        .tab-disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
+        .glass-panel { 
+            background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(8px);
+            border-radius: 16px; padding: 0.65rem; color: #1a1a1a; border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        /* VS PANEL - HIGH CONTRAST */
+        .vs-card { transition: all 0.4s ease; border: 2.5px solid transparent; border-radius: 16px; padding: 12px 8px; position: relative; }
+        .vs-card.winner { 
+            background: rgba(255, 210, 0, 0.15); border-color: var(--grab-yellow); 
+            box-shadow: 0 0 25px rgba(255, 210, 0, 0.4);
+        }
+        .winner-badge {
+            position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+            background: var(--grab-yellow); color: black; font-size: 9px; font-weight: 900;
+            padding: 3px 10px; border-radius: 20px; border: 2px solid black; display: none; z-index: 20;
+        }
+        .vs-card.winner .winner-badge { display: block; animation: bounce 0.5s infinite alternate; }
+
+        .input-group { 
+            display: grid; grid-template-columns: 32px 1fr 32px; align-items: center; 
+            background: white; border: 2px solid #e2e8f0; border-radius: 10px; height: 40px;
+        }
+        .input-side { font-weight: 900; font-size: 11px; color: #94a3b8; display: flex; justify-content: center; align-items: center; }
+        .input-pro { border: none; font-size: 1.2rem; font-weight: 900; width: 100%; text-align: center; outline: none; background: transparent; color: #1a1a1a; }
+
+        #detailOverlay {
+            position: fixed; top: 120px; left: 50%; transform: translateX(-50%) translateY(20px);
+            width: 90%; max-width: 400px; background: rgba(0, 0, 0, 0.98); backdrop-filter: blur(20px);
+            border-radius: 24px; padding: 25px; z-index: 300; opacity: 0; pointer-events: none;
+            transition: 0.3s ease-out; border: 1px solid rgba(255,255,255,0.2);
+        }
+        #detailOverlay.active { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
+
+        .main-fab { width: 45px; height: 45px; border-radius: 50%; background: var(--grab-yellow); border: 2.5px solid #000; display: flex; align-items: center; justify-content: center; position: fixed; right: 15px; bottom: 45px; z-index: 100; box-shadow: 0 5px 15px rgba(0,0,0,0.4); }
+        .fab-options { position: fixed; right: 18px; bottom: 95px; display: flex; flex-direction: column; gap: 8px; opacity: 0; pointer-events: none; transition: 0.4s; z-index: 99; }
+        .fab-options.active { opacity: 1; pointer-events: auto; transform: translateY(-5px); }
+        .scheme-btn { width: 40px; height: 40px; border-radius: 10px; background: white; border: 2px solid #000; display: flex; align-items: center; justify-content: center; font-size: 1rem; }
+
+        .label-bold { font-size: 11px; font-weight: 900; text-transform: uppercase; color: #334155; margin-bottom: 4px; display: block; }
+        @keyframes bounce { from { transform: translateX(-50%) translateY(0); } to { transform: translateX(-50%) translateY(-3px); } }
     </style>
 </head>
-<body class="antialiased">
+<body>
 
-    <nav class="nav-bar sticky top-0 z-50">
-        <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
-            <div class="flex items-center gap-4">
-                <div class="w-10 h-10 lg:w-12 lg:h-12 bg-black rounded-xl flex items-center justify-center border-2 border-white/20 shadow-lg font-black text-white italic text-xl">G</div>
-                <p class="font-black text-lg lg:text-2xl tracking-tighter leading-none uppercase">PITCHPRO <span class="bg-black text-[var(--grab-yellow)] text-[8px] lg:text-[10px] px-2 py-0.5 rounded italic font-bold">ELITE</span></p>
+    <div class="fixed-top">
+        <header class="gradient-header flex justify-between items-center">
+            <div class="flex items-center gap-1.5">
+                <div class="w-6 h-6 bg-black rounded flex items-center justify-center font-black text-white italic text-xs shadow-sm">G</div>
+                <p class="font-black text-sm tracking-tighter uppercase text-slate-800">PITCHPRO <span class="text-[var(--grab-green)]">MASTER</span></p>
             </div>
-            <div class="hidden md:block">
-                <p class="text-[10px] font-black opacity-30 uppercase tracking-[0.2em]">Merchant Partner System</p>
-            </div>
-        </div>
-    </nav>
+            <div class="bg-emerald-100 text-[var(--grab-green)] px-2.5 py-0.5 rounded-full text-[8px] font-black uppercase tracking-tight">Active Sync</div>
+        </header>
 
-    <main class="max-w-5xl mx-auto px-4 py-6 lg:py-10 space-y-8 flex-grow">
-        <div class="flex justify-center">
-            <div class="relative bg-black/10 p-1.5 rounded-2xl flex w-full max-w-lg border border-black/5">
-                <button class="tab-btn bg-white border-2 border-black rounded-xl shadow-[3px_3px_0px_#000] z-10">Grab Funded</button>
-                <button class="tab-btn tab-disabled">Co-Funded (Soon)</button>
-            </div>
-        </div>
-
-        <div class="glass-card p-6 grid grid-cols-1 md:grid-cols-12 gap-6">
-            <div class="md:col-span-5 space-y-4 md:border-r-2 md:pr-6 border-slate-100">
-                <label class="label-micro text-emerald-600 font-black">1. Pilih Skema Promo</label>
-                <div id="strategyContainer">
-                    <div id="activePointer"></div>
-                    <div id="buttonWrapper"></div>
+        <section class="spotlight-dashboard">
+            <div class="max-w-5xl mx-auto grid grid-cols-3 gap-0.5 text-center">
+                <div class="dash-col" onclick="showDetail(event, 'app')">
+                    <p class="text-[8px] font-black text-slate-400 uppercase tracking-tighter">App Price ⓘ</p>
+                    <h2 id="resApp" class="text-xl md:text-3xl font-black text-slate-800 italic leading-none">Rp 0</h2>
+                    <div id="roundToggle" onclick="toggleRound(event)" class="text-[7px] font-black p-1 uppercase opacity-50">Rounded ⚙️</div>
                 </div>
-                
-                <div id="tierSection" class="hidden pt-4 border-t-2 border-dashed border-slate-200 space-y-3">
-                    <label class="label-micro">Pilih Tier</label>
-                    <div id="tierWrapper" class="flex gap-2"></div>
+                <div class="dash-col border-x border-slate-100" onclick="showDetail(event, 'cust')">
+                    <p class="text-[8px] font-black text-slate-400 uppercase tracking-tighter">Cust. Pay ⓘ</p>
+                    <h2 id="resTP" class="text-xl md:text-3xl font-black text-[var(--grab-green)] italic leading-none">Rp 0</h2>
+                    <div class="text-[6px] font-black text-slate-300 uppercase">Nett</div>
+                </div>
+                <div class="dash-col" onclick="showDetail(event, 'net')">
+                    <p class="text-[8px] font-black text-slate-400 uppercase tracking-tighter">Net Profit ⓘ</p>
+                    <h2 id="resNet" class="text-xl md:text-3xl font-black text-emerald-600 italic leading-none">Rp 0</h2>
+                    <div class="text-[6px] font-black text-slate-300 uppercase">Get</div>
                 </div>
             </div>
-            <div class="md:col-span-7 bg-slate-50 p-6 rounded-3xl h-full border border-black/5">
-                <label class="label-micro mb-4">Benefit Skema Terpilih</label>
-                <div id="benefitList" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
-                <div class="mt-8 pt-4 border-t-2 border-slate-200">
-                    <p id="insightPanel" class="text-[11px] font-bold italic opacity-60 leading-relaxed"></p>
-                </div>
-            </div>
-        </div>
+        </section>
+    </div>
 
-        <div class="glass-card p-6 md:p-8 space-y-8">
-            <h2 class="text-lg font-black italic uppercase tracking-tighter border-b-2 pb-2">2. Calculator Harga</h2>
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="space-y-4">
-                    <div>
-                        <label class="label-micro">Harga Offline Basis</label>
-                        <div class="input-box flex items-center bg-slate-50">
-                            <span class="mr-2 opacity-30 italic">Rp</span>
-                            <input type="text" id="mainVal" class="bg-transparent outline-none w-full font-black">
-                        </div>
-                    </div>
-                    <div>
-                        <label class="label-micro text-blue-700 font-bold">Subsidi Merchant</label>
-                        <div class="input-box flex items-center border-blue-600 bg-blue-50">
-                            <span id="subLabel" class="mr-2 text-blue-600 font-black italic">Rp</span>
-                            <input type="text" id="subVal" class="bg-transparent outline-none w-full text-blue-800">
-                            <div class="flex gap-1">
-                                <button onclick="setSubMode('val')" id="sVal" class="inner-toggle active">Rp</button>
-                                <button onclick="setSubMode('pct')" id="sPct" class="inner-toggle">%</button>
-                            </div>
-                        </div>
+    <div id="detailOverlay" onclick="closeOverlay()">
+        <div id="overlayContent"></div>
+        <p class="text-[9px] text-center text-white/40 mt-6 uppercase font-black tracking-widest border-t border-white/10 pt-4">Tutup</p>
+    </div>
+
+    <main>
+        <div class="glass-panel">
+            <div class="flex justify-between items-center mb-1">
+                <div class="flex flex-col">
+                    <label class="label-bold">SKEMA AKTIF</label>
+                    <h1 id="schemeTitle" class="text-base font-black text-[var(--grab-dark)] uppercase leading-none tracking-tight">Normal Commision</h1>
+                </div>
+                <div id="tierSection" class="hidden">
+                    <div class="flex bg-gray-200/50 p-0.5 rounded-lg border border-gray-300">
+                        <button onclick="setTier('hemat')" id="btnHem" class="px-3 py-1 rounded-md text-[9px] font-black transition-all">HEMAT</button>
+                        <button onclick="setTier('ekstra')" id="btnEks" class="px-3 py-1 rounded-md text-[9px] font-black transition-all ml-0.5">EKSTRA</button>
                     </div>
                 </div>
-                <div class="grid grid-cols-2 gap-3">
-                    <div><label class="label-micro">Total Komisi %</label><input type="number" id="kPct" class="input-box text-emerald-600"></div>
-                    <div><label class="label-micro">Diskon %</label><input type="number" id="vDisk" class="input-box border-red-500 text-red-600"></div>
-                    <div><label class="label-micro">Max Disc</label><input type="text" id="mDisk" class="input-box"></div>
-                    <div><label class="label-micro">Min Order</label><input type="text" id="minO" class="input-box"></div>
-                </div>
             </div>
+            <div id="benefitList" class="flex flex-wrap gap-1 border-t border-gray-200 pt-1.5"></div>
         </div>
 
-        <div class="glass-card p-6 md:p-10 border-b-[14px] border-b-[var(--grab-yellow)]">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 pb-8 border-b-2">
-                <div class="p-6 rounded-3xl border-2 bg-slate-50 flex flex-col justify-center">
+        <div class="glass-panel">
+            <label class="label-bold">HARGA & SUBSIDI</label>
+            <div class="grid grid-cols-2 gap-3 items-end">
+                <div class="flex flex-col">
+                    <span class="text-[7px] font-black text-slate-400 uppercase mb-1">Offline Basis</span>
+                    <div class="input-group"><div class="input-side">Rp</div><input type="text" id="mainVal" class="input-pro" placeholder="0"><div class="input-side"></div></div>
+                </div>
+                <div class="flex flex-col">
                     <div class="flex justify-between items-center mb-1">
-                        <label class="label-micro opacity-60">Listing Price App</label>
-                        <div class="flex items-center gap-2">
-                            <span class="text-[8px] font-black opacity-40">Round up</span>
-                            <input type="checkbox" id="roundCheck" checked onchange="hitung()" class="w-4 h-4 accent-emerald-500">
-                        </div>
+                        <span class="text-[7px] font-black text-blue-500 uppercase">Subsidi</span>
+                        <div class="flex gap-1"><button onclick="setSubMode('val')" id="sVal" class="inner-toggle active px-1 text-[8px] font-black text-slate-400">Rp</button><button onclick="setSubMode('pct')" id="sPct" class="inner-toggle px-1 text-[8px] font-black text-slate-400">%</button></div>
                     </div>
-                    <h2 id="resApp" class="text-4xl font-black italic tracking-tighter text-amber-600">Rp 0</h2>
-                </div>
-                <div class="bg-black p-6 rounded-3xl border-4 border-emerald-500 relative">
-                    <div class="absolute top-2 right-2"><span id="pStat" class="text-[7px] font-black px-2 py-0.5 rounded text-white">STATUS</span></div>
-                    <label class="label-micro text-white/40">Merchant Net Profit</label>
-                    <h2 id="resNet" class="text-5xl font-black italic text-[var(--grab-green)] leading-none">Rp 0</h2>
-                    <div class="mt-4 pt-3 border-t border-white/10 space-y-1.5">
-                        <div class="flex justify-between text-[9px] font-bold text-white/40 uppercase"><span>Service Fee (Base 20%)</span><span id="resSF" class="text-white/70">Rp 0</span></div>
-                        <div class="flex justify-between text-[9px] font-bold text-white/40 uppercase"><span>Marketing Success Fee</span><span id="resMF" class="text-white/70">Rp 0</span></div>
-                        <div class="flex justify-between text-[9px] font-bold text-white/40 uppercase"><span>Promo Burden (Grab Funded)</span><span id="resDB" class="text-emerald-400 font-black">Rp 0</span></div>
-                    </div>
+                    <div class="input-group border-blue-200"><div id="subPrefix" class="input-side text-blue-500">Rp</div><input type="text" id="subVal" class="input-pro text-blue-700 bg-blue-50/10" placeholder="0"><div class="input-side"></div></div>
                 </div>
             </div>
-            <div class="space-y-3 text-xs font-black uppercase">
-                <div class="flex justify-between text-slate-400"><span>Original Listing</span><span id="detL" class="text-black">Rp 0</span></div>
-                <div class="flex justify-between text-red-600"><span>Campaign Discount</span><span id="detD" class="font-black">- Rp 0</span></div>
-                <div class="pt-6 flex justify-between items-end border-t-2 border-dashed">
-                    <span class="font-black text-sm italic text-slate-700">Customer Final Pay</span>
-                    <span id="resTP" class="text-3xl font-black text-emerald-600 tracking-tighter">Rp 0</span>
+        </div>
+
+        <div class="glass-panel">
+            <label class="label-bold">PARAMETER SISTEM</label>
+            <div class="grid grid-cols-2 gap-x-3 gap-y-2">
+                <div><span class="text-[7px] font-black opacity-50 uppercase">Commision</span><div class="input-group"><div class="input-side"></div><input type="number" id="kPct" class="input-pro" value="20"><div class="input-side">%</div></div></div>
+                <div><span class="text-[7px] font-black opacity-50 uppercase">Discount</span><div class="input-group"><div class="input-side"></div><input type="number" id="vDisk" class="input-pro text-red-600" value="0"><div class="input-side text-red-300">%</div></div></div>
+                <div><span class="text-[7px] font-black opacity-50 uppercase">Max Disc</span><div class="input-group"><div class="input-side">Rp</div><input type="text" id="mDisk" class="input-pro" value="0"><div class="input-side"></div></div></div>
+                <div><span class="text-[7px] font-black opacity-50 uppercase">Min Order</span><div class="input-group"><div class="input-side">Rp</div><input type="text" id="minO" class="input-pro" value="0"><div class="input-side"></div></div></div>
+            </div>
+        </div>
+
+        <div class="glass-panel !bg-black/60 !border-dashed !border-[var(--grab-yellow)] !p-3">
+            <div id="vsTitle" class="text-[10px] font-black text-[var(--grab-yellow)] uppercase mb-3 text-center tracking-widest italic">NORMAL VS PROMO</div>
+            <div class="grid grid-cols-2 gap-3 h-28">
+                <div id="cardNormal" class="vs-card">
+                    <div class="winner-badge">WINNER 🏆</div>
+                    <p class="text-[8px] font-black text-white/50 uppercase mb-2">NORMAL</p>
+                    <div class="space-y-1">
+                        <div class="flex flex-col"><span class="text-[6px] text-white/30 uppercase">Harga Tayang</span><p id="vsAppNormal" class="text-[12px] font-black text-white/40">Rp 0</p></div>
+                        <div class="flex flex-col"><span class="text-[7px] text-white/60 font-bold uppercase">Konsumen Bayar</span><p id="vsPayNormal" class="text-lg font-black text-white/90">Rp 0</p></div>
+                    </div>
+                </div>
+                <div id="cardPromo" class="vs-card">
+                    <div class="winner-badge">WINNER 🏆</div>
+                    <p id="vsPromoLabel" class="text-[8px] font-black text-[var(--grab-yellow)] uppercase mb-2">PROMO</p>
+                    <div class="space-y-1">
+                        <div class="flex flex-col"><span class="text-[6px] text-white/30 uppercase">Harga Tayang</span><p id="vsAppPromo" class="text-[12px] font-black text-white/40">Rp 0</p></div>
+                        <div class="flex flex-col"><span class="text-[7px] text-[var(--grab-yellow)]/60 font-bold uppercase">Konsumen Bayar</span><p id="vsPayPromo" class="text-2xl font-black text-[var(--grab-yellow)]">Rp 0</p></div>
+                    </div>
                 </div>
             </div>
         </div>
     </main>
 
-    <footer class="py-10 bg-black/5">
-        <div class="text-center font-black opacity-30 uppercase tracking-[0.4em] text-[10px]">© 2026 PITCHPRO | POWERED BY GRAB</div>
+    <div class="fab-container" id="fabContainer">
+        <div id="fabOptions" class="fab-options">
+            <button onclick="selectSchema('normal', 'btnNormal')" id="btnNormal" class="scheme-btn">⚖️</button>
+            <button onclick="selectSchema('puas-cuan', 'btnCuan')" id="btnCuan" class="scheme-btn">🔥</button>
+            <button onclick="selectSchema('booster', 'btnBooster')" id="btnBooster" class="scheme-btn">🚀</button>
+        </div>
+        <div id="mainFab" class="main-fab" onclick="toggleFab(event)"><span class="text-xl font-black">+</span></div>
+    </div>
+
+    <footer class="gradient-footer text-center">
+        <p class="text-[8px] font-black opacity-40 text-slate-800 uppercase tracking-widest italic">© 2026 PitchPro | Elite Partner System</p>
     </footer>
 
 <script>
-    let sMode = 'val', sTier = 'hemat';
-    const state = { mainVal: "25.000", kPct: 20, vDisk: 0, mDisk: "0", minO: "0", subVal: "0", schema: "normal" };
+    let sTier = 'hemat', currentSchema = 'normal', fabOpen = false, isRounded = true, subMode = 'val';
+    let calcData = { list: 0, disc: 0, sf: 0, mf: 0, commTotal: 20 };
+    const state = { mainVal: "25.000", kPct: 20, vDisk: 0, mDisk: "0", minO: "0", subVal: "0" };
 
     const PRESETS = {
-        'normal': { 
-            name: '⚖️ Standard Normal', k: 20, v: 0, 
-            hint: 'Fokus pada margin keuntungan maksimal tanpa dukungan promo aplikasi.', 
-            b: { hemat: ['100% Margin Aman', 'Harga Konsisten', 'Tanpa Sukses Fee'] } 
-        },
-        'puas-cuan': { 
-            name: '🔥 Diskon Puas Cuan', k: 32, v: 30, 
-            hint: 'Subsidi harian dari Grab untuk menjaga aliran transaksi tetap stabil setiap saat.', 
-            tiers: { hemat: { min: 15000, max: 45000 }, ekstra: { min: 35000, max: 80000 } }, 
-            b: { 
-                hemat: ['Always On Promo 30%', 'In-App Exposure', 'Grab Funded Discount'], 
-                ekstra: ['Always On Promo 30%', 'In-App Exposure', 'Prioritas Search Rank'] 
-            } 
-        },
-        'booster': { 
-            name: '🚀 Diskon Puas Booster', k: 38, v: 35, 
-            hint: 'Skema komplit untuk dominasi pasar dengan eksposur maksimal & promo eksklusif.', 
-            tiers: { hemat: { min: 15000, max: 55000 }, ekstra: { min: 35000, max: 100000 } }, 
-            b: { 
-                hemat: ['Flash Sale (Up to 55%)', 'Always On Promo 35%', 'Local & Tactical Promo', 'In-App Exposure'], 
-                ekstra: ['Flash Sale (Up to 55%)', 'Always On Promo 35%', 'Local & Tactical Promo', 'Priority Ranking Area'] 
-            } 
-        }
+        'normal': { name: 'Normal Commision', k: 20, v: 0, b: ['Margin Aman', 'Harga Stabil'] },
+        'puas-cuan': { name: 'Diskon Puas Cuan', k: 32, v: 30, tiers: { hemat: { min: 15000, max: 45000 }, ekstra: { min: 35000, max: 80000 } }, b: { hemat: ['30% Promo', 'Always On'], ekstra: ['30% Promo', 'Search Rank'] } },
+        'booster': { name: 'Diskon Puas Booster', k: 38, v: 35, tiers: { hemat: { min: 15000, max: 55000 }, ekstra: { min: 35000, max: 100000 } }, b: { hemat: ['FS 55%', 'Promo 35%'], ekstra: ['Top Rank', 'Blast Notif'] } }
     };
 
-    const fNum = (n) => n.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
-    const pNum = (n) => parseFloat(n.toString().replace(/\./g, "")) || 0;
-
-    function renderStrategies() {
-        const wrapper = document.getElementById('buttonWrapper');
-        wrapper.innerHTML = '';
-        Object.keys(PRESETS).forEach(key => {
-            const item = document.createElement('div');
-            item.className = `strat-item ${state.schema === key ? 'active' : ''}`;
-            item.innerHTML = `<button class="strat-btn" onclick="selectScheme('${key}', this)">${PRESETS[key].name}</button>`;
-            wrapper.appendChild(item);
-            if(state.schema === key) setTimeout(() => movePointer(item), 50);
-        });
-        applyStrategy(state.schema);
+    function showDetail(e, type) {
+        e.stopPropagation();
+        const overlay = document.getElementById('detailOverlay');
+        const content = document.getElementById('overlayContent');
+        let html = '';
+        if(type === 'app') {
+            html = `<h3 class="text-xs font-black text-[var(--grab-yellow)] mb-4 uppercase italic tracking-widest">Detail App Price</h3><div class="space-y-4 text-white text-xs"><div class="flex justify-between"><span>Harga Offline</span><span class="font-black text-sm">Rp ${state.mainVal}</span></div><div class="flex justify-between"><span>Komisi Sistem (${calcData.commTotal}%)</span><span class="font-black text-sm">Rp ${fNum(Math.round(calcData.sf + calcData.mf))}</span></div><div class="pt-4 border-t border-white/20 flex justify-between text-xl font-black text-white"><span>HARGA TAYANG</span><span>Rp ${fNum(Math.round(calcData.list))}</span></div></div>`;
+        } else if(type === 'cust') {
+            html = `<h3 class="text-xs font-black text-emerald-400 mb-4 uppercase italic tracking-widest">Detail Customer Pay</h3><div class="space-y-4 text-white text-xs"><div class="flex justify-between"><span>Harga Tayang</span><span class="font-black text-sm">Rp ${fNum(Math.round(calcData.list))}</span></div><div class="flex justify-between text-red-400"><span>Subsidi Campaign</span><span class="font-black text-sm">- Rp ${fNum(Math.round(calcData.disc))}</span></div><div class="pt-4 border-t border-white/20 flex justify-between text-xl font-black text-emerald-400"><span>TOTAL BAYAR</span><span>Rp ${fNum(Math.round(calcData.list - calcData.disc))}</span></div></div>`;
+        } else {
+            html = `<h3 class="text-xs font-black text-emerald-500 mb-4 uppercase italic tracking-widest">Detail Merchant Profit</h3><div class="space-y-4 text-white text-xs"><div class="flex justify-between"><span>Service Fee (20%)</span><span class="font-black text-sm">- Rp ${fNum(Math.round(calcData.sf))}</span></div><div class="flex justify-between"><span>Marketing Fee (${Math.max(0, calcData.commTotal - 20)}%)</span><span class="font-black text-sm">- Rp ${fNum(Math.round(calcData.mf))}</span></div><div class="flex justify-between text-emerald-400"><span>Subsidi Promo Grab</span><span class="font-black text-sm">FREE ✅</span></div><div class="pt-4 border-t border-white/20 flex justify-between text-xl font-black text-emerald-500"><span>PROFIT BERSIH</span><span>Rp ${fNum(Math.round(calcData.list - calcData.sf - calcData.mf))}</span></div></div>`;
+        }
+        content.innerHTML = html;
+        overlay.classList.add('active');
     }
 
-    function selectScheme(key, btn) {
-        state.schema = key;
-        const items = document.querySelectorAll('.strat-item');
-        items.forEach(i => i.classList.remove('active'));
-        btn.parentElement.classList.add('active');
-        movePointer(btn.parentElement);
-        applyStrategy(key);
+    function closeOverlay() { document.getElementById('detailOverlay').classList.remove('active'); }
+    function toggleRound(e) { e.stopPropagation(); isRounded = !isRounded; hitung(); }
+    function toggleFab(e) { e.stopPropagation(); fabOpen = !fabOpen; document.getElementById('fabOptions').classList.toggle('active', fabOpen); document.getElementById('mainFab').classList.toggle('active', fabOpen); }
+    function setSubMode(m) { subMode = m; document.getElementById('sVal').classList.toggle('active', m === 'val'); document.getElementById('sPct').classList.toggle('active', m === 'pct'); document.getElementById('subPrefix').innerText = m === 'val' ? 'Rp' : '%'; hitung(); }
+
+    function selectSchema(key, btnId) {
+        currentSchema = key;
+        document.querySelectorAll('.scheme-btn').forEach(b => b.classList.remove('active'));
+        document.getElementById(btnId).classList.add('active');
+        document.getElementById('schemeTitle').innerText = PRESETS[key].name;
+        applyStrategy();
+        setTimeout(() => { fabOpen = false; document.getElementById('fabOptions').classList.remove('active'); document.getElementById('mainFab').classList.remove('active'); }, 300);
     }
 
-    function movePointer(el) {
-        const pointer = document.getElementById('activePointer');
-        pointer.style.height = el.offsetHeight + 'px';
-        pointer.style.top = el.offsetTop + 'px';
-    }
+    function setTier(t) { sTier = t; applyStrategy(); }
 
-    function applyStrategy(key) {
-        const conf = PRESETS[key];
-        const ts = document.getElementById('tierSection'), tw = document.getElementById('tierWrapper');
-
+    function applyStrategy() {
+        const conf = PRESETS[currentSchema];
+        const ts = document.getElementById('tierSection');
         if (conf.tiers) {
             ts.classList.remove('hidden');
-            tw.innerHTML = `<button onclick="setTier('hemat')" class="tier-btn ${sTier==='hemat'?'active':''}">HEMAAT</button><button onclick="setTier('ekstra')" class="tier-btn ${sTier==='ekstra'?'active':''}">EKSTRA</button>`;
-            const t = conf.tiers[sTier];
-            state.kPct = conf.k; state.vDisk = conf.v; state.minO = fNum(t.min); state.mDisk = fNum(t.max);
+            document.getElementById('btnHem').className = `px-3 py-1 rounded-md text-[9px] font-black transition-all ${sTier === 'hemat' ? 'bg-black text-white' : 'bg-transparent text-gray-500'}`;
+            document.getElementById('btnEks').className = `px-3 py-1 rounded-md text-[9px] font-black transition-all ${sTier === 'ekstra' ? 'bg-black text-white' : 'bg-transparent text-gray-500'}`;
+            state.kPct = conf.k; state.vDisk = conf.v; state.minO = fNum(conf.tiers[sTier].min); state.mDisk = fNum(conf.tiers[sTier].max);
         } else {
             ts.classList.add('hidden');
             state.kPct = conf.k; state.vDisk = conf.v; state.minO = "0"; state.mDisk = "0";
         }
-        renderBenefits(key);
-        document.getElementById('insightPanel').innerText = conf.hint;
-        updateUI();
+        renderBenefits(); updateUI();
     }
 
-    function setTier(t) { sTier = t; applyStrategy(state.schema); }
-
-    function renderBenefits(key) {
-        const container = document.getElementById('benefitList');
-        container.innerHTML = '';
-        const list = PRESETS[key].tiers ? PRESETS[key].b[sTier] : PRESETS[key].b.hemat;
-        list.forEach((item, i) => {
-            const el = document.createElement('div');
-            el.className = 'benefit-item';
-            el.style.animationDelay = `${i * 0.1}s`;
-            el.innerHTML = `<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path></svg> <span>${item}</span>`;
-            container.appendChild(el);
-        });
+    function renderBenefits() {
+        const container = document.getElementById('benefitList'); container.innerHTML = '';
+        const list = PRESETS[currentSchema].tiers ? PRESETS[currentSchema].b[sTier] : PRESETS[currentSchema].b;
+        list.forEach(item => { container.innerHTML += `<div class="bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded border border-emerald-200 text-[8px] font-black italic">✓ ${item}</div>`; });
     }
+
+    const fNum = (n) => n.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+    const pNum = (n) => parseFloat(n.toString().replace(/\./g, "")) || 0;
 
     function updateUI() {
         document.getElementById('mainVal').value = state.mainVal;
@@ -274,44 +274,49 @@
     }
 
     function hitung() {
-        const off = pNum(state.mainVal), comm = pNum(state.kPct), adj = sMode === 'val' ? pNum(state.subVal) : (off * pNum(state.subVal)/100);
-        let list = (off - adj) / (1 - (comm/100));
-        if (document.getElementById('roundCheck').checked) list = Math.ceil(list/100)*100;
-
-        const sf = list * 0.20, mf = list * (Math.max(0, comm-20)/100);
-        const disc = (list >= pNum(state.minO)) ? Math.min(list * pNum(state.vDisk)/100, pNum(state.mDisk)) : 0;
-
+        const off = pNum(state.mainVal), commTotal = pNum(state.kPct), subRaw = pNum(state.subVal);
+        const adj = subMode === 'val' ? subRaw : (off * subRaw / 100);
+        
+        let list = (off - adj) / (1 - (commTotal/100));
+        if (isRounded) list = Math.ceil(list/100)*100;
+        calcData.commTotal = commTotal; calcData.sf = list * 0.20; calcData.mf = list * (Math.max(0, commTotal - 20)/100);
+        calcData.list = list; calcData.disc = (list >= pNum(state.minO)) ? Math.min(list * pNum(state.vDisk)/100, pNum(state.mDisk)) : 0;
+        
         document.getElementById('resApp').innerText = "Rp " + fNum(Math.round(list));
-        document.getElementById('resNet').innerText = "Rp " + fNum(Math.round(list - sf - mf));
-        document.getElementById('resTP').innerText = "Rp " + fNum(Math.round(list - disc));
-        document.getElementById('resSF').innerText = "- Rp " + fNum(Math.round(sf));
-        document.getElementById('resMF').innerText = "- Rp " + fNum(Math.round(mf));
-        document.getElementById('detL').innerText = "Rp " + fNum(Math.round(list));
-        document.getElementById('detD').innerText = "- Rp " + fNum(Math.round(disc));
+        document.getElementById('resNet').innerText = "Rp " + fNum(Math.round(list - calcData.sf - calcData.mf));
+        document.getElementById('resTP').innerText = "Rp " + fNum(Math.round(list - calcData.disc));
 
-        const ok = (list >= pNum(state.minO) && pNum(state.minO) > 0) || (pNum(state.vDisk) > 0 && pNum(state.minO) == 0);
-        const ps = document.getElementById('pStat');
-        ps.innerText = ok ? 'PROMO ACTIVE' : 'NO PROMO';
-        ps.className = `text-[7px] font-black px-2 py-0.5 rounded ${ok ? 'bg-emerald-500' : 'bg-red-600'} text-white tracking-widest`;
+        const normalComm = 20;
+        let nList = (off - adj) / (1 - (normalComm/100));
+        if (isRounded) nList = Math.ceil(nList/100)*100;
+        const nPay = nList;
+        const pPay = list - calcData.disc;
+
+        const promoLabel = currentSchema === 'normal' ? 'NORMAL' : (currentSchema === 'puas-cuan' ? 'CUAN' : 'BOOSTER');
+        document.getElementById('vsTitle').innerText = `NORMAL VS ${promoLabel}`;
+        document.getElementById('vsPromoLabel').innerText = `${promoLabel}`;
+        document.getElementById('vsAppNormal').innerText = "Tayang: " + fNum(Math.round(nList));
+        document.getElementById('vsPayNormal').innerText = "Rp " + fNum(Math.round(nPay));
+        document.getElementById('vsAppPromo').innerText = "Tayang: " + fNum(Math.round(list));
+        document.getElementById('vsPayPromo').innerText = "Rp " + fNum(Math.round(pPay));
+
+        document.getElementById('cardNormal').classList.toggle('winner', nPay < pPay);
+        document.getElementById('cardPromo').classList.toggle('winner', pPay < nPay);
     }
 
     ['mainVal','kPct','vDisk','mDisk','minO','subVal'].forEach(id => {
         document.getElementById(id).addEventListener('input', (e) => {
             if(['mainVal','subVal','mDisk','minO'].includes(id)) e.target.value = fNum(e.target.value);
-            state[id] = e.target.value;
-            hitung();
+            state[id] = e.target.value; hitung();
         });
     });
 
-    function setSubMode(m) { 
-        sMode = m; 
-        document.getElementById('sVal').classList.toggle('active', m==='val');
-        document.getElementById('sPct').classList.toggle('active', m==='pct');
-        document.getElementById('subLabel').innerText = m==='val'?'Rp':'%';
-        hitung(); 
-    }
+    document.addEventListener('click', (e) => {
+        const overlay = document.getElementById('detailOverlay');
+        if (!overlay.contains(e.target) && overlay.classList.contains('active')) closeOverlay();
+    });
 
-    window.onload = renderStrategies;
+    window.onload = () => selectSchema('normal', 'btnNormal');
 </script>
 </body>
 </html>
