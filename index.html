@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Merchant Calculator | Scroll Fixed</title>
+    <title>Merchant Calculator | Grab Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
@@ -16,24 +16,42 @@
             color: white; 
             display: flex; 
             flex-direction: column; 
-            min-height: 100vh; /* Menggunakan min-height agar fleksibel */
+            min-height: 100vh;
             margin: 0; 
-            overflow-y: auto; /* MENGAKTIFKAN SCROLL KEMBALI */
+            overflow-y: auto;
         }
 
         header, section { flex-shrink: 0; }
         
-        /* Main container tanpa pembatasan overflow yang kaku */
         main { 
             flex-grow: 1; 
-            padding: 0.5rem 0.75rem 2rem 0.75rem; /* Tambah padding bawah agar tidak mepet footer */
+            padding: 0.5rem 0.75rem 3rem 0.75rem; 
             display: flex; 
             flex-direction: column; 
             gap: 0.5rem; 
         }
 
-        .gradient-header { background: linear-gradient(180deg, #FFFFFF 0%, #F8FAFC 100%); padding: 0.5rem 1rem; border-bottom: 1px solid rgba(0,0,0,0.05); position: sticky; top: 0; z-index: 50; }
-        .spotlight-dashboard { background: white; padding: 0.75rem 0.5rem; border-bottom: 4px solid var(--grab-yellow); color: #1a1a1a; position: sticky; top: 45px; z-index: 40; box-shadow: 0 4px 10px rgba(0,0,0,0.1); }
+        .gradient-header { 
+            background: #FFFFFF; 
+            padding: 0.7rem 1rem; 
+            border-bottom: 1px solid rgba(0,0,0,0.05); 
+            position: sticky; 
+            top: 0; 
+            z-index: 50; 
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .spotlight-dashboard { 
+            background: white; 
+            padding: 0.75rem 0.5rem; 
+            border-bottom: 4px solid var(--grab-yellow); 
+            color: #1a1a1a; 
+            position: sticky; 
+            top: 58px; 
+            z-index: 40; 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1); 
+        }
+
         .dash-input { background: transparent; border: none; font-weight: 900; width: 100%; text-align: center; outline: none; padding: 0; margin: 0; font-style: italic; color: #1a1a1a; }
         
         .chips-panel { background: rgba(0, 0, 0, 0.2); padding: 0.6rem; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.1); }
@@ -62,12 +80,12 @@
 </head>
 <body onclick="closeOverlay()">
 
-    <header class="gradient-header flex justify-between items-center">
-        <div class="flex items-center gap-1.5">
-            <div class="w-6 h-6 bg-black rounded flex items-center justify-center font-black text-white italic text-xs shadow-sm">G</div>
-            <p class="font-black text-sm tracking-tighter uppercase text-slate-800 leading-none">MERCHANT <span class="text-[var(--grab-green)]">CALCULATOR</span></p>
+    <header class="gradient-header flex items-center gap-3">
+        <img src="https://i.ibb.co.com/4gWv1mD/grab-logo.png" alt="Grab" class="h-8 w-auto">
+        <div class="flex flex-col">
+            <p class="font-black text-xs tracking-tighter uppercase text-slate-800 leading-none">MERCHANT <span class="text-[var(--grab-green)]">CALCULATOR</span></p>
+            <p class="text-[8px] font-bold text-slate-400 italic">All in one calculation</p>
         </div>
-        <div class="bg-blue-100 text-blue-600 px-2.5 py-0.5 rounded-full text-[8px] font-black uppercase italic tracking-tighter">Scroll Fixed</div>
     </header>
 
     <section class="spotlight-dashboard">
@@ -149,8 +167,8 @@
         <div class="glass-panel !bg-black/60 !border-dashed !border-[var(--grab-yellow)] !p-3 mb-4 text-center">
             <div id="vsTitle" class="text-[10px] font-black text-[var(--grab-yellow)] uppercase mb-3 italic tracking-widest">NORMAL VS PROMO</div>
             <div class="grid grid-cols-2 gap-3">
-                <div id="cardNormal" class="vs-card"><div class="winner-badge">WINNER 🏆</div><p class="text-[8px] font-black opacity-60 text-white uppercase mb-2">NORMAL</p><div class="space-y-1 text-center"><span class="text-[6px] text-white/30 uppercase">App Price</span><p id="vsAppNormal" class="text-[11px] font-black text-white/40">Rp 0</p><span class="text-[7px] text-white/60 font-bold uppercase">Paid by Pax</span><p id="vsPayNormal" class="text-base font-black text-white">Rp 0</p></div></div>
-                <div id="cardPromo" class="vs-card"><div class="winner-badge">WINNER 🏆</div><p id="vsPromoLabel" class="text-[8px] font-black text-[var(--grab-yellow)] uppercase mb-2">PROMO</p><div class="space-y-1 text-center"><span class="text-[6px] text-white/30 uppercase">App Price</span><p id="vsAppPromo" class="text-[12px] font-black text-white/40">Rp 0</p><span class="text-[7px] text-[var(--grab-yellow)]/60 font-bold uppercase">Paid by Pax</span><p id="vsPayPromo" class="text-xl font-black text-[var(--grab-yellow)]">Rp 0</p></div></div>
+                <div id="cardNormal" class="vs-card"><div class="winner-badge">WINNER 🏆</div><p class="text-[8px] font-black opacity-60 text-white uppercase mb-2">NORMAL</p><div class="space-y-1 text-center"><span class="text-[6px] text-white/30 uppercase">App Price</span><p id="vsAppNormal" class="text-[11px] font-black text-white/60">Rp 0</p><span class="text-[7px] text-white/80 font-bold uppercase">Paid by Pax</span><p id="vsPayNormal" class="text-base font-black text-white">Rp 0</p></div></div>
+                <div id="cardPromo" class="vs-card"><div class="winner-badge">WINNER 🏆</div><p id="vsPromoLabel" class="text-[8px] font-black text-[var(--grab-yellow)] uppercase mb-2 text-center">PROMO</p><div class="space-y-1 text-center"><span class="text-[6px] text-white/30 uppercase">App Price</span><p id="vsAppPromo" class="text-[11px] font-black text-white/60">Rp 0</p><span class="text-[7px] text-[var(--grab-yellow)] font-bold uppercase">Paid by Pax</span><p id="vsPayPromo" class="text-xl font-black text-[var(--grab-yellow)]">Rp 0</p></div></div>
             </div>
         </div>
     </main>
@@ -188,6 +206,7 @@
         const paidPax = listPromo - totalDisc;
 
         if (currentSchema === 'cofund') {
+            // Formula v30.7
             const mPromoCost = (mSharePct / 100) * (discPct / 100) * listPromo;
             const mexGB = (commPct / 100) * (listPromo - mPromoCost);
             calcData.net = listPromo - (mexGB + mPromoCost);
@@ -203,7 +222,6 @@
         document.getElementById('resTP').innerText = "Rp " + fNum(Math.round(paidPax));
         document.getElementById('resNet').innerText = "Rp " + fNum(Math.round(calcData.net));
 
-        // VS Sync
         let listNormal = (off - adj) / (1 - (20/100));
         if (isRounded) listNormal = Math.ceil(listNormal/100)*100;
         const isNormalWin = listNormal < paidPax;
