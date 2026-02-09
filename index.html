@@ -3,288 +3,315 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>MerchantCalculator Elite v6.8</title>
+    <title>Grab Merchant Elite v23.1 | Marketing Pro Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root { --grab-green: #00B14F; --grab-yellow: #FFD200; --pitch-black: #0F172A; }
-        body { font-family: 'Plus Jakarta Sans', sans-serif; background: linear-gradient(135deg, var(--grab-green) 0%, #008a3d 100%); min-height: 100vh; display: flex; justify-content: center; padding: 20px 0; margin: 0; }
-        .main-wrapper { width: 92%; max-width: 980px; display: flex; flex-direction: column; gap: 15px; }
-        .tab-box { background: rgba(0,0,0,0.2); padding: 4px; border-radius: 16px; position: relative; display: flex; border: 1.5px solid #000; }
-        .tab-indicator { position: absolute; height: calc(100% - 8px); width: calc(33.33% - 4px); background: var(--grab-yellow); border-radius: 12px; transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55); border: 1.5px solid #000; z-index: 0; }
-        .tab-btn { flex: 1; padding: 12px 0; font-size: 10px; font-weight: 800; text-transform: uppercase; z-index: 1; color: white; text-align: center; cursor: pointer; }
-        .tab-btn.active { color: black !important; }
-        .elite-card { background: #ffffff; border: 2px solid #000; box-shadow: 4px 4px 0px #000; border-radius: 28px; padding: 20px; }
-        .dark-elite-card { background: var(--pitch-black); border: 2px solid #000; box-shadow: 4px 4px 0px rgba(0,0,0,0.5); border-radius: 28px; padding: 20px; }
-        .input-group-elite { background: #f8fafc; border: 1.5px solid #e2e8f0; border-radius: 16px; display: flex; flex-direction: column; justify-content: center; transition: all 0.2s; }
-        input:focus { outline: none; }
-        .label-pitch { font-size: 9px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.5px; color: #64748b; }
-        .comp-input-box { background: #ffffff; border: 1px solid #e2e8f0; border-radius: 12px; padding: 8px; text-align: center; }
-        .winner-active { border-color: var(--grab-green) !important; box-shadow: 0 0 20px rgba(0, 177, 79, 0.3), 6px 6px 0px var(--grab-green) !important; transform: scale(1.01); z-index: 10; }
-        @media (min-width: 1024px) { .sticky-panel { position: sticky; top: 20px; } }
+        :root { --grab-green: #00B14F; --grab-yellow: #FFD200; }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; min-height: 100vh; background-color: var(--grab-green); color: #000; display: flex; flex-direction: column; }
+        
+        .glass-card { background: white; border: 3px solid #000; box-shadow: 10px 10px 0px #000; border-radius: 4px; }
+        .nav-bar { background: white; border-bottom: 4px solid #000; }
+
+        /* Floating Indicator Scheme Menu */
+        #strategyContainer { position: relative; }
+        #activePointer {
+            position: absolute; left: -5px; width: calc(100% + 10px); background: var(--grab-yellow);
+            border: 3px solid #000; border-radius: 14px; z-index: 0;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55);
+            box-shadow: -6px 0px 0px #000;
+        }
+        .strat-item { position: relative; z-index: 1; margin-bottom: 8px; }
+        .strat-btn { 
+            background: transparent; padding: 14px; border: 3px solid #000; border-radius: 14px;
+            font-size: 12px; font-weight: 900; text-align: justify; transition: all 0.3s ease; 
+            width: 100%; text-transform: uppercase; color: #000;
+        }
+        .strat-item.active .strat-btn { border-color: transparent; }
+        .strat-item:not(.active) .strat-btn { background: #f8fafc; opacity: 0.5; }
+
+        /* Snappy Tier Buttons */
+        .tier-btn { 
+            border: 2.5px solid #000; padding: 10px; border-radius: 12px; font-size: 10px; font-weight: 900; 
+            background: white; flex: 1; transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tier-btn:active { transform: scale(0.95); }
+        .tier-btn.active { 
+            background: #000 !important; color: #FFF !important; 
+            transform: scale(1.05); box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        /* Input Styling */
+        .input-box { border: 3px solid #000; border-radius: 18px; padding: 12px 18px; font-size: 1.4rem; font-weight: 900; background: white; width: 100%; }
+        .label-micro { font-size: 10px; font-weight: 900; text-transform: uppercase; letter-spacing: 0.05em; opacity: 0.8; margin-bottom: 5px; display: block; }
+        
+        .benefit-item { display: flex; align-items: center; gap: 8px; font-size: 11px; font-weight: 800; color: #059669; animation: slideIn 0.3s ease-out both; }
+        @keyframes slideIn { from { opacity: 0; transform: translateX(-10px); } to { opacity: 1; transform: translateX(0); } }
+
+        .inner-toggle { font-size: 10px; font-weight: 900; padding: 6px 12px; border-radius: 10px; border: 2.5px solid #000; background: #E2E8F0; }
+        .inner-toggle.active { background: var(--grab-yellow); }
+
+        .tab-btn { padding: 12px; font-size: 11px; font-weight: 800; flex: 1; text-transform: uppercase; }
+        .tab-disabled { opacity: 0.5; cursor: not-allowed; filter: grayscale(1); }
     </style>
 </head>
-<body>
+<body class="antialiased">
 
-<div class="main-wrapper">
-    <div class="header-container text-center mb-2">
-        <h1 class="text-3xl font-black text-white italic uppercase tracking-tighter leading-none">Merchant <span class="text-[var(--grab-yellow)]">Calculator</span></h1>
-    </div>
+    <nav class="nav-bar sticky top-0 z-50">
+        <div class="max-w-5xl mx-auto px-6 py-4 flex justify-between items-center">
+            <div class="flex items-center gap-4">
+                <div class="w-10 h-10 lg:w-12 lg:h-12 bg-black rounded-xl flex items-center justify-center border-2 border-white/20 shadow-lg font-black text-white italic text-xl">G</div>
+                <p class="font-black text-lg lg:text-2xl tracking-tighter leading-none uppercase">PITCHPRO <span class="bg-black text-[var(--grab-yellow)] text-[8px] lg:text-[10px] px-2 py-0.5 rounded italic font-bold">ELITE</span></p>
+            </div>
+            <div class="hidden md:block">
+                <p class="text-[10px] font-black opacity-30 uppercase tracking-[0.2em]">Merchant Partner System</p>
+            </div>
+        </div>
+    </nav>
 
-    <div class="tab-box">
-        <div id="tabSlider" class="tab-indicator"></div>
-        <button onclick="switchCategory('full')" id="btnFull" class="tab-btn active">Full Funded</button>
-        <button onclick="switchCategory('co')" id="btnCo" class="tab-btn">Co-Funded</button>
-        <button onclick="switchCategory('compare')" id="btnCompare" class="tab-btn">Compare</button>
-    </div>
+    <main class="max-w-5xl mx-auto px-4 py-6 lg:py-10 space-y-8 flex-grow">
+        <div class="flex justify-center">
+            <div class="relative bg-black/10 p-1.5 rounded-2xl flex w-full max-w-lg border border-black/5">
+                <button class="tab-btn bg-white border-2 border-black rounded-xl shadow-[3px_3px_0px_#000] z-10">Grab Funded</button>
+                <button class="tab-btn tab-disabled">Co-Funded (Soon)</button>
+            </div>
+        </div>
 
-    <div id="mainView" class="grid grid-cols-1 lg:grid-cols-2 gap-6 items-start">
-        <div class="space-y-4">
-            <div class="elite-card space-y-4">
+        <div class="glass-card p-6 grid grid-cols-1 md:grid-cols-12 gap-6">
+            <div class="md:col-span-5 space-y-4 md:border-r-2 md:pr-6 border-slate-100">
+                <label class="label-micro text-emerald-600 font-black">1. Pilih Skema Strategis</label>
+                <div id="strategyContainer">
+                    <div id="activePointer"></div>
+                    <div id="buttonWrapper"></div>
+                </div>
+                
+                <div id="tierSection" class="hidden pt-4 border-t-2 border-dashed border-slate-200 space-y-3">
+                    <label class="label-micro">Pilih Tier</label>
+                    <div id="tierWrapper" class="flex gap-2"></div>
+                </div>
+            </div>
+            <div class="md:col-span-7 bg-slate-50 p-6 rounded-3xl h-full border border-black/5">
+                <label class="label-micro mb-4">Benefit Skema Terpilih</label>
+                <div id="benefitList" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+                <div class="mt-8 pt-4 border-t-2 border-slate-200">
+                    <p id="insightPanel" class="text-[11px] font-bold italic opacity-60 leading-relaxed"></p>
+                </div>
+            </div>
+        </div>
+
+        <div class="glass-card p-6 md:p-8 space-y-8">
+            <h2 class="text-lg font-black italic uppercase tracking-tighter border-b-2 pb-2">2. Konfigurasi Data</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <div class="space-y-4">
+                    <div>
+                        <label class="label-micro">Harga Offline Basis</label>
+                        <div class="input-box flex items-center bg-slate-50">
+                            <span class="mr-2 opacity-30 italic">Rp</span>
+                            <input type="text" id="mainVal" class="bg-transparent outline-none w-full font-black">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="label-micro text-blue-700 font-bold">Subsidi Merchant</label>
+                        <div class="input-box flex items-center border-blue-600 bg-blue-50">
+                            <span id="subLabel" class="mr-2 text-blue-600 font-black italic">Rp</span>
+                            <input type="text" id="subVal" class="bg-transparent outline-none w-full text-blue-800">
+                            <div class="flex gap-1">
+                                <button onclick="setSubMode('val')" id="sVal" class="inner-toggle active">Rp</button>
+                                <button onclick="setSubMode('pct')" id="sPct" class="inner-toggle">%</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
                 <div class="grid grid-cols-2 gap-3">
-                    <div class="input-group-elite p-4">
-                        <label class="label-pitch text-center">Offline Price</label>
-                        <div class="flex items-center justify-center font-black">
-                            <span class="text-xs opacity-30 mr-1 italic">Rp</span>
-                            <input type="text" id="mainVal" class="bg-transparent w-full text-center text-xl outline-none" oninput="handleInput(this, 'mainVal')">
-                        </div>
-                    </div>
-                    <div class="input-group-elite p-4">
-                        <label class="label-pitch text-center italic text-green-600">Commission %</label>
-                        <div class="flex items-center justify-center font-black">
-                            <input type="number" id="kPct" class="bg-transparent w-full text-center text-xl outline-none text-green-600" oninput="updateVal('kPct', this.value)">
-                            <span class="text-xs text-green-600 ml-1">%</span>
-                        </div>
-                    </div>
+                    <div><label class="label-micro">Total Komisi %</label><input type="number" id="kPct" class="input-box text-emerald-600"></div>
+                    <div><label class="label-micro">Diskon %</label><input type="number" id="vDisk" class="input-box border-red-500 text-red-600"></div>
+                    <div><label class="label-micro">Max Disc</label><input type="text" id="mDisk" class="input-box"></div>
+                    <div><label class="label-micro">Min Order</label><input type="text" id="minO" class="input-box"></div>
                 </div>
+            </div>
+        </div>
 
-                <div class="input-group-elite p-4 border-blue-200 bg-blue-50/30">
+        <div class="glass-card p-6 md:p-10 border-b-[14px] border-b-[var(--grab-yellow)]">
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8 mb-8 pb-8 border-b-2">
+                <div class="p-6 rounded-3xl border-2 bg-slate-50 flex flex-col justify-center">
                     <div class="flex justify-between items-center mb-1">
-                        <label class="label-pitch text-blue-600 italic">Price Pressing Subsidy</label>
-                        <select id="subType" class="text-[8px] font-black bg-white border border-blue-200 px-1 rounded outline-none" onchange="hitung()">
-                            <option value="val">IDR (Rp)</option>
-                            <option value="pct">Percent (%)</option>
-                        </select>
+                        <label class="label-micro opacity-60">Listing Price App</label>
+                        <div class="flex items-center gap-2">
+                            <span class="text-[8px] font-black opacity-40">Round up</span>
+                            <input type="checkbox" id="roundCheck" checked onchange="hitung()" class="w-4 h-4 accent-emerald-500">
+                        </div>
                     </div>
-                    <div class="flex items-center justify-between font-black text-blue-600">
-                        <span id="subLabel" class="text-xs">Rp</span>
-                        <input type="text" id="subVal" value="0" class="bg-transparent w-full text-right text-xl outline-none" oninput="handleInput(this, 'subVal')">
-                    </div>
+                    <h2 id="resApp" class="text-4xl font-black italic tracking-tighter text-amber-600">Rp 0</h2>
                 </div>
-
-                <div class="p-5 bg-slate-50 rounded-[24px] border-[1.2px] border-slate-200 space-y-4">
-                    <div class="flex justify-between items-center px-1"><label class="label-pitch text-slate-400 uppercase font-black">Presets</label><button onclick="savePreset()" class="text-[8px] font-black bg-black text-white px-3 py-1 rounded">SAVE</button></div>
-                    <select id="schemaSelect" class="w-full text-xs font-black bg-white border-[1.2px] border-black p-3 rounded-xl outline-none shadow-sm" onchange="applySchema(this.value)"></select>
-                    <div class="grid grid-cols-2 gap-3">
-                        <div class="bg-white p-3 rounded-xl border border-slate-200 text-center"><span class="text-[8px] font-black text-slate-400 block uppercase">Disc %</span><input type="number" id="vDisk" class="w-full text-lg font-black text-red-500 text-center outline-none" oninput="updateVal('vDisk', this.value)"></div>
-                        <div class="bg-white p-3 rounded-xl border border-slate-200 text-center"><span class="text-[8px] font-black text-slate-400 block uppercase">Max Disc</span><input type="text" id="mDisk" class="w-full text-lg font-black text-red-500 text-center outline-none" oninput="handleInput(this, 'mDisk')"></div>
-                    </div>
-                    <div class="flex justify-between items-center px-4 py-2 bg-white rounded-xl border border-slate-200"><span class="text-[9px] font-bold text-slate-400 uppercase">Min Order</span><input type="text" id="minO" class="bg-transparent text-right font-black text-sm w-32 outline-none text-slate-600" oninput="handleInput(this, 'minO')"></div>
-                </div>
-            </div>
-        </div>
-
-        <div class="space-y-4 sticky-panel">
-            <div id="captureOutput" class="space-y-4 p-1"> <div class="bg-[#0F172A] border-2 border-black p-6 rounded-[32px] text-center relative shadow-xl">
-                    <label class="absolute top-4 right-5 flex items-center cursor-pointer select-none"><span class="text-[7px] font-black mr-1 text-white opacity-40">ROUND UP</span><input type="checkbox" id="roundCheck" checked onchange="hitung()" class="w-3.5 h-3.5 accent-yellow-400"></label>
-                    <label class="text-[10px] font-black text-yellow-400 uppercase tracking-widest block mb-1">App Listing Price</label>
-                    <div class="flex items-center justify-center text-white italic leading-none"><span class="text-2xl mr-1 opacity-50 font-black">Rp</span><input type="text" id="resApp" value="0" class="bg-transparent w-full text-6xl font-black outline-none text-center" readonly></div>
-                </div>
-                <div class="dark-elite-card !bg-[#0F172A] p-6 rounded-[32px] border-2 border-black">
-                    <div class="flex justify-between items-end">
-                        <div><p class="text-[10px] font-black text-yellow-400 uppercase tracking-widest">Net Profit</p><h2 id="resNet" class="text-5xl font-black text-yellow-400 italic leading-none">Rp 0</h2></div>
-                        <div class="text-right text-slate-500"><p class="text-[8px] font-bold uppercase">Comm. Fee</p><p id="resKomisi" class="text-base font-black text-white italic">Rp 0</p></div>
-                    </div>
-                </div>
-                <div id="cardBuyer" class="elite-card border-b-[12px] border-yellow-400">
-                    <div class="flex justify-between items-center mb-3 border-b border-slate-100 pb-2 text-[10px] font-black text-slate-400 uppercase italic"><span>Customer Bill</span><span id="promoStat" class="px-3 py-1 rounded-full text-white uppercase italic text-[8px]"></span></div>
-                    <div class="space-y-1.5 text-sm font-bold uppercase text-[10px]">
-                        <div class="flex justify-between text-slate-500"><span>Price in App</span><span id="bMenu" class="text-black font-black">Rp 0</span></div>
-                        <div class="flex justify-between text-red-500"><span>Discount</span><span id="bDisk" class="font-black">- Rp 0</span></div>
-                        <div class="pt-3 mt-2 border-t-2 border-dashed border-slate-200 flex justify-between items-center"><span class="text-black text-[12px]">Total Payment</span><span id="bTotal" class="text-4xl font-black text-[#00B14F] tracking-tighter">Rp 0</span></div>
+                <div class="bg-black p-6 rounded-3xl border-4 border-emerald-500 relative">
+                    <div class="absolute top-2 right-2"><span id="pStat" class="text-[7px] font-black px-2 py-0.5 rounded text-white">STATUS</span></div>
+                    <label class="label-micro text-white/40">Merchant Net Profit</label>
+                    <h2 id="resNet" class="text-5xl font-black italic text-[var(--grab-green)] leading-none">Rp 0</h2>
+                    <div class="mt-4 pt-3 border-t border-white/10 space-y-1.5">
+                        <div class="flex justify-between text-[9px] font-bold text-white/40 uppercase"><span>Service Fee (Base 20%)</span><span id="resSF" class="text-white/70">Rp 0</span></div>
+                        <div class="flex justify-between text-[9px] font-bold text-white/40 uppercase"><span>Marketing Success Fee</span><span id="resMF" class="text-white/70">Rp 0</span></div>
+                        <div class="flex justify-between text-[9px] font-bold text-white/40 uppercase"><span>Promo Burden (Grab Funded)</span><span id="resDB" class="text-emerald-400 font-black">Rp 0</span></div>
                     </div>
                 </div>
             </div>
-            
-            <button onclick="takeSnapshot()" class="w-full bg-black text-white py-4 rounded-2xl border-2 border-white/20 font-black uppercase text-xs tracking-widest flex items-center justify-center gap-2 hover:bg-zinc-900 active:scale-95 transition-all">
-                <span>📸 Capture & Share to WhatsApp</span>
-            </button>
+            <div class="space-y-3 text-xs font-black uppercase">
+                <div class="flex justify-between text-slate-400"><span>Original Listing</span><span id="detL" class="text-black">Rp 0</span></div>
+                <div class="flex justify-between text-red-600"><span>Campaign Discount</span><span id="detD" class="font-black">- Rp 0</span></div>
+                <div class="pt-6 flex justify-between items-end border-t-2 border-dashed">
+                    <span class="font-black text-sm italic text-slate-700">Customer Final Pay</span>
+                    <span id="resTP" class="text-3xl font-black text-emerald-600 tracking-tighter">Rp 0</span>
+                </div>
+            </div>
         </div>
-    </div>
+    </main>
 
-    <div id="compareView" class="hidden space-y-4">
-        <div class="elite-card text-center italic text-slate-400 py-10 uppercase font-black">Compare Mode Active</div>
-    </div>
-</div>
+    <footer class="py-10 bg-black/5">
+        <div class="text-center font-black opacity-30 uppercase tracking-[0.4em] text-[10px]">© 2026 PITCHPRO | POWERED BY GRAB</div>
+    </footer>
 
 <script>
-    let currentMode = 'full';
-    const state = {
-        full: { mainVal: "25.000", kPct: 32, vDisk: 30, mDisk: "55.000", minO: "15.000", vOng: "0", subVal: "0", schema: "puas-cuan" },
-        co: { mainVal: "60.000", kPct: 20, vDisk: 55, mDisk: "50.000", minO: "60.000", vOng: "0", subVal: "0", sBurden: 75, schema: "brand-week" }
-    };
+    let sMode = 'val', sTier = 'hemat';
+    const state = { mainVal: "25.000", kPct: 20, vDisk: 0, mDisk: "0", minO: "0", subVal: "0", schema: "normal" };
 
-    const DEFAULT_SCHEMAS = {
-        full: { 
-            'normal': { name: '⚖️ NORMAL PRICE', k: 20, v: 0, m: 0, min: 0, burden: 0 },
-            'puas-cuan': { name: '🔥 DISKON PUAS CUAN', k: 32, v: 30, m: 55000, min: 15000 },
-            'booster-hemat': { name: '🚀 BOOSTER HEMAT', k: 38, v: 35, m: 55000, min: 15000 }
+    const PRESETS = {
+        'normal': { 
+            name: '⚖️ Standard Normal', k: 20, v: 0, 
+            hint: 'Fokus pada margin keuntungan maksimal tanpa dukungan promo aplikasi.', 
+            b: { hemat: ['100% Margin Aman', 'Harga Konsisten', 'Tanpa Sukses Fee'] } 
         },
-        co: { 
-            'normal': { name: '⚖️ NORMAL PRICE', k: 20, v: 0, m: 0, min: 0, burden: 0 },
-            'brand-week': { name: '🎊 BRAND WEEK FESTIVAL', k: 20, v: 55, m: 50000, min: 60000, burden: 75 }
+        'puas-cuan': { 
+            name: '🔥 Diskon Puas Cuan', k: 32, v: 30, 
+            hint: 'Subsidi harian dari Grab untuk menjaga aliran transaksi tetap stabil setiap saat.', 
+            tiers: { hemat: { min: 15000, max: 45000 }, ekstra: { min: 35000, max: 80000 } }, 
+            b: { 
+                hemat: ['Always On Promo 30%', 'In-App Exposure', 'Grab Funded Discount'], 
+                ekstra: ['Always On Promo 30%', 'In-App Exposure', 'Prioritas Search Rank'] 
+            } 
+        },
+        'booster': { 
+            name: '🚀 Diskon Puas Booster', k: 38, v: 35, 
+            hint: 'Skema komplit untuk dominasi pasar dengan eksposur maksimal & promo eksklusif.', 
+            tiers: { hemat: { min: 15000, max: 55000 }, ekstra: { min: 35000, max: 100000 } }, 
+            b: { 
+                hemat: ['Flash Sale (Up to 55%)', 'Always On Promo 35%', 'Local & Tactical Promo', 'In-App Exposure'], 
+                ekstra: ['Flash Sale (Up to 55%)', 'Always On Promo 35%', 'Local & Tactical Promo', 'Priority Ranking Area'] 
+            } 
         }
     };
 
     const fNum = (n) => n.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     const pNum = (n) => parseFloat(n.toString().replace(/\./g, "")) || 0;
 
-    // FUNGSI INPUT BARU (Mencegah Error Kalkulasi)
-    function handleInput(el, field) {
-        el.value = fNum(el.value);
-        state[currentMode][field] = el.value;
-        hitung();
+    function renderStrategies() {
+        const wrapper = document.getElementById('buttonWrapper');
+        wrapper.innerHTML = '';
+        Object.keys(PRESETS).forEach(key => {
+            const item = document.createElement('div');
+            item.className = `strat-item ${state.schema === key ? 'active' : ''}`;
+            item.innerHTML = `<button class="strat-btn" onclick="selectScheme('${key}', this)">${PRESETS[key].name}</button>`;
+            wrapper.appendChild(item);
+            if(state.schema === key) setTimeout(() => movePointer(item), 50);
+        });
+        applyStrategy(state.schema);
     }
 
-    function updateVal(field, val) {
-        state[currentMode][field] = val;
-        hitung();
+    function selectScheme(key, btn) {
+        state.schema = key;
+        const items = document.querySelectorAll('.strat-item');
+        items.forEach(i => i.classList.remove('active'));
+        btn.parentElement.classList.add('active');
+        movePointer(btn.parentElement);
+        applyStrategy(key);
     }
 
-    function switchCategory(mode) {
-        currentMode = (mode === 'compare') ? currentMode : mode;
-        const slider = document.getElementById('tabSlider');
-        document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
-        
-        if(mode === 'compare') {
-            slider.style.transform = 'translateX(200%)';
-            document.getElementById('btnCompare').classList.add('active');
-            document.getElementById('mainView').classList.add('hidden');
-            document.getElementById('compareView').classList.remove('hidden');
+    function movePointer(el) {
+        const pointer = document.getElementById('activePointer');
+        pointer.style.height = el.offsetHeight + 'px';
+        pointer.style.top = el.offsetTop + 'px';
+    }
+
+    function applyStrategy(key) {
+        const conf = PRESETS[key];
+        const ts = document.getElementById('tierSection'), tw = document.getElementById('tierWrapper');
+
+        if (conf.tiers) {
+            ts.classList.remove('hidden');
+            tw.innerHTML = `<button onclick="setTier('hemat')" class="tier-btn ${sTier==='hemat'?'active':''}">HEMAAT</button><button onclick="setTier('ekstra')" class="tier-btn ${sTier==='ekstra'?'active':''}">EKSTRA</button>`;
+            const t = conf.tiers[sTier];
+            state.kPct = conf.k; state.vDisk = conf.v; state.minO = fNum(t.min); state.mDisk = fNum(t.max);
         } else {
-            slider.style.transform = (mode === 'full') ? 'translateX(0)' : 'translateX(100%)';
-            document.getElementById('btn' + mode.charAt(0).toUpperCase() + mode.slice(1)).classList.add('active');
-            document.getElementById('mainView').classList.remove('hidden');
-            document.getElementById('compareView').classList.add('hidden');
-            
-            const s = state[mode];
-            document.getElementById('mainVal').value = s.mainVal;
-            document.getElementById('kPct').value = s.kPct;
-            document.getElementById('vDisk').value = s.vDisk;
-            document.getElementById('mDisk').value = s.mDisk;
-            document.getElementById('minO').value = s.minO;
-            document.getElementById('subVal').value = s.subVal;
-            renderSchemaDropdown();
+            ts.classList.add('hidden');
+            state.kPct = conf.k; state.vDisk = conf.v; state.minO = "0"; state.mDisk = "0";
         }
+        renderBenefits(key);
+        document.getElementById('insightPanel').innerText = conf.hint;
+        updateUI();
     }
 
-    function renderSchemaDropdown() {
-        const select = document.getElementById('schemaSelect');
-        select.innerHTML = '';
-        for (let key in DEFAULT_SCHEMAS[currentMode]) {
-            let opt = document.createElement('option');
-            opt.value = key; opt.innerText = DEFAULT_SCHEMAS[currentMode][key].name;
-            select.appendChild(opt);
-        }
-        select.value = state[currentMode].schema;
+    function setTier(t) { sTier = t; applyStrategy(state.schema); }
+
+    function renderBenefits(key) {
+        const container = document.getElementById('benefitList');
+        container.innerHTML = '';
+        const list = PRESETS[key].tiers ? PRESETS[key].b[sTier] : PRESETS[key].b.hemat;
+        list.forEach((item, i) => {
+            const el = document.createElement('div');
+            el.className = 'benefit-item';
+            el.style.animationDelay = `${i * 0.1}s`;
+            el.innerHTML = `<svg class="w-4 h-4" fill="currentColor" viewBox="0 0 20 20"><path d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z"></path></svg> <span>${item}</span>`;
+            container.appendChild(el);
+        });
+    }
+
+    function updateUI() {
+        document.getElementById('mainVal').value = state.mainVal;
+        document.getElementById('kPct').value = state.kPct;
+        document.getElementById('vDisk').value = state.vDisk;
+        document.getElementById('mDisk').value = state.mDisk;
+        document.getElementById('minO').value = state.minO;
+        document.getElementById('subVal').value = state.subVal;
         hitung();
-    }
-
-    function applySchema(key) {
-        state[currentMode].schema = key;
-        const config = DEFAULT_SCHEMAS[currentMode][key];
-        if(config) {
-            document.getElementById('kPct').value = config.k;
-            document.getElementById('vDisk').value = config.v;
-            document.getElementById('mDisk').value = fNum(config.m);
-            document.getElementById('minO').value = fNum(config.min);
-            state[currentMode].kPct = config.k;
-            state[currentMode].vDisk = config.v;
-            state[currentMode].mDisk = fNum(config.m);
-            state[currentMode].minO = fNum(config.min);
-            hitung();
-        }
     }
 
     function hitung() {
-        const s = state[currentMode];
-        const offline = pNum(s.mainVal);
-        const kPct = pNum(s.kPct)/100;
-        const subType = document.getElementById('subType').value;
-        const subVal = pNum(s.subVal);
-        const isRound = document.getElementById('roundCheck').checked;
+        const off = pNum(state.mainVal), comm = pNum(state.kPct), adj = sMode === 'val' ? pNum(state.subVal) : (off * pNum(state.subVal)/100);
+        let list = (off - adj) / (1 - (comm/100));
+        if (document.getElementById('roundCheck').checked) list = Math.ceil(list/100)*100;
 
-        document.getElementById('subLabel').innerText = subType === 'val' ? 'Rp' : '%';
-        const nominalSubsidi = subType === 'val' ? subVal : (offline * (subVal / 100));
-        const pressingBasis = offline - nominalSubsidi;
-        
-        let listing = currentMode === 'full' ? (pressingBasis / (1 - kPct)) : pressingBasis;
-        if(currentMode === 'full' && isRound && listing > 0) listing = Math.ceil(listing/100)*100;
-        
-        const komisi = listing * kPct;
-        const finalDiskon = (listing >= pNum(s.minO)) ? Math.min(listing * (pNum(s.vDisk)/100), pNum(s.mDisk)) : 0;
-        const netProfit = listing - komisi - (currentMode === 'co' ? (finalDiskon * (pNum(s.sBurden)/100)) : 0);
-        
-        document.getElementById('resApp').value = fNum(Math.round(listing));
-        document.getElementById('resNet').innerText = "Rp " + fNum(Math.round(netProfit));
-        document.getElementById('resKomisi').innerText = "Rp " + fNum(Math.round(komisi));
-        document.getElementById('bMenu').innerText = "Rp " + fNum(Math.round(listing));
-        document.getElementById('bDisk').innerText = "- Rp " + fNum(Math.round(finalDiskon));
-        document.getElementById('bTotal').innerText = "Rp " + fNum(Math.round(listing - finalDiskon));
-        
-        const pStat = document.getElementById('promoStat');
-        const isActive = listing >= pNum(s.minO);
-        pStat.innerText = isActive ? "PROMO ACTIVE" : "MIN ORDER NOT MET";
-        pStat.style.background = isActive ? "var(--grab-green)" : "#ef4444";
+        const sf = list * 0.20, mf = list * (Math.max(0, comm-20)/100);
+        const disc = (list >= pNum(state.minO)) ? Math.min(list * pNum(state.vDisk)/100, pNum(state.mDisk)) : 0;
+
+        document.getElementById('resApp').innerText = "Rp " + fNum(Math.round(list));
+        document.getElementById('resNet').innerText = "Rp " + fNum(Math.round(list - sf - mf));
+        document.getElementById('resTP').innerText = "Rp " + fNum(Math.round(list - disc));
+        document.getElementById('resSF').innerText = "- Rp " + fNum(Math.round(sf));
+        document.getElementById('resMF').innerText = "- Rp " + fNum(Math.round(mf));
+        document.getElementById('detL').innerText = "Rp " + fNum(Math.round(list));
+        document.getElementById('detD').innerText = "- Rp " + fNum(Math.round(disc));
+
+        const ok = (list >= pNum(state.minO) && pNum(state.minO) > 0) || (pNum(state.vDisk) > 0 && pNum(state.minO) == 0);
+        const ps = document.getElementById('pStat');
+        ps.innerText = ok ? 'PROMO ACTIVE' : 'NO PROMO';
+        ps.className = `text-[7px] font-black px-2 py-0.5 rounded ${ok ? 'bg-emerald-500' : 'bg-red-600'} text-white tracking-widest`;
     }
 
-    // FUNGSI CAPTURE & SHARE
-    async function takeSnapshot() {
-        const area = document.getElementById('captureOutput');
-        const btn = event.currentTarget;
-        btn.innerText = "📸 Capturing...";
-        
-        try {
-            const canvas = await html2canvas(area, {
-                backgroundColor: "#00B14F",
-                scale: 2,
-                borderRadius: 32
-            });
-            
-            const imgData = canvas.toDataURL("image/png");
-            const link = document.createElement('a');
-            link.download = `CuanCalc_${Date.now()}.png`;
-            link.href = imgData;
-            link.click();
+    ['mainVal','kPct','vDisk','mDisk','minO','subVal'].forEach(id => {
+        document.getElementById(id).addEventListener('input', (e) => {
+            if(['mainVal','subVal','mDisk','minO'].includes(id)) e.target.value = fNum(e.target.value);
+            state[id] = e.target.value;
+            hitung();
+        });
+    });
 
-            const text = encodeURIComponent(
-                `*--- MERCHANT CALCULATOR ELITE ---*\n\n` +
-                `📊 *Schema:* ${currentMode.toUpperCase()}\n` +
-                `💰 *Offline:* Rp ${state[currentMode].mainVal}\n` +
-                `📱 *Harga Aplikasi:* Rp ${document.getElementById('resApp').value}\n` +
-                `---------------------------------\n` +
-                `💸 *PROFIT BERSIH:* ${document.getElementById('resNet').innerText}\n` +
-                `🛍️ *Bayar Konsumen:* ${document.getElementById('bTotal').innerText}\n\n` +
-                `_(Gunakan gambar yang baru saja terdownload)_`
-            );
-
-            setTimeout(() => {
-                window.open(`https://wa.me/?text=${text}`, '_blank');
-            }, 1000);
-            
-        } catch (e) {
-            alert("Error: Gagal memotret layar.");
-        } finally {
-            btn.innerText = "📸 Capture & Share to WhatsApp";
-        }
+    function setSubMode(m) { 
+        sMode = m; 
+        document.getElementById('sVal').classList.toggle('active', m==='val');
+        document.getElementById('sPct').classList.toggle('active', m==='pct');
+        document.getElementById('subLabel').innerText = m==='val'?'Rp':'%';
+        hitung(); 
     }
 
-    function savePreset() {
-        alert("Preset Saved to Memory");
-    }
-
-    window.onload = () => switchCategory('full');
+    window.onload = renderStrategies;
 </script>
 </body>
 </html>
