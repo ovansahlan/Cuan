@@ -3,20 +3,17 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Merchant Calculator | Pixel Perfect</title>
+    <title>Merchant Calculator | Mex Promo Cost</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
     <style>
         :root { --grab-green: #00B14F; --grab-yellow: #FFD200; --grab-dark: #004d22; }
-        
-        * { box-sizing: border-box; } /* Mencegah border meluber keluar */
-
+        * { box-sizing: border-box; }
         body { 
             font-family: 'Inter', sans-serif; 
             background: linear-gradient(135deg, #004d22 0%, #00B14F 50%, #008a3d 100%);
             color: white; display: flex; flex-direction: column; height: 100vh; margin: 0; overflow: hidden;
         }
-
         header, section, footer { flex-shrink: 0; }
         main { flex-grow: 1; padding: 0.5rem 0.75rem; display: flex; flex-direction: column; gap: 0.4rem; overflow-y: auto; scrollbar-width: none; }
         main::-webkit-scrollbar { display: none; }
@@ -32,29 +29,9 @@
 
         .glass-panel { background: rgba(255, 255, 255, 0.94); backdrop-filter: blur(10px); border-radius: 16px; padding: 0.65rem; color: #1a1a1a; border: 1px solid rgba(255, 255, 255, 0.3); }
         
-        /* FIX BORDER OFFSET PADA VS PANEL */
-        .vs-card { 
-            border: 2px solid transparent; 
-            border-radius: 14px; 
-            padding: 12px 8px; 
-            position: relative; 
-            transition: all 0.4s ease; 
-            background: rgba(255,255,255,0.05);
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        .vs-card.winner { 
-            background: rgba(255, 210, 0, 0.15); 
-            border-color: var(--grab-yellow); 
-            box-shadow: inset 0 0 10px rgba(255, 210, 0, 0.2), 0 0 20px rgba(255, 210, 0, 0.3);
-        }
-        .winner-badge {
-            position: absolute; top: -10px; left: 50%; transform: translateX(-50%);
-            background: var(--grab-yellow); color: black; font-size: 8px; font-weight: 900;
-            padding: 2px 10px; border-radius: 20px; border: 2px solid #000; display: none; z-index: 10;
-            white-space: nowrap;
-        }
+        .vs-card { border: 2px solid transparent; border-radius: 14px; padding: 12px 8px; position: relative; transition: 0.4s; background: rgba(255,255,255,0.05); }
+        .vs-card.winner { background: rgba(255, 210, 0, 0.15); border-color: var(--grab-yellow); box-shadow: 0 0 20px rgba(255, 210, 0, 0.3); }
+        .winner-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--grab-yellow); color: black; font-size: 8px; font-weight: 900; padding: 2px 10px; border-radius: 20px; border: 2px solid #000; display: none; z-index: 10; }
         .vs-card.winner .winner-badge { display: block; animation: bounce 0.5s infinite alternate; }
 
         .input-group { display: grid; grid-template-columns: 35px 1fr 35px; align-items: center; background: white; border: 2px solid #e2e8f0; border-radius: 10px; height: 38px; overflow: hidden; }
@@ -76,7 +53,7 @@
             <div class="w-6 h-6 bg-black rounded flex items-center justify-center font-black text-white italic text-xs shadow-sm">G</div>
             <p class="font-black text-sm tracking-tighter uppercase text-slate-800 leading-none">MERCHANT <span class="text-[var(--grab-green)]">CALCULATOR</span></p>
         </div>
-        <div class="bg-emerald-100 text-[var(--grab-green)] px-2.5 py-0.5 rounded-full text-[8px] font-black uppercase italic">Pixel Fix</div>
+        <div class="bg-blue-100 text-blue-600 px-2.5 py-0.5 rounded-full text-[8px] font-black uppercase tracking-tight italic">v30.7 Promo Cost</div>
     </header>
 
     <section class="spotlight-dashboard">
@@ -142,7 +119,7 @@
         <div class="glass-panel">
             <label class="label-bold italic"><svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M12 6V4m0 2a2 2 0 100 4m0-4a2 2 0 110 4m-6 8a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4m6 6v10m6-2a2 2 0 100-4m0 4a2 2 0 110-4m0 4v2m0-6V4"></path></svg>3. Parameter Sistem</label>
             <div class="grid grid-cols-2 gap-x-3 gap-y-2">
-                <div><span class="text-[7px] font-black opacity-50 uppercase">Comm % (Grab Share)</span><div class="input-group"><div class="input-side"></div><input type="number" id="kPct" class="input-pro" value="20"><div class="input-side">%</div></div></div>
+                <div><span class="text-[7px] font-black opacity-50 uppercase">Merchant Comm %</span><div class="input-group"><div class="input-side"></div><input type="number" id="kPct" class="input-pro" value="20"><div class="input-side">%</div></div></div>
                 <div><span class="text-[7px] font-black opacity-50 uppercase">Promo Disc %</span><div class="input-group"><div class="input-side"></div><input type="number" id="vDisk" class="input-pro text-red-600" value="0"><div class="input-side text-red-300">%</div></div></div>
                 <div><span class="text-[7px] font-black opacity-50 uppercase">Max Disc Rp</span><div class="input-group"><div class="input-side">Rp</div><input type="text" id="mDisk" class="input-pro" value="0"><div class="input-side"></div></div></div>
                 <div><span class="text-[7px] font-black opacity-50 uppercase text-blue-600">Cofund Mex %</span><div id="cofundGroup" class="input-group border-blue-200 disabled"><div class="input-side"></div><input type="number" id="mShare" class="input-pro text-blue-600" value="0" disabled><div class="input-side">%</div></div></div>
@@ -150,58 +127,32 @@
             </div>
         </div>
 
-        <div class="glass-panel !bg-black/60 !border-dashed !border-[var(--grab-yellow)] !p-3 mb-8">
-            <div id="vsTitle" class="text-[10px] font-black text-[var(--grab-yellow)] uppercase mb-3 text-center italic tracking-widest">NORMAL VS PROMO</div>
+        <div class="glass-panel !bg-black/60 !border-dashed !border-[var(--grab-yellow)] !p-3 mb-8 text-center">
+            <div id="vsTitle" class="text-[10px] font-black text-[var(--grab-yellow)] uppercase mb-3 italic tracking-widest">NORMAL VS PROMO</div>
             <div class="grid grid-cols-2 gap-3">
-                <div id="cardNormal" class="vs-card">
-                    <div class="winner-badge">WINNER 🏆</div>
-                    <p class="text-[8px] font-black opacity-60 text-white uppercase mb-2 text-center">NORMAL</p>
-                    <div class="flex flex-col text-center space-y-1">
-                        <div>
-                            <span class="text-[6px] text-white/40 uppercase block leading-none">App Price</span>
-                            <p id="vsAppNormal" class="text-[11px] font-black text-white/60">Rp 0</p>
-                        </div>
-                        <div>
-                            <span class="text-[7px] text-white/80 font-bold uppercase block leading-none">Paid by Pax</span>
-                            <p id="vsPayNormal" class="text-base font-black text-white leading-tight">Rp 0</p>
-                        </div>
-                    </div>
-                </div>
-                <div id="cardPromo" class="vs-card">
-                    <div class="winner-badge">WINNER 🏆</div>
-                    <p id="vsPromoLabel" class="text-[8px] font-black text-[var(--grab-yellow)] uppercase mb-2 text-center">PROMO</p>
-                    <div class="flex flex-col text-center space-y-1">
-                        <div>
-                            <span class="text-[6px] text-white/40 uppercase block leading-none">App Price</span>
-                            <p id="vsAppPromo" class="text-[11px] font-black text-white/60">Rp 0</p>
-                        </div>
-                        <div>
-                            <span class="text-[7px] text-[var(--grab-yellow)] font-bold uppercase block leading-none">Paid by Pax</span>
-                            <p id="vsPayPromo" class="text-xl font-black text-[var(--grab-yellow)] leading-tight">Rp 0</p>
-                        </div>
-                    </div>
-                </div>
+                <div id="cardNormal" class="vs-card"><div class="winner-badge">WINNER 🏆</div><p class="text-[8px] font-black opacity-60 text-white uppercase mb-2">NORMAL</p><div class="space-y-1 text-center"><span class="text-[6px] text-white/30 uppercase">App Price</span><p id="vsAppNormal" class="text-[11px] font-black text-white/40">Rp 0</p><span class="text-[7px] text-white/60 font-bold uppercase">Paid by Pax</span><p id="vsPayNormal" class="text-base font-black text-white">Rp 0</p></div></div>
+                <div id="cardPromo" class="vs-card"><div class="winner-badge">WINNER 🏆</div><p id="vsPromoLabel" class="text-[8px] font-black text-[var(--grab-yellow)] uppercase mb-2 text-center">PROMO</p><div class="space-y-1 text-center"><span class="text-[6px] text-white/30 uppercase">App Price</span><p id="vsAppPromo" class="text-[12px] font-black text-white/40">Rp 0</p><span class="text-[7px] text-[var(--grab-yellow)]/60 font-bold uppercase">Paid by Pax</span><p id="vsPayPromo" class="text-xl font-black text-[var(--grab-yellow)]">Rp 0</p></div></div>
             </div>
         </div>
     </main>
 
 <script>
     let sTier = 'hemat', currentSchema = 'normal', isRounded = true, subMode = 'val';
-    const calcData = { list: 0, disc: 0, pay: 0, net: 0, gCofund: 0, mCofund: 0 };
+    const calcData = { list: 0, disc: 0, pay: 0, net: 0, mexGB: 0, mexPromoCost: 0, totalInvestment: 0 };
     const state = { mainVal: "25.000", kPct: 20, vDisk: 0, mDisk: "0", minO: "0", subVal: "0", mShare: 0 };
 
     const PRESETS = {
-        'normal': { name: 'Normal Commision', k: 20, v: 0, b: ['Margin Aman 100%', 'Harga Menu Stabil'], s: 0 },
-        'puas-cuan': { name: 'Diskon Puas Cuan', k: 32, v: 30, tiers: { hemat: { min: 15000, max: 45000 }, ekstra: { min: 35000, max: 80000 } }, b: ['Promo Grab Funded', 'Search Rank Prioritas'], s: 0 },
-        'booster': { name: 'Diskon Puas Booster', k: 38, v: 35, tiers: { hemat: { min: 15000, max: 55000 }, ekstra: { min: 35000, max: 100000 } }, b: ['Flash Sale 55%', 'Top 3 Ranking'], s: 0 },
-        'cofund': { name: 'Skema Cofunding', k: 20, v: 40, b: ['Beban Patungan Diskon', 'Flexible Share'], s: 75 }
+        'normal': { name: 'Normal Commision', k: 20, v: 0, b: ['Margin Aman 100%'], s: 0 },
+        'puas-cuan': { name: 'Diskon Puas Cuan', k: 32, v: 30, tiers: { hemat: { min: 15000, max: 45000 }, ekstra: { min: 35000, max: 80000 } }, b: ['Promo Grab Funded'], s: 0 },
+        'booster': { name: 'Diskon Puas Booster', k: 38, v: 35, tiers: { hemat: { min: 15000, max: 55000 }, ekstra: { min: 35000, max: 100000 } }, b: ['Flash Sale 55%'], s: 0 },
+        'cofund': { name: 'Skema Cofunding', k: 20, v: 40, b: ['Beban Patungan Diskon'], s: 75 }
     };
 
     const fNum = (n) => n.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     const pNum = (n) => parseFloat(n.toString().replace(/\./g, "")) || 0;
 
     function hitung(source = 'offline') {
-        const commPct = pNum(state.kPct), subRaw = pNum(state.subVal), mSharePct = pNum(state.mShare);
+        const commPct = pNum(state.kPct), subRaw = pNum(state.subVal), mCofundPct = pNum(state.mShare), discPct = pNum(state.vDisk);
         const adj = subMode === 'val' ? subRaw : (pNum(state.mainVal) * subRaw / 100);
 
         if(source === 'app') {
@@ -214,20 +165,31 @@
         let listPromo = (off - adj) / (1 - (commPct/100));
         if (isRounded) listPromo = Math.ceil(listPromo/100)*100;
         
-        const totalDisc = (listPromo >= pNum(state.minO)) ? Math.min(listPromo * pNum(state.vDisk)/100, pNum(state.mDisk) || Infinity) : 0;
+        const totalDisc = (listPromo >= pNum(state.minO)) ? Math.min(listPromo * discPct/100, pNum(state.mDisk) || Infinity) : 0;
         const paidPax = listPromo - totalDisc;
 
-        const mexCofundAmt = totalDisc * (mSharePct / 100);
-        const grabCofundAmt = totalDisc * ((100 - mSharePct) / 100);
+        // VERIFIED REVENUE LOGIC v30.7 (MEX PROMO COST BASED ON APP PRICE)
+        if (currentSchema === 'cofund') {
+            // Mex Promo Cost = Cofund Mex % * Discount % * App Price
+            const mexPromoCost = (mCofundPct / 100) * (discPct / 100) * listPromo;
+            // Mex GB = Comm % * (App Price - Mex Promo Cost)
+            const mexGB = (commPct / 100) * (listPromo - mexPromoCost);
+            // Investment = Mex GB + Mex Promo Cost
+            const investment = mexGB + mexPromoCost;
+            
+            calcData.net = listPromo - investment;
+            calcData.mexGB = mexGB;
+            calcData.mexPromoCost = mexPromoCost;
+            calcData.totalInvestment = investment;
+        } else {
+            const standardComm = listPromo * (commPct / 100);
+            calcData.net = listPromo - standardComm;
+            calcData.mexGB = standardComm;
+            calcData.mexPromoCost = 0;
+            calcData.totalInvestment = standardComm;
+        }
 
         calcData.list = listPromo; calcData.disc = totalDisc; calcData.pay = paidPax;
-        calcData.mCofund = mexCofundAmt; calcData.gCofund = grabCofundAmt;
-
-        if (currentSchema === 'cofund') {
-            calcData.net = listPromo - mexCofundAmt - grabCofundAmt;
-        } else {
-            calcData.net = listPromo - (listPromo * (commPct/100));
-        }
 
         if(source !== 'app') document.getElementById('resApp').value = fNum(Math.round(listPromo));
         document.getElementById('resTP').innerText = "Rp " + fNum(Math.round(paidPax));
@@ -237,13 +199,11 @@
         let listNormal = (off - adj) / (1 - (20/100));
         if (isRounded) listNormal = Math.ceil(listNormal/100)*100;
         const isNormalWin = listNormal < paidPax;
-        
-        document.getElementById('vsTitle').innerText = `NORMAL VS ${currentSchema.toUpperCase()}`;
         document.getElementById('vsAppNormal').innerText = "Rp " + fNum(Math.round(listNormal));
         document.getElementById('vsPayNormal').innerText = "Rp " + fNum(Math.round(listNormal));
         document.getElementById('vsAppPromo').innerText = "Rp " + fNum(Math.round(listPromo));
         document.getElementById('vsPayPromo').innerText = "Rp " + fNum(Math.round(paidPax));
-        
+        document.getElementById('vsTitle').innerText = `NORMAL VS ${currentSchema.toUpperCase()}`;
         document.getElementById('cardNormal').className = `vs-card ${isNormalWin ? 'winner' : ''}`;
         document.getElementById('cardPromo').className = `vs-card ${!isNormalWin ? 'winner' : ''}`;
     }
@@ -254,15 +214,15 @@
         document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
         document.getElementById(`chip-${key}`).classList.add('active');
         const conf = PRESETS[key];
-        const ts = document.getElementById('tierSection');
-        const cofundInput = document.getElementById('mShare'), cofundGroup = document.getElementById('cofundGroup');
+        const ts = document.getElementById('tierSection'), cofundInput = document.getElementById('mShare'), cofundGroup = document.getElementById('cofundGroup');
 
         if (conf.tiers) {
             ts.classList.remove('hidden');
             document.getElementById('btnHem').className = `px-3 py-1 rounded-md text-[8px] font-black transition-all ${sTier === 'hemat' ? 'bg-black text-white' : 'bg-transparent text-gray-500'}`;
             document.getElementById('btnEks').className = `px-3 py-1 rounded-md text-[8px] font-black transition-all ${sTier === 'ekstra' ? 'bg-black text-white' : 'bg-transparent text-gray-500'}`;
             state.kPct = conf.k; state.vDisk = conf.v;
-            state.minO = fNum(conf.tiers[sTier].min);
+            state.minOrderVal = conf.tiers[sTier].min;
+            state.minO = fNum(state.minOrderVal);
             state.mDisk = fNum(conf.tiers[sTier].max);
         } else {
             ts.classList.add('hidden');
@@ -276,16 +236,26 @@
         renderBenefits(); updateUI();
     }
 
-    function setTier(t) { sTier = t; selectSchema(currentSchema); }
-    function renderBenefits() {
-        const container = document.getElementById('benefitList'); container.innerHTML = '';
-        PRESETS[currentSchema].b.forEach(item => { container.innerHTML += `<div class="bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded border border-emerald-200 text-[8px] font-black italic">✓ ${item}</div>`; });
+    function showDetail(e, type) {
+        e.stopPropagation();
+        const overlay = document.getElementById('detailOverlay'), content = document.getElementById('overlayContent');
+        let html = '';
+        if(type === 'cust') html = `<h3 class="text-xs font-black text-emerald-400 mb-4 uppercase text-center italic">Paid by Pax Detail</h3><div class="space-y-4 text-white text-xs"><div class="flex justify-between"><span>App Price</span><span>Rp ${fNum(Math.round(calcData.list))}</span></div><div class="flex justify-between text-red-400"><span>Total Discount</span><span>- Rp ${fNum(Math.round(calcData.disc))}</span></div><div class="pt-4 border-t border-white/20 flex justify-between text-xl font-black text-emerald-400"><span>PAID BY PAX</span><span>Rp ${fNum(Math.round(calcData.pay))}</span></div></div>`;
+        else html = `<h3 class="text-xs font-black text-emerald-500 mb-4 uppercase text-center italic">Investment Detail</h3><div class="space-y-4 text-white text-xs">
+            <div class="flex justify-between"><span>Initial App Price</span><span>Rp ${fNum(Math.round(calcData.list))}</span></div>
+            <div class="flex justify-between text-orange-400"><span>Mex GB (Komisi)</span><span>- Rp ${fNum(Math.round(calcData.mexGB))}</span></div>
+            <div class="flex justify-between text-blue-400"><span>Mex Promo Cost</span><span>- Rp ${fNum(Math.round(calcData.mexPromoCost))}</span></div>
+            <div class="pt-4 border-t border-white/20 flex justify-between text-xl font-black text-emerald-500"><span>NET REVENUE</span><span>Rp ${fNum(Math.round(calcData.net))}</span></div>
+            <div class="mt-4 pt-2 text-[8px] text-white/40 italic text-center">Net Revenue = App Price - (Mex GB + Mex Promo Cost)</div></div>`;
+        content.innerHTML = html; overlay.classList.add('active');
     }
+
+    function setTier(t) { sTier = t; selectSchema(currentSchema); }
+    function renderBenefits() { const container = document.getElementById('benefitList'); container.innerHTML = ''; PRESETS[currentSchema].b.forEach(item => { container.innerHTML += `<div class="bg-emerald-100 text-emerald-700 px-1.5 py-0.5 rounded border border-emerald-200 text-[8px] font-black italic">✓ ${item}</div>`; }); }
     function updateUI() { document.getElementById('mainVal').value = state.mainVal; document.getElementById('kPct').value = state.kPct; document.getElementById('vDisk').value = state.vDisk; document.getElementById('mDisk').value = state.mDisk; document.getElementById('minO').value = state.minO; document.getElementById('subVal').value = state.subVal; document.getElementById('mShare').value = state.mShare; hitung(); }
     ['mainVal','kPct','vDisk','mDisk','minO','subVal','mShare'].forEach(id => { document.getElementById(id).addEventListener('input', (e) => { if(['mainVal','subVal','mDisk','minO'].includes(id)) e.target.value = fNum(e.target.value); state[id] = e.target.value; hitung('offline'); }); });
     document.getElementById('resApp').addEventListener('input', (e) => { e.target.value = fNum(e.target.value); hitung('app'); });
     function closeOverlay() { document.getElementById('detailOverlay').classList.remove('active'); }
-    function showDetail(e, type) { e.stopPropagation(); const overlay = document.getElementById('detailOverlay'), content = document.getElementById('overlayContent'); let html = ''; if(type === 'cust') html = `<h3 class="text-xs font-black text-emerald-400 mb-4 uppercase text-center italic">Paid by Pax Detail</h3><div class="space-y-4 text-white text-xs"><div class="flex justify-between"><span>App Price</span><span>Rp ${fNum(Math.round(calcData.list))}</span></div><div class="flex justify-between text-red-400"><span>Total Discount</span><span>- Rp ${fNum(Math.round(calcData.disc))}</span></div><div class="pt-4 border-t border-white/20 flex justify-between text-xl font-black text-emerald-400"><span>PAID BY PAX</span><span>Rp ${fNum(Math.round(calcData.pay))}</span></div></div>`; else html = `<h3 class="text-xs font-black text-emerald-500 mb-4 uppercase text-center italic">Net Revenue Detail</h3><div class="space-y-4 text-white text-xs"><div class="flex justify-between"><span>Initial App Price</span><span>Rp ${fNum(Math.round(calcData.list))}</span></div><div class="flex justify-between text-orange-400"><span>Mex Cofund (${pNum(state.mShare)}%)</span><span>- Rp ${fNum(Math.round(calcData.mCofund))}</span></div><div class="flex justify-between text-blue-400"><span>Grab Cofund (${100 - pNum(state.mShare)}%)</span><span>- Rp ${fNum(Math.round(calcData.gCofund))}</span></div><div class="pt-4 border-t border-white/20 flex justify-between text-xl font-black text-emerald-500"><span>NET REVENUE</span><span>Rp ${fNum(Math.round(calcData.net))}</span></div></div>`; content.innerHTML = html; overlay.classList.add('active'); }
     function toggleRound(e) { e.stopPropagation(); isRounded = !isRounded; hitung(); }
     function setSubMode(m) { subMode = m; document.getElementById('sVal').classList.toggle('active', m === 'val'); document.getElementById('sPct').classList.toggle('active', m === 'pct'); document.getElementById('subPrefix').innerText = m === 'val' ? 'Rp' : '%'; hitung(); }
     window.onload = () => selectSchema('normal');
