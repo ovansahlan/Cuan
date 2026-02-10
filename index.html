@@ -3,203 +3,241 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Merchant Calculator | Discount % Detail</title>
+    <title>Merchant Tool | Ultimate v39.9</title>
+    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
-        :root { --grab-green: #00B14F; --grab-yellow: #FFD200; --grab-dark: #004d22; --orange-kontras: #f97316; }
+        :root { --grab-green: #00B14F; --grab-yellow: #FFD200; --grab-dark: #004d22; }
         * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
-        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #004d22 0%, #00B14F 50%, #008a3d 100%); color: white; display: flex; flex-direction: column; min-height: 100vh; margin: 0; overflow-x: hidden; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #004d22 0%, #00B14F 50%, #008a3d 100%); color: white; min-height: 100vh; margin: 0; overflow-x: hidden; }
         
+        .page { display: none; width: 100%; min-height: 100vh; }
+        .page.active { display: block; animation: fadeIn 0.3s ease-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+
         .sticky-unit { position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.15); width: 100%; }
         .gradient-header { background: #FFFFFF; padding: 1rem 1.2rem; }
         .header-divider { height: 4px; background: linear-gradient(90deg, #00B14F 0%, #008a3d 100%); width: 100%; }
-        
         .spotlight-dashboard { background: white; color: #1a1a1a; border-bottom: 5px solid var(--grab-yellow); }
-        .dash-input { background: transparent; border: none; font-weight: 900; width: 100%; text-align: center; outline: none; padding: 0; margin: 0; color: #1a1a1a; font-family: inherit; }
+        .dash-input { background: transparent; border: none; font-weight: 900; width: 100%; text-align: center; outline: none; color: #1a1a1a; font-family: inherit; }
         
         .main-container { max-width: 1000px; margin: 0 auto; width: 100%; padding: 1rem 0.8rem 4rem 0.8rem; }
-        
-        .preset-dropdown-container { position: relative; width: 100%; }
-        .preset-menu-universal { position: absolute; top: 100%; left: 0; width: 100%; background: white; border: 2px solid #e2e8f0; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 500; display: none; margin-top: 5px; max-height: 300px; overflow-y: auto; color: #1a1a1a; }
-        .preset-menu-universal.active { display: block; animation: fadeInDown 0.2s ease-out; }
-
-        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-10px); } to { opacity: 1; transform: translateY(0); } }
-
-        @media (min-width: 1024px) {
-            .desktop-zoom { transform: scale(1.3); transform-origin: top center; margin-top: 3.5rem; margin-bottom: 15rem; }
-            .desktop-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 1.2rem; align-items: start; }
-            .sticky-side { position: sticky; top: 140px; }
-            .dash-input, .dash-result { font-size: 3rem !important; line-height: 1 !important; }
-            .spotlight-dashboard { padding: 1.8rem 1rem !important; }
-        }
-
-        @media (max-width: 1023px) {
-            .dash-input, .dash-result { font-size: 1.4rem !important; }
-            .desktop-grid { display: flex; flex-direction: column; gap: 0.5rem; }
-        }
-
         .glass-panel { background: rgba(255, 255, 255, 0.98); border-radius: 18px; padding: 1.2rem; color: #1a1a1a; border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
+
         .label-main { font-size: 11px; font-weight: 900; text-transform: uppercase; color: #0f172a; display: block; margin-bottom: 10px; }
         .label-row { display: flex; align-items: center; justify-content: space-between; min-height: 24px; margin-bottom: 6px; }
         .label-sub { font-size: 10px; font-weight: 800; text-transform: uppercase; color: #64748b; }
-
+        
         .input-group { display: grid; grid-template-columns: 35px 1fr 35px; align-items: center; background: white; border: 2px solid #cbd5e1; border-radius: 10px; height: 44px; overflow: hidden; }
         .input-pro { border: none; font-size: 1rem; font-weight: 800; width: 100%; text-align: center; outline: none; background: transparent; color: #0f172a; }
         .input-side { font-weight: 900; font-size: 10px; color: #94a3b8; display: flex; justify-content: center; align-items: center; }
 
-        .chip { flex: 1; padding: 0.6rem 0.2rem; border-radius: 10px; background: #f1f5f9; color: #64748b; font-size: 9px; font-weight: 900; text-transform: uppercase; border: 2px solid transparent; transition: 0.2s; }
-        .chip.active { background: var(--grab-yellow); color: #1a1a1a; border-color: #e6bd00; box-shadow: 0 4px 12px rgba(255, 210, 0, 0.4); }
-        
+        .preset-dropdown-container { position: relative; width: 100%; }
+        .preset-menu-universal { position: absolute; top: 100%; left: 0; width: 100%; background: white; border: 2px solid #e2e8f0; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 500; display: none; margin-top: 5px; max-height: 300px; overflow-y: auto; color: #1a1a1a; }
+        .preset-menu-universal.active { display: block; }
+
+        .chip { flex: 1; padding: 0.6rem 0.2rem; border-radius: 10px; background: #f1f5f9; color: #64748b; font-size: 9px; font-weight: 900; text-transform: uppercase; border: 2px solid transparent; }
+        .chip.active { background: var(--grab-yellow); color: #1a1a1a; border-color: #e6bd00; }
         .tier-btn-active { background-color: #0f172a !important; color: white !important; font-weight: 900 !important; }
         .tier-btn-inactive { background-color: #f1f5f9 !important; color: #94a3b8 !important; }
 
-        #detailOverlay { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); width: 92%; max-width: 450px; background: #1c1c1c; border-radius: 26px; padding: 35px; z-index: 2200; opacity: 0; pointer-events: none; transition: 0.25s; color: white; border: 1px solid rgba(255,255,255,0.1); box-shadow: 0 40px 80px rgba(0,0,0,0.6); }
+        .vs-card { border: 2.5px solid transparent; border-radius: 16px; padding: 12px 8px; position: relative; background: rgba(255,255,255,0.05); }
+        .vs-card.winner { background: rgba(255, 210, 0, 0.15); border-color: var(--grab-yellow); }
+
+        /* WORKSHEET */
+        .ws-table { width: 100%; border-collapse: separate; border-spacing: 0 6px; }
+        .ws-table th { font-size: 8px; text-transform: uppercase; color: #64748b; padding: 8px; font-weight: 800; }
+        .ws-table td { background: #fff; padding: 10px 8px; vertical-align: middle; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; text-align: center; font-weight: 700; color: #334155; }
+        .ws-table td:first-child { border-radius: 12px 0 0 12px; text-align: left; }
+        .ws-input { width: 100%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 8px; font-weight: 800; text-align: right; outline: none; }
+        #bulkArea { width: 100%; height: 100px; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 10px; font-size: 11px; margin-bottom: 10px; resize: none; color: #1a1a1a; }
+
+        @media (min-width: 1024px) {
+            .desktop-zoom { transform: scale(1.3); transform-origin: top center; margin-top: 3.5rem; }
+            .desktop-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 1.2rem; align-items: start; }
+            .sticky-side { position: sticky; top: 140px; }
+            .dash-input, .dash-result { font-size: 3.2rem !important; line-height: 1 !important; }
+        }
+
+        #detailOverlay { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); width: 92%; max-width: 450px; background: #1c1c1c; border-radius: 26px; padding: 35px; z-index: 2200; opacity: 0; pointer-events: none; transition: 0.25s; color: white; border: 1px solid rgba(255,255,255,0.1); }
         #detailOverlay.active { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; display: none; }
         .modal-overlay.active { display: block; }
-        
-        .vs-card { border: 2.5px solid transparent; border-radius: 16px; padding: 12px 8px; position: relative; background: rgba(255,255,255,0.05); }
-        .vs-card.winner { background: rgba(255, 210, 0, 0.15); border-color: var(--grab-yellow); }
     </style>
 </head>
 <body onclick="closeAllPopups()">
 
-    <div class="sticky-unit">
-        <header class="gradient-header flex justify-center">
-            <div class="max-w-[1000px] w-full flex items-center gap-4 px-4">
-                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3eUHGPBllwPFxtkNKY7e_3T_mb2rKNWoMaRD6DON2dMI6swNt9a4Fee2k&s=10" alt="Grab" class="h-9 w-auto">
-                <div class="flex flex-col">
-                    <p class="font-black text-[17px] tracking-tighter uppercase text-slate-900 leading-none">MERCHANT <span class="text-[var(--grab-green)]">CALCULATOR</span></p>
-                    <p class="text-[10px] font-bold text-slate-400 mt-0.5 uppercase tracking-widest italic">Profit Analysis</p>
-                </div>
-            </div>
-        </header>
-        <div class="header-divider"></div>
-
-        <section class="spotlight-dashboard flex justify-center">
-            <div class="max-w-[1000px] w-full grid grid-cols-3 gap-0 text-center items-center px-4">
-                <div class="dash-col border-r-2 border-slate-100 px-2">
-                    <p class="dash-label text-[10px] font-black text-slate-400 uppercase tracking-tighter">App Price ✎</p>
-                    <div class="flex items-center justify-center font-black text-slate-900 italic">
-                        <span class="text-sm mr-0.5 font-bold opacity-30">Rp</span>
-                        <input type="text" id="resApp" class="dash-input" value="0">
+    <div id="pageCalc" class="page active">
+        <div class="sticky-unit">
+            <header class="gradient-header flex justify-center">
+                <div class="max-w-[1000px] w-full flex items-center gap-4 px-4">
+                    <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3eUHGPBllwPFxtkNKY7e_3T_mb2rKNWoMaRD6DON2dMI6swNt9a4Fee2k&s=10" alt="Grab" class="h-9 w-auto">
+                    <div class="flex flex-col">
+                        <p class="font-black text-[17px] tracking-tighter uppercase text-slate-900 leading-none">MERCHANT <span class="text-[var(--grab-green)]">CALCULATOR</span></p>
+                        <p class="text-[10px] font-bold text-slate-400 mt-0.5 uppercase tracking-widest italic">v39.9 Final Locked</p>
                     </div>
                 </div>
-                <div class="dash-col border-r-2 border-slate-100 px-2 cursor-pointer group" onclick="showDetail(event, 'cust')">
-                    <p class="dash-label text-[10px] font-black text-slate-400 uppercase tracking-tighter group-hover:text-grab-green transition-colors">Paid by Pax ⓘ</p>
-                    <h2 id="resTP" class="dash-result font-black text-[var(--grab-green)] leading-none italic">Rp 0</h2>
-                </div>
-                <div class="dash-col px-2 cursor-pointer group" onclick="showDetail(event, 'net')">
-                    <p class="dash-label text-[10px] font-black text-slate-400 uppercase tracking-tighter group-hover:text-emerald-600 transition-colors italic">Mex Net Rev ⓘ</p>
-                    <h2 id="resNet" class="dash-result font-black text-emerald-600 leading-none italic">Rp 0</h2>
-                </div>
-            </div>
-        </section>
-    </div>
-
-    <div id="modal-overlay" class="modal-overlay" onclick="closeAllPopups()"></div>
-
-    <main class="main-container desktop-zoom">
-        <div class="desktop-grid">
-            
-            <div class="space-y-3">
-                <div class="glass-panel">
-                    <label class="label-main">PILIH STRATEGI CAMPAIGN</label>
-                    <div class="flex gap-1.5 p-1 bg-slate-50 rounded-xl border border-slate-100">
-                        <button onclick="changeScheme('normal', event)" id="chip-normal" class="chip active">⚖️ Normal</button>
-                        <button onclick="changeScheme('puas-cuan', event)" id="chip-puas-cuan" class="chip">🔥 Cuan</button>
-                        <button onclick="changeScheme('booster', event)" id="chip-booster" class="chip">🚀 Booster</button>
-                        <button onclick="changeScheme('cofund', event)" id="chip-cofund" class="chip">🤝 Cofund</button>
+            </header>
+            <div class="header-divider"></div>
+            <section class="spotlight-dashboard flex justify-center">
+                <div class="max-w-[1000px] w-full grid grid-cols-3 gap-0 text-center items-center px-4 py-3 lg:py-8">
+                    <div class="dash-col border-r-2 border-slate-100 px-2">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-tighter">App Price ✎</p>
+                        <div class="flex items-center justify-center font-black text-slate-900 italic"><span class="text-sm mr-0.5 font-bold opacity-30">Rp</span><input type="text" id="resApp" class="dash-input" value="0"></div>
+                    </div>
+                    <div class="dash-col border-r-2 border-slate-100 px-2 cursor-pointer" onclick="showDetail(event, 'cust')">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-tighter italic">Paid by Pax ⓘ</p>
+                        <h2 id="resTP" class="dash-result font-black text-[var(--grab-green)]">Rp 0</h2>
+                    </div>
+                    <div class="dash-col px-2 cursor-pointer" onclick="showDetail(event, 'net')">
+                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-tighter italic">Mex Net Rev ⓘ</p>
+                        <h2 id="resNet" class="dash-result font-black text-emerald-600">Rp 0</h2>
                     </div>
                 </div>
+            </section>
+        </div>
 
-                <div class="glass-panel">
-                    <div class="flex justify-between items-center mb-3">
-                        <div class="flex flex-col">
-                            <span class="label-sub !text-[var(--grab-green)] uppercase font-black tracking-tight">Strategic Benefit</span>
-                            <h1 id="schemeTitle" class="text-xl font-black text-slate-900 uppercase leading-none">Normal Commision</h1>
+        <div id="modal-overlay" class="modal-overlay" onclick="closeAllPopups()"></div>
+
+        <main class="main-container desktop-zoom">
+            <div class="desktop-grid">
+                <div class="space-y-3">
+                    <div class="glass-panel">
+                        <label class="label-main">PILIH STRATEGI CAMPAIGN</label>
+                        <div class="flex gap-1.5 p-1 bg-slate-50 rounded-xl border border-slate-100">
+                            <button onclick="changeScheme('normal', event)" id="chip-normal" class="chip active">⚖️ Normal</button>
+                            <button onclick="changeScheme('puas-cuan', event)" id="chip-puas-cuan" class="chip">🔥 Cuan</button>
+                            <button onclick="changeScheme('booster', event)" id="chip-booster" class="chip">🚀 Booster</button>
+                            <button onclick="changeScheme('cofund', event)" id="chip-cofund" class="chip">🤝 Cofund</button>
                         </div>
-                        <div id="tierSection" class="hidden">
-                            <div class="flex bg-slate-100 p-1 rounded-xl">
-                                <button onclick="setTier('hemat')" id="btnHem" class="px-4 py-1.5 rounded-lg text-[9px] font-black">HEMAT</button>
-                                <button onclick="setTier('ekstra')" id="btnEks" class="px-4 py-1.5 rounded-lg text-[9px] font-black ml-1">EKSTRA</button>
+                    </div>
+
+                    <div class="glass-panel">
+                        <div class="flex justify-between items-center mb-3">
+                            <div class="flex flex-col">
+                                <span class="label-sub !text-[var(--grab-green)] uppercase font-black">Strategic Benefit</span>
+                                <h1 id="schemeTitle" class="text-xl font-black text-slate-900 uppercase leading-none">Normal Commision</h1>
                             </div>
-                        </div>
-                    </div>
-                    <div id="benefitDetailContent" class="space-y-3 pt-3 border-t border-slate-100"></div>
-                </div>
-
-                <div id="cofundTierSection" class="glass-panel hidden border-blue-200">
-                    <label class="label-main !text-blue-600 uppercase">Select Campaign</label>
-                    <div class="preset-dropdown-container">
-                        <button class="w-full bg-slate-50 border-2 border-slate-200 p-3 rounded-xl flex justify-between items-center font-black text-slate-800 uppercase text-xs" onclick="togglePresetMenu(event)">
-                            <span id="tierLabelDisplay" class="truncate pr-4 italic">PILIH DARI DATABASE...</span>
-                            <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
-                        </button>
-                        <div id="universalPresetMenu" class="preset-menu-universal"></div>
-                    </div>
-                </div>
-
-                <div class="glass-panel">
-                    <label class="label-main">HARGA DASAR & SUBSIDI</label>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div class="flex flex-col">
-                            <div class="label-row"><span class="label-sub">Offline Basis</span></div>
-                            <div class="input-group"><div class="input-side">Rp</div><input type="text" id="mainVal" class="input-pro" placeholder="0"><div class="input-side"></div></div>
-                        </div>
-                        <div class="flex flex-col">
-                            <div class="label-row">
-                                <span class="label-sub text-blue-600 font-bold uppercase">Subsidi Toko</span>
-                                <div class="flex gap-1">
-                                    <button onclick="setSubMode('val')" id="sVal" class="w-8 h-4 bg-slate-800 text-white rounded text-[8px] font-black">Rp</button>
-                                    <button onclick="setSubMode('pct')" id="sPct" class="w-8 h-4 bg-slate-200 text-slate-500 rounded text-[8px] font-black">%</button>
+                            <div id="tierSection" class="hidden">
+                                <div class="flex bg-slate-100 p-1 rounded-xl">
+                                    <button onclick="setTier('hemat')" id="btnHem" class="px-4 py-1.5 rounded-lg text-[9px] font-black tier-btn-active">HEMAT</button>
+                                    <button onclick="setTier('ekstra')" id="btnEks" class="px-4 py-1.5 rounded-lg text-[9px] font-black ml-1 tier-btn-inactive">EKSTRA</button>
                                 </div>
                             </div>
-                            <div class="input-group border-blue-400"><div id="subPrefix" class="input-side text-blue-600 font-black">Rp</div><input type="text" id="subVal" class="input-pro text-blue-800 font-bold" placeholder="0"><div class="input-side"></div></div>
+                        </div>
+                        <div id="benefitDetailContent" class="space-y-3 pt-3 border-t border-slate-100"></div>
+                    </div>
+
+                    <div id="cofundTierSection" class="glass-panel hidden border-blue-200">
+                        <label class="label-main !text-blue-600">Campaign Database</label>
+                        <div class="preset-dropdown-container">
+                            <button class="w-full bg-slate-50 border-2 border-slate-200 p-3 rounded-xl flex justify-between items-center font-black text-slate-800 uppercase text-xs" onclick="togglePresetMenu(event)">
+                                <span id="tierLabelDisplay" class="truncate italic">PILIH DARI DATABASE...</span>
+                                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
+                            </button>
+                            <div id="universalPresetMenu" class="preset-menu-universal"></div>
+                        </div>
+                    </div>
+
+                    <div class="glass-panel">
+                        <label class="label-main">HARGA DASAR & SUBSIDI</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div class="flex flex-col">
+                                <div class="label-row"><span class="label-sub">Offline Basis</span></div>
+                                <div class="input-group"><div class="input-side">Rp</div><input type="text" id="mainVal" class="input-pro" value="25.000"><div class="input-side"></div></div>
+                            </div>
+                            <div class="flex flex-col">
+                                <div class="label-row"><span class="label-sub text-blue-600 font-bold uppercase">Subsidi Toko</span><div class="flex gap-1"><button onclick="setSubMode('val')" id="sVal" class="w-8 h-4 bg-slate-800 text-white rounded text-[8px] font-black">Rp</button><button onclick="setSubMode('pct')" id="sPct" class="w-8 h-4 bg-slate-200 text-slate-500 rounded text-[8px] font-black">%</button></div></div>
+                                <div class="input-group border-blue-400"><div id="subPrefix" class="input-side text-blue-600 font-black">Rp</div><input type="text" id="subVal" class="input-pro text-blue-800 font-bold" value="0"><div class="input-side"></div></div>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="space-y-3 sticky-side">
-                <div class="glass-panel !bg-slate-900 !p-5 text-center border-2 border-dashed border-[var(--grab-yellow)] shadow-2xl">
-                    <div id="vsTitle" class="text-[11px] font-black text-[var(--grab-yellow)] uppercase mb-4 italic tracking-widest leading-none">POLOSAN VS SKEMA</div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div id="cardNormal" class="vs-card"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-black text-[8px] font-black px-4 py-1.5 rounded-full hidden badge-winner uppercase">WINNER</div><p class="text-[9px] font-black opacity-60 text-white uppercase mb-2 leading-none">POLOSAN</p><p id="vsAppNormal" class="text-[12px] font-bold text-white/50">Rp 0</p><p id="vsPayNormal" class="text-base font-black text-white mt-1">Rp 0</p></div>
-                        <div id="cardPromo" class="vs-card"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[var(--grab-yellow)] text-black text-[8px] font-black px-4 py-1.5 rounded-full hidden badge-winner uppercase">WINNER</div><p id="vsPromoLabel" class="text-[9px] font-black text-[var(--grab-yellow)] uppercase mb-2 leading-none">PROMO</p><p id="vsAppPromo" class="text-[12px] font-bold text-white/50">Rp 0</p><p id="vsPayPromo" class="text-xl font-black text-[var(--grab-yellow)] mt-1">Rp 0</p></div>
+                <div class="space-y-3 sticky-side">
+                    <div class="glass-panel !bg-slate-900 !p-5 text-center border-2 border-dashed border-[var(--grab-yellow)] shadow-2xl">
+                        <div class="text-[11px] font-black text-[var(--grab-yellow)] uppercase mb-4 italic tracking-widest leading-none">POLOSAN VS SKEMA</div>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div id="cardNormal" class="vs-card">
+                                <p class="text-[9px] font-black opacity-60 text-white uppercase mb-1">POLOSAN</p>
+                                <p id="vsAppNormal" class="text-[12px] font-bold text-white/50">Rp 0</p>
+                                <p id="vsPayNormal" class="text-base font-black text-white mt-1">Rp 0</p>
+                            </div>
+                            <div id="cardPromo" class="vs-card winner">
+                                <p id="vsPromoLabel" class="text-[9px] font-black text-[var(--grab-yellow)] uppercase mb-1">PROMO</p>
+                                <p id="vsAppPromo" class="text-[12px] font-bold text-white/50">Rp 0</p>
+                                <p id="vsPayPromo" class="text-xl font-black text-[var(--grab-yellow)] mt-1">Rp 0</p>
+                            </div>
+                        </div>
                     </div>
-                </div>
 
-                <div class="glass-panel">
-                    <label class="label-main">PARAMETER SISTEM</label>
-                    <div class="grid grid-cols-2 gap-x-4 gap-y-3">
-                        <div class="flex flex-col gap-1"><span class="label-sub uppercase">Comm %</span><div class="input-group"><div class="input-side"></div><input type="number" id="kPct" class="input-pro" value="20"><div class="input-side">%</div></div></div>
-                        <div class="flex flex-col gap-1"><span class="label-sub uppercase">Promo %</span><div class="input-group"><div class="input-side"></div><input type="number" id="vDisk" class="input-pro text-red-600" value="0"><div class="input-side text-red-400">%</div></div></div>
-                        <div class="flex flex-col gap-1"><span class="label-sub uppercase tracking-tight">Max Rp</span><div class="input-group"><div class="input-side">Rp</div><input type="text" id="mDisk" class="input-pro" value="0"><div class="input-side"></div></div></div>
-                        <div class="flex flex-col gap-1"><span class="label-sub !text-blue-600 font-bold uppercase tracking-tight">Cofund %</span><div id="cofundGroup" class="input-group border-blue-200 disabled"><div class="input-side"></div><input type="number" id="mShare" class="input-pro text-blue-700 font-black" value="0" disabled><div class="input-side">%</div></div></div>
-                        <div class="col-span-2 flex flex-col gap-1"><span class="label-sub uppercase tracking-tight">Min Order Rp</span><div class="input-group"><div class="input-side">Rp</div><input type="text" id="minO" class="input-pro" value="0"><div class="input-side"></div></div></div>
+                    <div class="glass-panel">
+                        <label class="label-main">PARAMETER SISTEM</label>
+                        <div class="grid grid-cols-2 gap-x-4 gap-y-3">
+                            <div class="flex flex-col gap-1"><span class="label-sub uppercase">Comm %</span><div class="input-group"><div class="input-side"></div><input type="number" id="kPct" class="input-pro" value="20"><div class="input-side">%</div></div></div>
+                            <div class="flex flex-col gap-1"><span class="label-sub uppercase text-red-500">Promo %</span><div class="input-group border-red-200"><div class="input-side"></div><input type="number" id="vDisk" class="input-pro text-red-600" value="0"><div class="input-side text-red-400">%</div></div></div>
+                            <div class="flex flex-col gap-1"><span class="label-sub uppercase tracking-tight">Max Rp</span><div class="input-group"><div class="input-side">Rp</div><input type="text" id="mDisk" class="input-pro" value="0"><div class="input-side"></div></div></div>
+                            <div class="flex flex-col gap-1"><span class="label-sub uppercase tracking-tight">Min Order</span><div class="input-group"><div class="input-side">Rp</div><input type="text" id="minO" class="input-pro" value="0"><div class="input-side"></div></div></div>
+                            <div class="col-span-2 flex flex-col gap-1"><span class="label-sub !text-blue-600 font-bold uppercase tracking-tight">Cofund %</span><div id="cofundGroup" class="input-group border-blue-200 disabled"><div class="input-side"></div><input type="number" id="mShare" class="input-pro text-blue-700 font-black" value="0" disabled><div class="input-side">%</div></div></div>
+                        </div>
                     </div>
+                    <button onclick="goToPage('pageJoin')" class="w-full bg-black text-white p-4 rounded-2xl font-black text-sm uppercase shadow-xl hover:bg-slate-800 transition-all">Buka Markup Roadmap →</button>
                 </div>
             </div>
-        </div>
-    </main>
+        </main>
+    </div>
+
+    <div id="pageJoin" class="page">
+        <header class="gradient-header flex items-center px-4 py-4 justify-between">
+            <div class="flex items-center gap-3">
+                <button onclick="goToPage('pageCalc')" class="w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center text-slate-900 font-bold">←</button>
+                <div class="flex flex-col"><h1 class="font-black text-slate-900 uppercase text-xs">Safe Markup Roadmap</h1><p class="text-[8px] text-slate-400 uppercase font-bold">Bulk Number Export</p></div>
+            </div>
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3eUHGPBllwPFxtkNKY7e_3T_mb2rKNWoMaRD6DON2dMI6swNt9a4Fee2k&s=10" alt="Grab" class="h-6 w-auto">
+        </header>
+        <div class="header-divider"></div>
+        <main class="main-container">
+            <div class="glass-panel mb-4">
+                <label class="text-[10px] font-black text-slate-900 uppercase mb-2 block">Bulk Paste (Excel Nama & Harga)</label>
+                <textarea id="bulkArea" placeholder="Contoh: Menu A [TAB] 25000"></textarea>
+                <button onclick="importBulk()" class="w-full bg-slate-900 text-white py-3 rounded-xl text-[10px] font-black uppercase">Konversi Masal ⚡</button>
+            </div>
+            <div class="glass-panel">
+                <div class="mb-4 grid grid-cols-2 gap-3">
+                    <div class="p-3 bg-slate-900 rounded-xl text-white"><p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Strategi</p><h3 id="wsSelectedScheme" class="text-xs font-black text-[var(--grab-yellow)] uppercase leading-none">-</h3></div>
+                    <div class="p-3 bg-slate-100 border border-slate-200 rounded-xl !text-slate-900"><p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Target Comm %</p><h3 id="wsTargetComm" class="text-xs font-black leading-none">0%</h3></div>
+                </div>
+                <div class="overflow-x-auto">
+                    <table class="ws-table" id="wsExcelTable">
+                        <thead><tr><th>Menu</th><th>Harga Sekarang</th><th>Comm (%)</th><th>Step 1 (+14%)</th><th>Step 2 (+14%)</th><th class="text-grab-green">Target Final</th></tr></thead>
+                        <tbody id="wsTableBody"></tbody>
+                    </table>
+                </div>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-6">
+                    <button onclick="addWsRow()" class="py-3 border-2 border-dashed border-slate-200 rounded-xl text-slate-400 text-xs font-black">+ TAMBAH BARIS</button>
+                    <button onclick="exportToExcel()" class="bg-[var(--grab-green)] text-white py-3 rounded-xl font-black text-[10px] shadow-lg uppercase">Download Excel (.xlsx) 📥</button>
+                </div>
+            </div>
+        </main>
+    </div>
 
     <div id="detailOverlay" onclick="closeOverlay()">
         <div id="overlayContent"></div>
-        <p class="text-[10px] text-center text-white/30 mt-12 uppercase font-black border-t border-white/10 pt-6 tracking-widest italic">TAP MANA SAJA UNTUK TUTUP</p>
+        <p class="text-[10px] text-center text-white/30 mt-10 uppercase font-black border-t border-white/10 pt-4 italic">TAP MANA SAJA UNTUK KEMBALI</p>
     </div>
 
 <script>
+    /* MASTER LOGIC RECOVERY COMPLETE */
     let sTier = 'hemat', currentScheme = 'normal', isRounded = true, subMode = 'val', selectedPresetIdx = null;
     const state = { mainVal: "25.000", kPct: 20, vDisk: 0, mDisk: "0", minO: "0", subVal: "0", mShare: 0 };
     const calcData = { list: 0, disc: 0, pay: 0, net: 0, mexGB: 0, mPromoCost: 0, appRate: 0, offRate: 0, serviceFee: 0, successFee: 0, discPct: 0 };
 
     const STRATEGY_DETAILS = {
-        'normal': { full: [{t: 'Kontrol Penuh Margin', d: 'Merchant memiliki kendali 100% atas harga menu tanpa beban promo tambahan.'},{t: 'Brand Stability', d: 'Harga menu tetap stabil, menjaga persepsi premium di mata konsumen.'}] },
-        'puas-cuan': { full: [{t: 'Funded by Grab', d: 'Grab mendanai seluruh diskon kampanye. Merchant hanya membayar komisi flat.'},{t: 'Rank Prioritas', d: 'Restoran muncul lebih sering di kategori promo "Diskon Gede".'},{t: 'Efek Volume', d: 'Meningkatkan frekuensi pesanan harian secara masif.'}] },
-        'booster': { full: [{t: 'Flash Sale Access', d: 'Akses khusus ke slot banner Flash Sale yang trafficnya 3x lipat lebih tinggi.'},{t: 'Top 3 Search', d: 'Prioritas menempatkan merchant di urutan 3 teratas hasil pencarian.'},{t: 'User Acquisition', d: 'Strategi terbaik akuisisi ribuan pengguna baru.'}] },
-        'cofund': { full: [{t: 'Scale Big Order', d: 'Satu-satunya skema untuk bergabung di event raksasa seperti Brand Week.'},{t: 'Collaboration', d: 'Merchant dan Grab berkolaborasi membiayai diskon besar.'},{t: 'Flexible Sharing', d: 'Dapat disesuaikan dengan profitabilitas tiap menu.'}] }
+        'normal': { k: 20, v: 0, tiers: null, full: [{t: 'Kontrol Penuh Margin', d: 'Merchant memiliki kendali 100% atas harga menu.'},{t: 'Brand Stability', d: 'Harga menu tetap stabil, menjaga persepsi premium.'}] },
+        'puas-cuan': { k: 32, v: 30, tiers: { hemat: { min: 15000, max: 45000 }, ekstra: { min: 35000, max: 80000 } }, full: [{t: 'Funded by Grab', d: 'Grab mendanai seluruh diskon kampanye.'},{t: 'Rank Prioritas', d: 'Restoran muncul lebih sering di kategori promo "Diskon Gede".'}] },
+        'booster': { k: 38, v: 35, tiers: { hemat: { min: 15000, max: 55000 }, ekstra: { min: 35000, max: 100000 } }, full: [{t: 'Flash Sale Access', d: 'Akses khusus ke slot traffic 3x lebih tinggi.'},{t: 'Top 3 Search', d: 'Algoritma menempatkan merchant di urutan teratas.'}] },
+        'cofund': { k: 20, v: 40, tiers: null, full: [{t: 'Scale Big Order', d: 'Satu-satunya skema untuk bergabung di event raksasa seperti Brand Week.'},{t: 'Collaboration', d: 'Merchant dan Grab berkolaborasi membiayai diskon besar.'}] }
     };
 
     const EXCEL_COFUND_DATA = [
@@ -225,20 +263,15 @@
         if(isRounded) list = Math.ceil(list/100)*100;
         const disc = (list >= pNum(state.minO)) ? Math.min(list * v/100, pNum(state.mDisk) || Infinity) : 0;
         const pay = list - disc;
-        
         calcData.discPct = list > 0 ? ((disc / list) * 100).toFixed(0) : 0;
-
+        
         if (currentScheme === 'cofund') {
             const mPromo = (s/100) * (v/100) * list;
             calcData.mexGB = (k/100) * (list - mPromo); calcData.mPromoCost = mPromo;
             calcData.net = list - (calcData.mexGB + mPromo);
         } else { 
-            const serviceBase = 20; 
-            calcData.serviceFee = (serviceBase/100) * list;
-            calcData.successFee = ((k - serviceBase)/100) * list;
-            calcData.mexGB = list * (k/100); 
-            calcData.mPromoCost = 0; 
-            calcData.net = list - calcData.mexGB; 
+            const sB = 20; calcData.serviceFee = (sB/100) * list; calcData.successFee = ((k - sB)/100) * list;
+            calcData.mexGB = list * (k/100); calcData.mPromoCost = 0; calcData.net = list - calcData.mexGB; 
         }
         calcData.list = list; calcData.disc = disc; calcData.pay = pay;
         calcData.appRate = list > 0 ? (calcData.net / list * 100).toFixed(1) : 0;
@@ -252,17 +285,13 @@
     function syncVS(subVal, pay, listPromo) {
         let listNormal = (pNum(state.mainVal) - subVal) / 0.8;
         if(isRounded) listNormal = Math.ceil(listNormal/100)*100;
-        const normalWin = listNormal < pay;
-        document.getElementById('vsTitle').innerText = `POLOSAN VS ${currentScheme.toUpperCase()}`;
+        const nWin = listNormal < pay;
         document.getElementById('vsAppNormal').innerText = "Rp " + fNum(Math.round(listNormal));
         document.getElementById('vsPayNormal').innerText = "Rp " + fNum(Math.round(listNormal));
         document.getElementById('vsAppPromo').innerText = "Rp " + fNum(Math.round(listPromo));
         document.getElementById('vsPayPromo').innerText = "Rp " + fNum(Math.round(pay));
-        document.querySelectorAll('.badge-winner').forEach(b => b.classList.add('hidden'));
-        document.getElementById('cardNormal').classList.toggle('winner', normalWin);
-        document.getElementById('cardPromo').classList.toggle('winner', !normalWin);
-        if(normalWin) document.querySelector('#cardNormal .badge-winner').classList.remove('hidden');
-        else document.querySelector('#cardPromo .badge-winner').classList.remove('hidden');
+        document.getElementById('cardNormal').className = nWin ? 'vs-card winner' : 'vs-card';
+        document.getElementById('cardPromo').className = !nWin ? 'vs-card winner' : 'vs-card';
     }
 
     function changeScheme(key, e) {
@@ -270,15 +299,23 @@
         currentScheme = key;
         document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
         document.getElementById(`chip-${key}`).classList.add('active');
-        const conf = { 'normal': { k: 20, v: 0, tiers: null }, 'puas-cuan': { k: 32, v: 30, tiers: { hemat: { min: 15000, max: 45000 }, ekstra: { min: 35000, max: 80000 } } }, 'booster': { k: 38, v: 35, tiers: { hemat: { min: 15000, max: 55000 }, ekstra: { min: 35000, max: 100000 } } }, 'cofund': { k: 20, v: 40, tiers: null } }[key];
+        const conf = STRATEGY_DETAILS[key];
+        
         document.getElementById('cofundTierSection').classList.toggle('hidden', key !== 'cofund');
         document.getElementById('tierSection').classList.toggle('hidden', !conf.tiers);
         document.getElementById('cofundGroup').classList.toggle('disabled', key !== 'cofund');
-        if(conf.tiers) { state.minO = fNum(conf.tiers[sTier].min); state.mDisk = fNum(conf.tiers[sTier].max); }
-        else if(key !== 'cofund') { state.minO = "0"; state.mDisk = "0"; }
+
+        if(conf.tiers) {
+            state.minO = fNum(conf.tiers[sTier].min);
+            state.mDisk = fNum(conf.tiers[sTier].max);
+        } else if(key !== 'cofund') {
+            state.minO = "0"; state.mDisk = "0";
+        }
+        
         if(key !== 'cofund') { state.kPct = conf.k; state.vDisk = conf.v; state.mShare = 0; }
         else { state.kPct = 20; if(selectedPresetIdx !== null) applyPreset(selectedPresetIdx); }
-        document.getElementById('schemeTitle').innerText = key === 'normal' ? 'Normal Comms' : key.replace('-',' ').toUpperCase();
+        
+        document.getElementById('schemeTitle').innerText = key.replace('-',' ').toUpperCase();
         renderBenefits(); updateTierButtons(); updateUI();
     }
 
@@ -287,52 +324,78 @@
         document.getElementById('benefitDetailContent').innerHTML = detail.full.map(f => `<div class="flex gap-2.5"><div class="w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 text-white text-[10px] font-black italic">✓</div><div><p class="font-black text-slate-800 text-[11px] leading-tight mb-0.5">${f.t}</p><p class="text-[10px] text-slate-500 leading-tight">${f.d}</p></div></div>`).join('');
     }
 
-    function togglePresetMenu(e) { e.stopPropagation(); document.getElementById('universalPresetMenu').classList.toggle('active'); }
-    function applyPreset(idx) { const p = EXCEL_COFUND_DATA[idx]; state.vDisk = p.v; state.mShare = p.s; state.minO = fNum(p.min); state.mDisk = fNum(p.max); state.kPct = 20; document.getElementById('tierLabelDisplay').innerText = p.name; selectedPresetIdx = idx; closeAllPopups(); updateUI(); }
-    
+    function applyPreset(idx) {
+        const p = EXCEL_COFUND_DATA[idx];
+        state.vDisk = p.v; state.mShare = p.s; state.minO = fNum(p.min); state.mDisk = fNum(p.max); state.kPct = 20;
+        document.getElementById('tierLabelDisplay').innerText = p.name;
+        selectedPresetIdx = idx;
+        closeAllPopups(); updateUI();
+    }
+
     function showDetail(e, type) {
         e.stopPropagation();
-        const content = document.getElementById('overlayContent');
-        if(type === 'cust') {
-            content.innerHTML = `
-                <h3 class="text-xl font-black text-emerald-400 mb-8 uppercase text-center italic tracking-tight">Payment Detail</h3>
-                <div class="space-y-6 text-lg">
-                    <div class="flex justify-between text-white/70"><span>Menu Price (App)</span><span class="text-white font-bold">Rp ${fNum(Math.round(calcData.list))}</span></div>
-                    <div class="flex justify-between text-red-400 font-bold"><span>Campaign Discount (${calcData.discPct}%)</span><span>- Rp ${fNum(Math.round(calcData.disc))}</span></div>
-                    <div class="pt-8 border-t border-white/10 flex justify-between text-3xl font-black text-emerald-400"><span>PAID BY PAX</span><span>Rp ${fNum(Math.round(calcData.pay))}</span></div>
-                </div>`;
-        } else {
-            let breakdownHtml = '';
-            if (currentScheme === 'cofund') {
-                breakdownHtml = `<div class="flex justify-between text-orange-400 font-bold"><span>Grab Commission</span><span>- Rp ${fNum(Math.round(calcData.mexGB))}</span></div><div class="flex justify-between text-blue-300 font-bold"><span>Mex Cofund Share</span><span>- Rp ${fNum(Math.round(calcData.mPromoCost))}</span></div>`;
-            } else {
-                breakdownHtml = `<div class="flex justify-between text-orange-300"><span>Service Fee (20%)</span><span>- Rp ${fNum(Math.round(calcData.serviceFee))}</span></div><div class="flex justify-between text-orange-500 font-bold"><span>Marketing Success Fee</span><span>- Rp ${fNum(Math.round(calcData.successFee))}</span></div>`;
-            }
-
-            content.innerHTML = `
-                <h3 class="text-xl font-black text-blue-400 mb-8 uppercase text-center italic tracking-tight">Revenue Analysis</h3>
-                <div class="space-y-6 text-lg">
-                    <div class="flex justify-between text-white/70"><span>Price in App</span><span class="text-white font-bold">Rp ${fNum(Math.round(calcData.list))}</span></div>
-                    ${breakdownHtml}
-                    <div class="pt-8 border-t border-white/10 flex justify-between text-3xl font-black text-blue-400"><span>MEX NET REV</span><span>Rp ${fNum(Math.round(calcData.net))}</span></div>
-                    <div class="mt-8 grid grid-cols-2 gap-4">
-                        <div class="p-4 bg-white/5 rounded-2xl border border-white/10 text-center"><p class="text-[10px] text-white/40 uppercase font-black mb-1">vs App Price</p><p class="text-2xl font-black text-grab-green">${calcData.appRate}%</p></div>
-                        <div class="p-4 bg-white/10 rounded-2xl border border-white/20 text-center shadow-lg"><p class="text-[10px] text-grab-yellow uppercase font-black mb-1">vs Offline Basis</p><p class="text-2xl font-black text-grab-yellow">${calcData.offRate}%</p></div>
-                    </div>
-                </div>`;
+        const c = document.getElementById('overlayContent');
+        if(type === 'cust') c.innerHTML = `<h3 class="text-xl font-black text-emerald-400 mb-8 uppercase text-center italic">Payment Detail</h3><div class="space-y-6 text-lg"><div class="flex justify-between text-white/70"><span>Menu Price</span><span class="text-white font-bold">Rp ${fNum(Math.round(calcData.list))}</span></div><div class="flex justify-between text-red-400 font-bold"><span>Promotion (${calcData.discPct}%)</span><span>- Rp ${fNum(Math.round(calcData.disc))}</span></div><div class="pt-8 border-t border-white/10 flex justify-between text-3xl font-black text-emerald-400"><span>PAID BY PAX</span><span>Rp ${fNum(Math.round(calcData.pay))}</span></div></div>`;
+        else {
+            let bHtml = currentScheme === 'cofund' ? `<div class="flex justify-between text-orange-400 font-bold"><span>Grab Commission</span><span>- Rp ${fNum(Math.round(calcData.mexGB))}</span></div><div class="flex justify-between text-blue-300 font-bold"><span>Mex Cofund Share</span><span>- Rp ${fNum(Math.round(calcData.mPromoCost))}</span></div>` : `<div class="flex justify-between text-orange-300"><span>Service Fee (20%)</span><span>- Rp ${fNum(Math.round(calcData.serviceFee))}</span></div><div class="flex justify-between text-orange-500 font-bold"><span>Marketing Success Fee</span><span>- Rp ${fNum(Math.round(calcData.successFee))}</span></div>`;
+            c.innerHTML = `<h3 class="text-xl font-black text-blue-400 mb-8 uppercase text-center italic">Revenue Analysis</h3><div class="space-y-6 text-lg"><div class="flex justify-between text-white/70"><span>Price in App</span><span class="text-white font-bold">Rp ${fNum(Math.round(calcData.list))}</span></div>${bHtml}<div class="pt-8 border-t border-white/10 flex justify-between text-3xl font-black text-blue-400"><span>MEX NET REV</span><span>Rp ${fNum(Math.round(calcData.net))}</span></div><div class="mt-8 grid grid-cols-2 gap-4"><div class="p-4 bg-white/5 rounded-2xl text-center"><p class="text-[10px] text-white/40 mb-1">vs App Price</p><p class="text-2xl font-black text-grab-green">${calcData.appRate}%</p></div><div class="p-4 bg-white/10 rounded-2xl text-center"><p class="text-[10px] text-grab-yellow mb-1">vs Offline Basis</p><p class="text-2xl font-black text-grab-yellow">${calcData.offRate}%</p></div></div></div>`;
         }
         document.getElementById('detailOverlay').classList.add('active'); document.getElementById('modal-overlay').classList.add('active');
     }
 
+    /* EXCEL EXPORT */
+    function exportToExcel() {
+        const rows = document.querySelectorAll('#wsTableBody tr');
+        let data = [["Nama Menu", "Harga Grab Sekarang", "Comm Sekarang (%)", "Step 1 (+14%)", "Step 2 (+14%)", "Target Final"]];
+        rows.forEach(row => {
+            data.push([
+                row.querySelector('input[type="text"]').value,
+                pNum(row.querySelector('.curr-app').value),
+                pNum(row.querySelector('.curr-comm').value),
+                pNum(row.querySelector('.step1-out').innerText),
+                pNum(row.querySelector('.step2-out').innerText),
+                pNum(row.querySelector('.target-out').innerText)
+            ]);
+        });
+        const ws = XLSX.utils.aoa_to_sheet(data);
+        const wb = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(wb, ws, "Markup Roadmap");
+        XLSX.writeFile(wb, `Grab_Roadmap_${Date.now()}.xlsx`);
+    }
+
+    /* NAV & BULK ENGINE */
+    function goToPage(pId) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(pId).classList.add('active'); if(pId === 'pageJoin') initWs(); window.scrollTo(0,0); }
+    function initWs() { document.getElementById('wsSelectedScheme').innerText = document.getElementById('schemeTitle').innerText; document.getElementById('wsTargetComm').innerText = state.kPct + "%"; document.getElementById('wsTableBody').innerHTML = ''; addWsRow(); }
+    function addWsRow(n = "", p = "") {
+        const row = document.createElement('tr');
+        row.innerHTML = `<td><input type="text" placeholder="Menu..." class="w-full bg-transparent p-1 text-[11px] font-bold outline-none" value="${n}"></td><td><input type="text" class="ws-input curr-app" value="${p}" oninput="calcSt(this)"></td><td><input type="number" class="ws-input curr-comm" value="20" oninput="calcSt(this)"></td><td class="step1-out">0</td><td class="step2-out">0</td><td class="target-out text-grab-green font-black">0</td>`;
+        document.getElementById('wsTableBody').appendChild(row);
+        if(p !== "") calcSt(row.querySelector('.curr-app'));
+    }
+    function importBulk() { const area = document.getElementById('bulkArea'); const lines = area.value.split('\n'); document.getElementById('wsTableBody').innerHTML = ''; lines.forEach(l => { if(l.trim() === "") return; const pts = l.split('\t'); addWsRow(pts[0] ? pts[0].trim() : "Menu", pts[1] ? fNum(pts[1].replace(/\D/g, "")) : "0"); }); area.value = ""; }
+    function calcSt(el) {
+        const r = el.closest('tr'); const cin = r.querySelector('.curr-app'); if(el === cin) el.value = fNum(el.value);
+        const cp = pNum(cin.value); const cc = pNum(r.querySelector('.curr-comm').value); const tc = pNum(state.kPct); if(cp <= 0) return;
+        const payout = cp * (1 - (cc/100)); let target = payout / (1 - (tc/100)); if(isRounded) target = Math.ceil(target/100)*100;
+        const s1 = Math.ceil(Math.min(cp * 1.14, target)/100)*100; const s2 = Math.ceil(Math.min(s1 * 1.14, target)/100)*100;
+        r.querySelector('.step1-out').innerText = fNum(s1); r.querySelector('.step2-out').innerText = (s1 >= target) ? "-" : fNum(s2); r.querySelector('.target-out').innerText = fNum(target);
+    }
+
+    /* UI HANDLERS */
+    function togglePresetMenu(e) { e.stopPropagation(); document.getElementById('universalPresetMenu').classList.toggle('active'); }
     function closeOverlay() { document.getElementById('detailOverlay').classList.remove('active'); document.getElementById('modal-overlay').classList.remove('active'); }
     function closeAllPopups() { if(document.getElementById('universalPresetMenu')) document.getElementById('universalPresetMenu').classList.remove('active'); closeOverlay(); }
-    function setSubMode(m) { subMode = m; document.getElementById('sVal').className = m==='val'?'w-8 h-4 bg-slate-800 text-white rounded text-[8px] font-black':'w-8 h-4 bg-slate-200 text-slate-500 rounded text-[8px] font-black'; document.getElementById('sPct').className = m==='pct'?'w-8 h-4 bg-slate-800 text-white rounded text-[8px] font-black':'w-8 h-4 bg-slate-200 text-slate-500 rounded text-[8px] font-black'; document.getElementById('subPrefix').innerText = m==='val'?'Rp':'%'; hitung(); }
+    function setSubMode(m) { subMode = m; hitung(); }
     function setTier(t) { sTier = t; changeScheme(currentScheme); }
-    function updateTierButtons() { const h = document.getElementById('btnHem'), e = document.getElementById('btnEks'); if(!h || !e) return; if(sTier === 'hemat') { h.classList.add('tier-btn-active'); h.classList.remove('tier-btn-inactive'); e.classList.add('tier-btn-inactive'); e.classList.remove('tier-btn-active'); } else { e.classList.add('tier-btn-active'); e.classList.remove('tier-btn-inactive'); h.classList.add('tier-btn-inactive'); h.classList.remove('tier-btn-active'); } }
-    function updateUI() { document.getElementById('mainVal').value = state.mainVal; document.getElementById('kPct').value = state.kPct; document.getElementById('vDisk').value = state.vDisk; document.getElementById('mDisk').value = state.mDisk; document.getElementById('minO').value = state.minO; document.getElementById('subVal').value = state.subVal; document.getElementById('mShare').value = state.mShare; hitung(); }
-    ['mainVal','kPct','vDisk','mDisk','subVal','mShare','minO'].forEach(id => { if(document.getElementById(id)) { document.getElementById(id).addEventListener('input', (e) => { if(['mainVal','subVal','mDisk','minO'].includes(id)) e.target.value = fNum(e.target.value); state[id] = e.target.value; hitung('offline'); }); } });
+    function updateTierButtons() { const h = document.getElementById('btnHem'), e = document.getElementById('btnEks'); if(!h || !e) return; h.className = sTier === 'hemat' ? 'px-4 py-1.5 rounded-lg text-[9px] font-black tier-btn-active' : 'px-4 py-1.5 rounded-lg text-[9px] font-black tier-btn-inactive'; e.className = sTier === 'ekstra' ? 'px-4 py-1.5 rounded-lg text-[9px] font-black tier-btn-active' : 'px-4 py-1.5 rounded-lg text-[9px] font-black tier-btn-inactive'; }
+    function updateUI() { document.getElementById('kPct').value = state.kPct; document.getElementById('vDisk').value = state.vDisk; document.getElementById('mDisk').value = state.mDisk; document.getElementById('minO').value = state.minO; document.getElementById('mShare').value = state.mShare; hitung(); }
+    ['mainVal','subVal','kPct','vDisk','mDisk','minO','mShare'].forEach(id => { if(document.getElementById(id)) { document.getElementById(id).addEventListener('input', (e) => { if(['mainVal','subVal','mDisk','minO'].includes(id)) e.target.value = fNum(e.target.value); state[id] = e.target.value; hitung('offline'); }); } });
     document.getElementById('resApp').addEventListener('input', (e) => { e.target.value = fNum(e.target.value); hitung('app'); });
-    window.onload = () => { document.getElementById('universalPresetMenu').innerHTML = EXCEL_COFUND_DATA.map((p, idx) => `<div class="p-3 border-b hover:bg-slate-50 cursor-pointer" onclick="applyPreset(${idx})"><p class="font-black text-slate-800 text-[10px] uppercase">${p.name}</p><p class="text-[9px] text-slate-400 font-bold">${p.v}% OFF | ${p.s}% Share | Min Rp${fNum(p.min)}</p></div>`).join(''); changeScheme('normal'); };
+    
+    window.onload = () => {
+        document.getElementById('universalPresetMenu').innerHTML = EXCEL_COFUND_DATA.map((p, idx) => `<div class="p-3 border-b hover:bg-slate-50 cursor-pointer text-slate-800" onclick="applyPreset(${idx})"><p class="font-black text-[10px] uppercase">${p.name}</p><p class="text-[9px] text-slate-400 font-bold">${p.v}% OFF | ${p.s}% Share | Min Rp${fNum(p.min)}</p></div>`).join('');
+        changeScheme('normal');
+    };
 </script>
 </body>
 </html>
