@@ -3,8 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Merchant Tool | Ultimate v39.9</title>
-    <script src="https://cdn.sheetjs.com/xlsx-latest/package/dist/xlsx.full.min.js"></script>
+    <title>Grab Merchant | Ultra Focus v40.0</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -13,8 +12,8 @@
         body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #004d22 0%, #00B14F 50%, #008a3d 100%); color: white; min-height: 100vh; margin: 0; overflow-x: hidden; }
         
         .page { display: none; width: 100%; min-height: 100vh; }
-        .page.active { display: block; animation: fadeIn 0.3s ease-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
+        .page.active { display: block; animation: slideUp 0.3s ease-out; }
+        @keyframes slideUp { from { transform: translateY(10px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
         .sticky-unit { position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.15); width: 100%; }
         .gradient-header { background: #FFFFFF; padding: 1rem 1.2rem; }
@@ -22,48 +21,49 @@
         .spotlight-dashboard { background: white; color: #1a1a1a; border-bottom: 5px solid var(--grab-yellow); }
         .dash-input { background: transparent; border: none; font-weight: 900; width: 100%; text-align: center; outline: none; color: #1a1a1a; font-family: inherit; }
         
-        .main-container { max-width: 1000px; margin: 0 auto; width: 100%; padding: 1rem 0.8rem 4rem 0.8rem; }
-        .glass-panel { background: rgba(255, 255, 255, 0.98); border-radius: 18px; padding: 1.2rem; color: #1a1a1a; border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 4px 15px rgba(0,0,0,0.05); }
-
-        .label-main { font-size: 11px; font-weight: 900; text-transform: uppercase; color: #0f172a; display: block; margin-bottom: 10px; }
-        .label-row { display: flex; align-items: center; justify-content: space-between; min-height: 24px; margin-bottom: 6px; }
-        .label-sub { font-size: 10px; font-weight: 800; text-transform: uppercase; color: #64748b; }
-        
-        .input-group { display: grid; grid-template-columns: 35px 1fr 35px; align-items: center; background: white; border: 2px solid #cbd5e1; border-radius: 10px; height: 44px; overflow: hidden; }
-        .input-pro { border: none; font-size: 1rem; font-weight: 800; width: 100%; text-align: center; outline: none; background: transparent; color: #0f172a; }
-        .input-side { font-weight: 900; font-size: 10px; color: #94a3b8; display: flex; justify-content: center; align-items: center; }
-
-        .preset-dropdown-container { position: relative; width: 100%; }
-        .preset-menu-universal { position: absolute; top: 100%; left: 0; width: 100%; background: white; border: 2px solid #e2e8f0; border-radius: 12px; box-shadow: 0 10px 25px rgba(0,0,0,0.15); z-index: 500; display: none; margin-top: 5px; max-height: 300px; overflow-y: auto; color: #1a1a1a; }
-        .preset-menu-universal.active { display: block; }
-
-        .chip { flex: 1; padding: 0.6rem 0.2rem; border-radius: 10px; background: #f1f5f9; color: #64748b; font-size: 9px; font-weight: 900; text-transform: uppercase; border: 2px solid transparent; }
-        .chip.active { background: var(--grab-yellow); color: #1a1a1a; border-color: #e6bd00; }
-        .tier-btn-active { background-color: #0f172a !important; color: white !important; font-weight: 900 !important; }
-        .tier-btn-inactive { background-color: #f1f5f9 !important; color: #94a3b8 !important; }
-
-        .vs-card { border: 2.5px solid transparent; border-radius: 16px; padding: 12px 8px; position: relative; background: rgba(255,255,255,0.05); }
-        .vs-card.winner { background: rgba(255, 210, 0, 0.15); border-color: var(--grab-yellow); }
-
-        /* WORKSHEET */
-        .ws-table { width: 100%; border-collapse: separate; border-spacing: 0 6px; }
-        .ws-table th { font-size: 8px; text-transform: uppercase; color: #64748b; padding: 8px; font-weight: 800; }
-        .ws-table td { background: #fff; padding: 10px 8px; vertical-align: middle; border-top: 1px solid #f1f5f9; border-bottom: 1px solid #f1f5f9; text-align: center; font-weight: 700; color: #334155; }
-        .ws-table td:first-child { border-radius: 12px 0 0 12px; text-align: left; }
-        .ws-input { width: 100%; padding: 6px; border: 1px solid #cbd5e1; border-radius: 8px; font-weight: 800; text-align: right; outline: none; }
-        #bulkArea { width: 100%; height: 100px; border: 2px dashed #cbd5e1; border-radius: 12px; padding: 10px; font-size: 11px; margin-bottom: 10px; resize: none; color: #1a1a1a; }
+        .main-container { max-width: 1000px; margin: 0 auto; width: 100%; padding: 2rem 1rem 6rem 1rem; }
+        .panel-gap { margin-bottom: 1.5rem; }
 
         @media (min-width: 1024px) {
             .desktop-zoom { transform: scale(1.3); transform-origin: top center; margin-top: 3.5rem; }
-            .desktop-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 1.2rem; align-items: start; }
+            .desktop-grid { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 2rem; align-items: start; }
             .sticky-side { position: sticky; top: 140px; }
-            .dash-input, .dash-result { font-size: 3.2rem !important; line-height: 1 !important; }
+            .dash-input, .dash-result { font-size: 3rem !important; }
         }
 
-        #detailOverlay { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); width: 92%; max-width: 450px; background: #1c1c1c; border-radius: 26px; padding: 35px; z-index: 2200; opacity: 0; pointer-events: none; transition: 0.25s; color: white; border: 1px solid rgba(255,255,255,0.1); }
+        .glass-panel { background: rgba(255, 255, 255, 0.98); border-radius: 20px; padding: 1.3rem; color: #1a1a1a; border: 1px solid rgba(255, 255, 255, 0.4); box-shadow: 0 10px 25px rgba(0,0,0,0.05); }
+        .input-row-align { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; align-items: end; }
+
+        /* VERSUS ANIMATED FOCUS PANEL */
+        .animated-border-panel { position: relative; background: #0f172a; border-radius: 24px; padding: 3px; overflow: hidden; margin-bottom: 1.5rem; }
+        .animated-border-panel::before { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: conic-gradient(transparent, transparent, transparent, var(--grab-yellow)); animation: rotate 4s linear infinite; }
+        @keyframes rotate { from { transform: rotate(0deg); } to { transform: rotate(360deg); } }
+        .vs-inner { position: relative; background: #151f32; border-radius: 21px; padding: 1.5rem 1rem; z-index: 1; }
+        
+        .vs-card { background: rgba(255,255,255,0.03); border-radius: 18px; padding: 1.2rem 0.8rem; border: 1px solid rgba(255,255,255,0.08); text-align: center; }
+        .vs-card.winner { background: rgba(255, 210, 0, 0.08); border-color: var(--grab-yellow); box-shadow: 0 0 20px rgba(255,210,0,0.1); }
+        
+        /* JUMBO FONT FOR VERSUS */
+        .vs-amount { font-size: 1.8rem; line-height: 1; font-weight: 900; font-style: italic; letter-spacing: -1px; margin: 4px 0; }
+        @media (min-width: 1024px) { .vs-amount { font-size: 2.4rem; } }
+
+        .chip { flex: 1; padding: 0.6rem 0.2rem; border-radius: 10px; background: #f1f5f9; color: #64748b; font-size: 10px; font-weight: 900; text-transform: uppercase; transition: 0.2s; border: 2px solid transparent; }
+        .chip.active { background: var(--grab-yellow); color: #1a1a1a; border-color: #e6bd00; }
+        
+        .tier-btn-active { background-color: #0f172a !important; color: white !important; font-weight: 900 !important; }
+        .tier-btn-inactive { background-color: #f1f5f9 !important; color: #94a3b8 !important; }
+
+        .ws-input { width: 100%; padding: 8px 10px; border: 2px solid #cbd5e1; border-radius: 10px; font-weight: 800; text-align: right; font-size: 12px; color: #0f172a; outline: none; }
+        .ws-input:focus { border-color: var(--grab-green); background: #f0fdf4; }
+
+        #detailOverlay { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); width: 92%; max-width: 450px; background: #1c1c1c; border-radius: 26px; padding: 35px; z-index: 2200; opacity: 0; pointer-events: none; transition: 0.25s; color: white; }
         #detailOverlay.active { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
         .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; display: none; }
         .modal-overlay.active { display: block; }
+
+        .preset-menu-universal { position: absolute; top: 100%; left: 0; width: 100%; background: white; border: 2px solid #e2e8f0; border-radius: 12px; z-index: 500; display: none; margin-top: 5px; max-height: 250px; overflow-y: auto; color: #1a1a1a; box-shadow: 0 10px 25px rgba(0,0,0,0.15); }
+        .preset-menu-universal.active { display: block; }
+        .btn-join { background: #000; color: #fff; width: 100%; padding: 1.2rem; border-radius: 16px; font-weight: 900; text-transform: uppercase; margin-top: 1rem; cursor: pointer; }
     </style>
 </head>
 <body onclick="closeAllPopups()">
@@ -74,37 +74,35 @@
                 <div class="max-w-[1000px] w-full flex items-center gap-4 px-4">
                     <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3eUHGPBllwPFxtkNKY7e_3T_mb2rKNWoMaRD6DON2dMI6swNt9a4Fee2k&s=10" alt="Grab" class="h-9 w-auto">
                     <div class="flex flex-col">
-                        <p class="font-black text-[17px] tracking-tighter uppercase text-slate-900 leading-none">MERCHANT <span class="text-[var(--grab-green)]">CALCULATOR</span></p>
-                        <p class="text-[10px] font-bold text-slate-400 mt-0.5 uppercase tracking-widest italic">v39.9 Final Locked</p>
+                        <p class="font-black text-[17px] uppercase text-slate-900 leading-none">MERCHANT <span class="text-[var(--grab-green)]">CALCULATOR</span></p>
+                        <p class="text-[10px] font-bold text-slate-400 mt-0.5 uppercase italic">v40.0 Ultra Focus</p>
                     </div>
                 </div>
             </header>
             <div class="header-divider"></div>
             <section class="spotlight-dashboard flex justify-center">
                 <div class="max-w-[1000px] w-full grid grid-cols-3 gap-0 text-center items-center px-4 py-3 lg:py-8">
-                    <div class="dash-col border-r-2 border-slate-100 px-2">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-tighter">App Price ✎</p>
-                        <div class="flex items-center justify-center font-black text-slate-900 italic"><span class="text-sm mr-0.5 font-bold opacity-30">Rp</span><input type="text" id="resApp" class="dash-input" value="0"></div>
+                    <div class="dash-col border-r-2 border-slate-100">
+                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-tighter italic">App Price ✎</p>
+                        <div class="flex items-center justify-center font-black text-slate-900 italic"><span class="text-xs mr-0.5 opacity-30">Rp</span><input type="text" id="resApp" class="dash-input text-xl lg:text-5xl" value="0"></div>
                     </div>
-                    <div class="dash-col border-r-2 border-slate-100 px-2 cursor-pointer" onclick="showDetail(event, 'cust')">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-tighter italic">Paid by Pax ⓘ</p>
-                        <h2 id="resTP" class="dash-result font-black text-[var(--grab-green)]">Rp 0</h2>
+                    <div class="dash-col border-r-2 border-slate-100 cursor-pointer group" onclick="showDetail(event, 'cust')">
+                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-tighter group-hover:text-grab-green italic">Paid by Pax ⓘ</p>
+                        <h2 id="resTP" class="dash-result text-xl lg:text-5xl font-black text-[var(--grab-green)] italic">Rp 0</h2>
                     </div>
-                    <div class="dash-col px-2 cursor-pointer" onclick="showDetail(event, 'net')">
-                        <p class="text-[10px] font-black text-slate-400 uppercase tracking-tighter italic">Mex Net Rev ⓘ</p>
-                        <h2 id="resNet" class="dash-result font-black text-emerald-600">Rp 0</h2>
+                    <div class="dash-col cursor-pointer group" onclick="showDetail(event, 'net')">
+                        <p class="text-[9px] font-black text-slate-400 uppercase tracking-tighter italic group-hover:text-emerald-600 italic">Mex Net Rev ⓘ</p>
+                        <h2 id="resNet" class="dash-result text-xl lg:text-5xl font-black text-emerald-600 italic">Rp 0</h2>
                     </div>
                 </div>
             </section>
         </div>
 
-        <div id="modal-overlay" class="modal-overlay" onclick="closeAllPopups()"></div>
-
         <main class="main-container desktop-zoom">
             <div class="desktop-grid">
-                <div class="space-y-3">
-                    <div class="glass-panel">
-                        <label class="label-main">PILIH STRATEGI CAMPAIGN</label>
+                <div class="left-col">
+                    <div class="glass-panel panel-gap">
+                        <label class="font-black text-[11px] text-slate-900 uppercase mb-3 block italic tracking-tighter">1. Pilih Strategi Campaign</label>
                         <div class="flex gap-1.5 p-1 bg-slate-50 rounded-xl border border-slate-100">
                             <button onclick="changeScheme('normal', event)" id="chip-normal" class="chip active">⚖️ Normal</button>
                             <button onclick="changeScheme('puas-cuan', event)" id="chip-puas-cuan" class="chip">🔥 Cuan</button>
@@ -113,170 +111,154 @@
                         </div>
                     </div>
 
-                    <div class="glass-panel">
+                    <div class="glass-panel panel-gap">
                         <div class="flex justify-between items-center mb-3">
                             <div class="flex flex-col">
-                                <span class="label-sub !text-[var(--grab-green)] uppercase font-black">Strategic Benefit</span>
-                                <h1 id="schemeTitle" class="text-xl font-black text-slate-900 uppercase leading-none">Normal Commision</h1>
+                                <span class="text-[9px] font-black text-[var(--grab-green)] uppercase tracking-widest leading-none">Strategic Benefit</span>
+                                <h1 id="schemeTitle" class="text-xl font-black text-slate-900 uppercase leading-none mt-1">Normal</h1>
                             </div>
                             <div id="tierSection" class="hidden">
-                                <div class="flex bg-slate-100 p-1 rounded-xl">
-                                    <button onclick="setTier('hemat')" id="btnHem" class="px-4 py-1.5 rounded-lg text-[9px] font-black tier-btn-active">HEMAT</button>
-                                    <button onclick="setTier('ekstra')" id="btnEks" class="px-4 py-1.5 rounded-lg text-[9px] font-black ml-1 tier-btn-inactive">EKSTRA</button>
+                                <div class="flex bg-slate-100 p-1 rounded-lg">
+                                    <button onclick="setTier('hemat')" id="btnHem" class="px-4 py-1.5 rounded text-[8px] font-black tier-btn-active">HEMAT</button>
+                                    <button onclick="setTier('ekstra')" id="btnEks" class="px-4 py-1.5 rounded text-[8px] font-black ml-1 tier-btn-inactive">EKSTRA</button>
                                 </div>
+                            </div>
+                        </div>
+                        <div id="cofundTierSection" class="hidden border-t border-slate-100 pt-3 mb-3">
+                            <div class="relative">
+                                <button class="w-full bg-slate-100 border-2 border-slate-300 p-3 rounded-xl flex justify-between items-center font-black text-slate-800 uppercase text-[10px]" onclick="togglePresetMenu(event)">
+                                    <span id="tierLabelDisplay">PILIH DATABASE...</span>
+                                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
+                                </button>
+                                <div id="universalPresetMenu" class="preset-menu-universal"></div>
                             </div>
                         </div>
                         <div id="benefitDetailContent" class="space-y-3 pt-3 border-t border-slate-100"></div>
                     </div>
 
-                    <div id="cofundTierSection" class="glass-panel hidden border-blue-200">
-                        <label class="label-main !text-blue-600">Campaign Database</label>
-                        <div class="preset-dropdown-container">
-                            <button class="w-full bg-slate-50 border-2 border-slate-200 p-3 rounded-xl flex justify-between items-center font-black text-slate-800 uppercase text-xs" onclick="togglePresetMenu(event)">
-                                <span id="tierLabelDisplay" class="truncate italic">PILIH DARI DATABASE...</span>
-                                <svg class="w-5 h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path d="M19 9l-7 7-7-7"></path></svg>
-                            </button>
-                            <div id="universalPresetMenu" class="preset-menu-universal"></div>
-                        </div>
-                    </div>
-
-                    <div class="glass-panel">
-                        <label class="label-main">HARGA DASAR & SUBSIDI</label>
-                        <div class="grid grid-cols-2 gap-4">
+                    <div class="glass-panel panel-gap">
+                        <label class="font-black text-[11px] text-slate-900 uppercase mb-4 block italic tracking-tighter">2. Atur Harga Dasar</label>
+                        <div class="input-row-align">
                             <div class="flex flex-col">
-                                <div class="label-row"><span class="label-sub">Offline Basis</span></div>
-                                <div class="input-group"><div class="input-side">Rp</div><input type="text" id="mainVal" class="input-pro" value="25.000"><div class="input-side"></div></div>
+                                <p class="text-[9px] font-bold text-slate-400 uppercase mb-1.5">Offline Basis</p>
+                                <div class="flex items-center border-2 border-slate-200 rounded-xl px-2 h-[46px] bg-white"><span class="text-xs font-bold text-slate-400">Rp</span><input type="text" id="mainVal" class="w-full p-2 outline-none font-bold text-slate-900" value="25.000"></div>
                             </div>
                             <div class="flex flex-col">
-                                <div class="label-row"><span class="label-sub text-blue-600 font-bold uppercase">Subsidi Toko</span><div class="flex gap-1"><button onclick="setSubMode('val')" id="sVal" class="w-8 h-4 bg-slate-800 text-white rounded text-[8px] font-black">Rp</button><button onclick="setSubMode('pct')" id="sPct" class="w-8 h-4 bg-slate-200 text-slate-500 rounded text-[8px] font-black">%</button></div></div>
-                                <div class="input-group border-blue-400"><div id="subPrefix" class="input-side text-blue-600 font-black">Rp</div><input type="text" id="subVal" class="input-pro text-blue-800 font-bold" value="0"><div class="input-side"></div></div>
+                                <div class="flex justify-between items-center mb-1.5">
+                                    <p class="text-[9px] font-bold text-blue-600 uppercase">Subsidi Toko</p>
+                                    <div class="flex gap-1"><button onclick="setSubMode('val')" id="sVal" class="w-7 h-4 bg-slate-800 text-white rounded text-[8px] font-black">Rp</button><button onclick="setSubMode('pct')" id="sPct" class="w-7 h-4 bg-slate-200 text-slate-500 rounded text-[8px] font-black">%</button></div>
+                                </div>
+                                <div class="flex items-center border-2 border-blue-200 rounded-xl px-2 h-[46px] bg-white"><span id="subPrefix" class="text-xs font-bold text-blue-400">Rp</span><input type="text" id="subVal" class="w-full p-2 outline-none font-bold text-blue-800" value="0"></div>
                             </div>
                         </div>
                     </div>
                 </div>
 
-                <div class="space-y-3 sticky-side">
-                    <div class="glass-panel !bg-slate-900 !p-5 text-center border-2 border-dashed border-[var(--grab-yellow)] shadow-2xl">
-                        <div class="text-[11px] font-black text-[var(--grab-yellow)] uppercase mb-4 italic tracking-widest leading-none">POLOSAN VS SKEMA</div>
-                        <div class="grid grid-cols-2 gap-4">
-                            <div id="cardNormal" class="vs-card">
-                                <p class="text-[9px] font-black opacity-60 text-white uppercase mb-1">POLOSAN</p>
-                                <p id="vsAppNormal" class="text-[12px] font-bold text-white/50">Rp 0</p>
-                                <p id="vsPayNormal" class="text-base font-black text-white mt-1">Rp 0</p>
-                            </div>
-                            <div id="cardPromo" class="vs-card winner">
-                                <p id="vsPromoLabel" class="text-[9px] font-black text-[var(--grab-yellow)] uppercase mb-1">PROMO</p>
-                                <p id="vsAppPromo" class="text-[12px] font-bold text-white/50">Rp 0</p>
-                                <p id="vsPayPromo" class="text-xl font-black text-[var(--grab-yellow)] mt-1">Rp 0</p>
+                <div class="right-col sticky-side">
+                    <div class="animated-border-panel">
+                        <div class="vs-inner">
+                            <div class="text-[10px] font-black text-[var(--grab-yellow)] uppercase mb-4 italic tracking-widest text-center border-b border-white/10 pb-3">TARGET ANALYSIS</div>
+                            <div class="grid grid-cols-2 gap-3">
+                                <div id="cardNormal" class="vs-card">
+                                    <p class="text-[8px] font-bold text-white/30 uppercase">POLOSAN (20%)</p>
+                                    <p id="vsPayNormal" class="vs-amount text-white">0</p>
+                                    <p class="text-[8px] font-bold text-white/30 uppercase mb-1">PAID BY PAX</p>
+                                    <div class="pt-2 border-t border-white/5 flex justify-center items-center gap-1">
+                                        <span class="text-[7px] text-white/20 uppercase font-black tracking-tighter">APP PRICE</span>
+                                        <span id="vsAppNormal" class="text-[9px] text-white/50 font-bold">Rp 0</span>
+                                    </div>
+                                </div>
+                                <div id="cardPromo" class="vs-card winner">
+                                    <p id="vsPromoLabel" class="text-[8px] font-bold text-[var(--grab-yellow)]/40 uppercase">STRATEGI BARU</p>
+                                    <p id="vsPayPromo" class="vs-amount text-[var(--grab-yellow)]">0</p>
+                                    <p class="text-[8px] font-bold text-[var(--grab-yellow)] uppercase mb-1">PAID BY PAX</p>
+                                    <div class="pt-2 border-t border-white/5 flex justify-center items-center gap-1">
+                                        <span class="text-[7px] text-[var(--grab-yellow)]/30 uppercase font-black tracking-tighter">APP PRICE</span>
+                                        <span id="vsAppPromo" class="text-[9px] text-[var(--grab-yellow)]/60 font-bold">Rp 0</span>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
 
-                    <div class="glass-panel">
-                        <label class="label-main">PARAMETER SISTEM</label>
-                        <div class="grid grid-cols-2 gap-x-4 gap-y-3">
-                            <div class="flex flex-col gap-1"><span class="label-sub uppercase">Comm %</span><div class="input-group"><div class="input-side"></div><input type="number" id="kPct" class="input-pro" value="20"><div class="input-side">%</div></div></div>
-                            <div class="flex flex-col gap-1"><span class="label-sub uppercase text-red-500">Promo %</span><div class="input-group border-red-200"><div class="input-side"></div><input type="number" id="vDisk" class="input-pro text-red-600" value="0"><div class="input-side text-red-400">%</div></div></div>
-                            <div class="flex flex-col gap-1"><span class="label-sub uppercase tracking-tight">Max Rp</span><div class="input-group"><div class="input-side">Rp</div><input type="text" id="mDisk" class="input-pro" value="0"><div class="input-side"></div></div></div>
-                            <div class="flex flex-col gap-1"><span class="label-sub uppercase tracking-tight">Min Order</span><div class="input-group"><div class="input-side">Rp</div><input type="text" id="minO" class="input-pro" value="0"><div class="input-side"></div></div></div>
-                            <div class="col-span-2 flex flex-col gap-1"><span class="label-sub !text-blue-600 font-bold uppercase tracking-tight">Cofund %</span><div id="cofundGroup" class="input-group border-blue-200 disabled"><div class="input-side"></div><input type="number" id="mShare" class="input-pro text-blue-700 font-black" value="0" disabled><div class="input-side">%</div></div></div>
+                    <div class="glass-panel panel-gap">
+                        <label class="font-black text-[11px] text-slate-900 uppercase mb-4 block italic tracking-tighter">3. Parameter Sistem</label>
+                        <div class="grid grid-cols-2 gap-4">
+                            <div><p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Comm %</p><input type="number" id="kPct" class="w-full p-2.5 border-2 border-slate-200 rounded-xl font-bold text-slate-900 outline-none" value="20"></div>
+                            <div><p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Promo %</p><input type="number" id="vDisk" class="w-full p-2.5 border-2 border-slate-200 rounded-xl font-bold text-red-600 outline-none" value="0"></div>
+                            <div><p class="text-[8px] font-bold text-blue-600 uppercase mb-1">Cofund %</p><input type="number" id="mShare" class="w-full p-2.5 border-2 border-slate-200 rounded-xl font-bold text-blue-700 outline-none" value="0" disabled></div>
+                            <div><p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Max Disc (Rp)</p><input type="text" id="mDisk" class="w-full p-2.5 border-2 border-slate-200 rounded-xl font-bold text-slate-900 outline-none" value="0"></div>
+                            <div class="col-span-2"><p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Min Order Rp</p><input type="text" id="minO" class="w-full p-2.5 border-2 border-slate-200 rounded-xl font-bold text-slate-900 outline-none" value="0"></div>
                         </div>
                     </div>
-                    <button onclick="goToPage('pageJoin')" class="w-full bg-black text-white p-4 rounded-2xl font-black text-sm uppercase shadow-xl hover:bg-slate-800 transition-all">Buka Markup Roadmap →</button>
+                    <button onclick="goToPage('pageJoin')" class="btn-join shadow-xl active:scale-95 transition-all">BUAT ROADMAP MARKUP HARGA →</button>
                 </div>
             </div>
         </main>
     </div>
 
     <div id="pageJoin" class="page">
-        <header class="gradient-header flex items-center px-4 py-4 justify-between">
-            <div class="flex items-center gap-3">
-                <button onclick="goToPage('pageCalc')" class="w-9 h-9 bg-slate-100 rounded-full flex items-center justify-center text-slate-900 font-bold">←</button>
-                <div class="flex flex-col"><h1 class="font-black text-slate-900 uppercase text-xs">Safe Markup Roadmap</h1><p class="text-[8px] text-slate-400 uppercase font-bold">Bulk Number Export</p></div>
-            </div>
+        <header class="gradient-header flex items-center px-4 py-4 justify-between sticky top-0 z-[1000] border-b">
+            <div class="flex items-center gap-3"><button onclick="goToPage('pageCalc')" class="w-10 h-10 bg-slate-100 rounded-full flex items-center justify-center text-slate-900 font-bold hover:bg-slate-200">←</button><h1 class="font-black text-slate-900 uppercase text-xs">Safe Markup Roadmap</h1></div>
             <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3eUHGPBllwPFxtkNKY7e_3T_mb2rKNWoMaRD6DON2dMI6swNt9a4Fee2k&s=10" alt="Grab" class="h-6 w-auto">
         </header>
         <div class="header-divider"></div>
         <main class="main-container">
-            <div class="glass-panel mb-4">
-                <label class="text-[10px] font-black text-slate-900 uppercase mb-2 block">Bulk Paste (Excel Nama & Harga)</label>
-                <textarea id="bulkArea" placeholder="Contoh: Menu A [TAB] 25000"></textarea>
-                <button onclick="importBulk()" class="w-full bg-slate-900 text-white py-3 rounded-xl text-[10px] font-black uppercase">Konversi Masal ⚡</button>
-            </div>
+            <div class="glass-panel mb-4 border-2 border-dashed border-slate-300"><textarea id="bulkArea" style="width: 100%; height: 100px; border: none; padding: 12px; color: #1a1a1a; font-size: 11px; outline: none;" placeholder="Copy 2 kolom Excel (Menu & Harga) lalu paste..."></textarea><button onclick="importBulk()" class="w-full bg-slate-900 text-white py-3 rounded-xl text-[10px] font-black uppercase mt-2">KONVERSI DATA EXCEL →</button></div>
             <div class="glass-panel">
-                <div class="mb-4 grid grid-cols-2 gap-3">
-                    <div class="p-3 bg-slate-900 rounded-xl text-white"><p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Strategi</p><h3 id="wsSelectedScheme" class="text-xs font-black text-[var(--grab-yellow)] uppercase leading-none">-</h3></div>
-                    <div class="p-3 bg-slate-100 border border-slate-200 rounded-xl !text-slate-900"><p class="text-[8px] font-bold text-slate-400 uppercase mb-1">Target Comm %</p><h3 id="wsTargetComm" class="text-xs font-black leading-none">0%</h3></div>
+                <div class="grid grid-cols-2 gap-3 mb-6 text-center font-black">
+                    <div class="p-3 bg-slate-900 rounded-xl text-white"><p class="text-[8px] text-white/50 uppercase mb-1">Target</p><h3 id="wsSelectedScheme" class="text-[10px] text-[var(--grab-yellow)] uppercase leading-none">-</h3></div>
+                    <div class="p-3 bg-slate-100 rounded-xl border-2 border-slate-200"><p class="text-[8px] text-slate-400 uppercase mb-1">Comm %</p><h3 id="wsTargetComm" class="text-[10px] leading-none">20%</h3></div>
                 </div>
-                <div class="overflow-x-auto">
-                    <table class="ws-table" id="wsExcelTable">
-                        <thead><tr><th>Menu</th><th>Harga Sekarang</th><th>Comm (%)</th><th>Step 1 (+14%)</th><th>Step 2 (+14%)</th><th class="text-grab-green">Target Final</th></tr></thead>
-                        <tbody id="wsTableBody"></tbody>
-                    </table>
-                </div>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-3 mt-6">
-                    <button onclick="addWsRow()" class="py-3 border-2 border-dashed border-slate-200 rounded-xl text-slate-400 text-xs font-black">+ TAMBAH BARIS</button>
-                    <button onclick="exportToExcel()" class="bg-[var(--grab-green)] text-white py-3 rounded-xl font-black text-[10px] shadow-lg uppercase">Download Excel (.xlsx) 📥</button>
-                </div>
+                <div class="overflow-x-auto"><table class="ws-table w-full"><thead><tr class="text-[8px] text-slate-400 uppercase"><th>Nama Menu</th><th>Harga Kini</th><th>Comm %</th><th>Step 1</th><th>Step 2</th><th class="text-emerald-600">Target</th></tr></thead><tbody id="wsTableBody"></tbody></table></div>
+                <button onclick="addWsRow()" class="w-full py-4 mt-4 border-2 border-dashed border-slate-300 rounded-xl text-slate-500 text-[10px] font-black uppercase">+ TAMBAH BARIS MANUAL</button>
             </div>
         </main>
     </div>
 
+    <div id="modal-overlay" class="modal-overlay" onclick="closeAllPopups()"></div>
     <div id="detailOverlay" onclick="closeOverlay()">
         <div id="overlayContent"></div>
-        <p class="text-[10px] text-center text-white/30 mt-10 uppercase font-black border-t border-white/10 pt-4 italic">TAP MANA SAJA UNTUK KEMBALI</p>
+        <p class="text-[10px] text-center text-white/30 mt-12 uppercase font-black border-t border-white/10 pt-6">TAP MANA SAJA UNTUK TUTUP</p>
     </div>
 
 <script>
-    /* MASTER LOGIC RECOVERY COMPLETE */
     let sTier = 'hemat', currentScheme = 'normal', isRounded = true, subMode = 'val', selectedPresetIdx = null;
     const state = { mainVal: "25.000", kPct: 20, vDisk: 0, mDisk: "0", minO: "0", subVal: "0", mShare: 0 };
     const calcData = { list: 0, disc: 0, pay: 0, net: 0, mexGB: 0, mPromoCost: 0, appRate: 0, offRate: 0, serviceFee: 0, successFee: 0, discPct: 0 };
 
     const STRATEGY_DETAILS = {
-        'normal': { k: 20, v: 0, tiers: null, full: [{t: 'Kontrol Penuh Margin', d: 'Merchant memiliki kendali 100% atas harga menu.'},{t: 'Brand Stability', d: 'Harga menu tetap stabil, menjaga persepsi premium.'}] },
-        'puas-cuan': { k: 32, v: 30, tiers: { hemat: { min: 15000, max: 45000 }, ekstra: { min: 35000, max: 80000 } }, full: [{t: 'Funded by Grab', d: 'Grab mendanai seluruh diskon kampanye.'},{t: 'Rank Prioritas', d: 'Restoran muncul lebih sering di kategori promo "Diskon Gede".'}] },
-        'booster': { k: 38, v: 35, tiers: { hemat: { min: 15000, max: 55000 }, ekstra: { min: 35000, max: 100000 } }, full: [{t: 'Flash Sale Access', d: 'Akses khusus ke slot traffic 3x lebih tinggi.'},{t: 'Top 3 Search', d: 'Algoritma menempatkan merchant di urutan teratas.'}] },
-        'cofund': { k: 20, v: 40, tiers: null, full: [{t: 'Scale Big Order', d: 'Satu-satunya skema untuk bergabung di event raksasa seperti Brand Week.'},{t: 'Collaboration', d: 'Merchant dan Grab berkolaborasi membiayai diskon besar.'}] }
+        'normal': { k: 20, v: 0, tiers: null, full: [{t: 'Margin Aman 100%', d: 'Kendali penuh profit tanpa beban diskon promo.'}] },
+        'puas-cuan': { k: 32, v: 30, tiers: { hemat: { min: 15000, max: 45000 }, ekstra: { min: 35000, max: 80000 } }, full: [{t: 'Funded by Grab', d: 'Grab mendanai seluruh diskon kampanye.'}] },
+        'booster': { k: 38, v: 35, tiers: { hemat: { min: 15000, max: 55000 }, ekstra: { min: 35000, max: 100000 } }, full: [{t: 'Exposure Maksimal', d: 'Prioritas ranking dan banner Flash Sale.'}] },
+        'cofund': { k: 20, v: 40, tiers: null, full: [{t: 'Mega Fest Join', d: 'Bagi beban diskon untuk event raksasa Brand Week.'}] }
     };
 
-    const EXCEL_COFUND_DATA = [
-        { name: "Brand Week Festival O1", v: 45, s: 55, min: 50000, max: 50000 },
-        { name: "Flash Sale Payday", v: 50, s: 60, min: 64000, max: 40000 },
-        { name: "Mega Hedon 55%", v: 55, s: 60, min: 40000, max: 35000 },
-        { name: "Sobat Hemat Reguler", v: 25, s: 50, min: 25000, max: 15000 },
-        { name: "Pasti Diskon Elite", v: 20, s: 60, min: 0, max: 20000 }
-    ];
+    const EXCEL_COFUND_DATA = [{ name: "Brand Week O1", v: 45, s: 55, min: 50000, max: 50000 }, { name: "Flash Sale Payday", v: 50, s: 60, min: 64000, max: 40000 }, { name: "Mega Hedon 55%", v: 55, s: 60, min: 40000, max: 35000 }];
 
     const fNum = (n) => n.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     const pNum = (n) => parseFloat(n.toString().replace(/\./g, "")) || 0;
 
-    function hitung(source = 'offline') {
-        const k = pNum(state.kPct), s = pNum(state.mShare), v = pNum(state.vDisk), subRaw = pNum(state.subVal), off = pNum(state.mainVal);
+    function hitung() {
+        const k = pNum(state.kPct), v = pNum(state.vDisk), subRaw = pNum(state.subVal), off = pNum(state.mainVal);
         const subConverted = subMode === 'val' ? subRaw : (off * subRaw / 100);
-        if(source === 'app') {
-            const app = pNum(document.getElementById('resApp').value);
-            state.mainVal = fNum(Math.round((app * (1 - k/100)) + subConverted));
-            document.getElementById('mainVal').value = state.mainVal;
-        }
-        let list = (pNum(state.mainVal) - subConverted) / (1 - k/100);
+        let list = (off - subConverted) / (1 - k/100);
         if(isRounded) list = Math.ceil(list/100)*100;
-        const disc = (list >= pNum(state.minO)) ? Math.min(list * v/100, pNum(state.mDisk) || Infinity) : 0;
+        const disc = Math.min(list * v/100, pNum(state.mDisk) || Infinity);
         const pay = list - disc;
         calcData.discPct = list > 0 ? ((disc / list) * 100).toFixed(0) : 0;
-        
         if (currentScheme === 'cofund') {
-            const mPromo = (s/100) * (v/100) * list;
+            const mPromo = (pNum(state.mShare)/100) * (v/100) * list;
             calcData.mexGB = (k/100) * (list - mPromo); calcData.mPromoCost = mPromo;
             calcData.net = list - (calcData.mexGB + mPromo);
-        } else { 
-            const sB = 20; calcData.serviceFee = (sB/100) * list; calcData.successFee = ((k - sB)/100) * list;
-            calcData.mexGB = list * (k/100); calcData.mPromoCost = 0; calcData.net = list - calcData.mexGB; 
+        } else {
+            calcData.serviceFee = (20/100) * list; calcData.successFee = ((k - 20)/100) * list;
+            calcData.mexGB = list * (k/100); calcData.net = list - calcData.mexGB;
         }
         calcData.list = list; calcData.disc = disc; calcData.pay = pay;
         calcData.appRate = list > 0 ? (calcData.net / list * 100).toFixed(1) : 0;
         calcData.offRate = off > 0 ? (calcData.net / off * 100).toFixed(1) : 0;
-        if(source !== 'app') document.getElementById('resApp').value = fNum(Math.round(list));
+        document.getElementById('resApp').value = fNum(Math.round(list));
         document.getElementById('resTP').innerText = "Rp " + fNum(Math.round(pay));
         document.getElementById('resNet').innerText = "Rp " + fNum(Math.round(calcData.net));
         syncVS(subConverted, pay, list);
@@ -285,13 +267,13 @@
     function syncVS(subVal, pay, listPromo) {
         let listNormal = (pNum(state.mainVal) - subVal) / 0.8;
         if(isRounded) listNormal = Math.ceil(listNormal/100)*100;
-        const nWin = listNormal < pay;
         document.getElementById('vsAppNormal').innerText = "Rp " + fNum(Math.round(listNormal));
-        document.getElementById('vsPayNormal').innerText = "Rp " + fNum(Math.round(listNormal));
+        document.getElementById('vsPayNormal').innerText = fNum(Math.round(listNormal));
         document.getElementById('vsAppPromo').innerText = "Rp " + fNum(Math.round(listPromo));
-        document.getElementById('vsPayPromo').innerText = "Rp " + fNum(Math.round(pay));
-        document.getElementById('cardNormal').className = nWin ? 'vs-card winner' : 'vs-card';
-        document.getElementById('cardPromo').className = !nWin ? 'vs-card winner' : 'vs-card';
+        document.getElementById('vsPayPromo').innerText = fNum(Math.round(pay));
+        const normalWin = listNormal < pay;
+        document.getElementById('cardNormal').classList.toggle('winner', normalWin);
+        document.getElementById('cardPromo').classList.toggle('winner', !normalWin);
     }
 
     function changeScheme(key, e) {
@@ -300,102 +282,51 @@
         document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
         document.getElementById(`chip-${key}`).classList.add('active');
         const conf = STRATEGY_DETAILS[key];
-        
-        document.getElementById('cofundTierSection').classList.toggle('hidden', key !== 'cofund');
         document.getElementById('tierSection').classList.toggle('hidden', !conf.tiers);
-        document.getElementById('cofundGroup').classList.toggle('disabled', key !== 'cofund');
-
-        if(conf.tiers) {
-            state.minO = fNum(conf.tiers[sTier].min);
-            state.mDisk = fNum(conf.tiers[sTier].max);
-        } else if(key !== 'cofund') {
-            state.minO = "0"; state.mDisk = "0";
-        }
-        
-        if(key !== 'cofund') { state.kPct = conf.k; state.vDisk = conf.v; state.mShare = 0; }
-        else { state.kPct = 20; if(selectedPresetIdx !== null) applyPreset(selectedPresetIdx); }
-        
+        document.getElementById('cofundTierSection').classList.toggle('hidden', key !== 'cofund');
+        if(conf.tiers) { state.minO = fNum(conf.tiers[sTier].min); state.mDisk = fNum(conf.tiers[sTier].max); }
+        else if(key !== 'cofund') { state.minO = "0"; state.mDisk = "0"; }
+        state.kPct = conf.k; state.vDisk = conf.v;
         document.getElementById('schemeTitle').innerText = key.replace('-',' ').toUpperCase();
-        renderBenefits(); updateTierButtons(); updateUI();
-    }
-
-    function renderBenefits() {
-        const detail = STRATEGY_DETAILS[currentScheme];
-        document.getElementById('benefitDetailContent').innerHTML = detail.full.map(f => `<div class="flex gap-2.5"><div class="w-5 h-5 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 text-white text-[10px] font-black italic">✓</div><div><p class="font-black text-slate-800 text-[11px] leading-tight mb-0.5">${f.t}</p><p class="text-[10px] text-slate-500 leading-tight">${f.d}</p></div></div>`).join('');
+        document.getElementById('kPct').value = state.kPct; document.getElementById('vDisk').value = state.vDisk;
+        document.getElementById('mDisk').value = state.mDisk; document.getElementById('minO').value = state.minO;
+        renderBenefits(); updateTierButtons(); hitung();
     }
 
     function applyPreset(idx) {
         const p = EXCEL_COFUND_DATA[idx];
-        state.vDisk = p.v; state.mShare = p.s; state.minO = fNum(p.min); state.mDisk = fNum(p.max); state.kPct = 20;
+        state.vDisk = p.v; state.mShare = p.s; state.minO = fNum(p.min); state.mDisk = fNum(p.max);
         document.getElementById('tierLabelDisplay').innerText = p.name;
-        selectedPresetIdx = idx;
-        closeAllPopups(); updateUI();
+        document.getElementById('vDisk').value = state.vDisk; document.getElementById('mShare').value = state.mShare;
+        document.getElementById('minO').value = state.minO; document.getElementById('mDisk').value = state.mDisk;
+        closeAllPopups(); hitung();
     }
 
     function showDetail(e, type) {
         e.stopPropagation();
-        const c = document.getElementById('overlayContent');
-        if(type === 'cust') c.innerHTML = `<h3 class="text-xl font-black text-emerald-400 mb-8 uppercase text-center italic">Payment Detail</h3><div class="space-y-6 text-lg"><div class="flex justify-between text-white/70"><span>Menu Price</span><span class="text-white font-bold">Rp ${fNum(Math.round(calcData.list))}</span></div><div class="flex justify-between text-red-400 font-bold"><span>Promotion (${calcData.discPct}%)</span><span>- Rp ${fNum(Math.round(calcData.disc))}</span></div><div class="pt-8 border-t border-white/10 flex justify-between text-3xl font-black text-emerald-400"><span>PAID BY PAX</span><span>Rp ${fNum(Math.round(calcData.pay))}</span></div></div>`;
+        const content = document.getElementById('overlayContent');
+        if(type === 'cust') content.innerHTML = `<h3 class="text-xl font-black text-emerald-400 mb-8 uppercase text-center italic tracking-tight">Payment Detail</h3><div class="space-y-6 text-lg"><div class="flex justify-between text-white/70"><span>Menu Price (App)</span><span class="text-white font-bold">Rp ${fNum(Math.round(calcData.list))}</span></div><div class="flex justify-between text-red-400 font-bold"><span>Campaign Discount (${calcData.discPct}%)</span><span>- Rp ${fNum(Math.round(calcData.disc))}</span></div><div class="pt-8 border-t border-white/10 flex justify-between text-3xl font-black text-emerald-400"><span>PAID BY PAX</span><span>Rp ${fNum(Math.round(calcData.pay))}</span></div></div>`;
         else {
             let bHtml = currentScheme === 'cofund' ? `<div class="flex justify-between text-orange-400 font-bold"><span>Grab Commission</span><span>- Rp ${fNum(Math.round(calcData.mexGB))}</span></div><div class="flex justify-between text-blue-300 font-bold"><span>Mex Cofund Share</span><span>- Rp ${fNum(Math.round(calcData.mPromoCost))}</span></div>` : `<div class="flex justify-between text-orange-300"><span>Service Fee (20%)</span><span>- Rp ${fNum(Math.round(calcData.serviceFee))}</span></div><div class="flex justify-between text-orange-500 font-bold"><span>Marketing Success Fee</span><span>- Rp ${fNum(Math.round(calcData.successFee))}</span></div>`;
-            c.innerHTML = `<h3 class="text-xl font-black text-blue-400 mb-8 uppercase text-center italic">Revenue Analysis</h3><div class="space-y-6 text-lg"><div class="flex justify-between text-white/70"><span>Price in App</span><span class="text-white font-bold">Rp ${fNum(Math.round(calcData.list))}</span></div>${bHtml}<div class="pt-8 border-t border-white/10 flex justify-between text-3xl font-black text-blue-400"><span>MEX NET REV</span><span>Rp ${fNum(Math.round(calcData.net))}</span></div><div class="mt-8 grid grid-cols-2 gap-4"><div class="p-4 bg-white/5 rounded-2xl text-center"><p class="text-[10px] text-white/40 mb-1">vs App Price</p><p class="text-2xl font-black text-grab-green">${calcData.appRate}%</p></div><div class="p-4 bg-white/10 rounded-2xl text-center"><p class="text-[10px] text-grab-yellow mb-1">vs Offline Basis</p><p class="text-2xl font-black text-grab-yellow">${calcData.offRate}%</p></div></div></div>`;
+            content.innerHTML = `<h3 class="text-xl font-black text-blue-400 mb-8 uppercase text-center italic tracking-tight">Revenue Analysis</h3><div class="space-y-6 text-lg"><div class="flex justify-between text-white/70"><span>Price in App</span><span class="text-white font-bold">Rp ${fNum(Math.round(calcData.list))}</span></div>${bHtml}<div class="pt-8 border-t border-white/10 flex justify-between text-3xl font-black text-blue-400"><span>MEX NET REV</span><span>Rp ${fNum(Math.round(calcData.net))}</span></div><div class="mt-8 grid grid-cols-2 gap-4"><div class="p-4 bg-white/5 rounded-2xl text-center font-bold text-grab-green"><p class="text-[8px] text-white/40 uppercase mb-1">vs App Price</p>${calcData.appRate}%</div><div class="p-4 bg-white/10 rounded-2xl text-center font-bold text-grab-yellow"><p class="text-[8px] text-white/40 uppercase mb-1">vs Offline Basis</p>${calcData.offRate}%</div></div></div>`;
         }
         document.getElementById('detailOverlay').classList.add('active'); document.getElementById('modal-overlay').classList.add('active');
     }
 
-    /* EXCEL EXPORT */
-    function exportToExcel() {
-        const rows = document.querySelectorAll('#wsTableBody tr');
-        let data = [["Nama Menu", "Harga Grab Sekarang", "Comm Sekarang (%)", "Step 1 (+14%)", "Step 2 (+14%)", "Target Final"]];
-        rows.forEach(row => {
-            data.push([
-                row.querySelector('input[type="text"]').value,
-                pNum(row.querySelector('.curr-app').value),
-                pNum(row.querySelector('.curr-comm').value),
-                pNum(row.querySelector('.step1-out').innerText),
-                pNum(row.querySelector('.step2-out').innerText),
-                pNum(row.querySelector('.target-out').innerText)
-            ]);
-        });
-        const ws = XLSX.utils.aoa_to_sheet(data);
-        const wb = XLSX.utils.book_new();
-        XLSX.utils.book_append_sheet(wb, ws, "Markup Roadmap");
-        XLSX.writeFile(wb, `Grab_Roadmap_${Date.now()}.xlsx`);
-    }
-
-    /* NAV & BULK ENGINE */
-    function goToPage(pId) { document.querySelectorAll('.page').forEach(p => p.classList.remove('active')); document.getElementById(pId).classList.add('active'); if(pId === 'pageJoin') initWs(); window.scrollTo(0,0); }
-    function initWs() { document.getElementById('wsSelectedScheme').innerText = document.getElementById('schemeTitle').innerText; document.getElementById('wsTargetComm').innerText = state.kPct + "%"; document.getElementById('wsTableBody').innerHTML = ''; addWsRow(); }
-    function addWsRow(n = "", p = "") {
-        const row = document.createElement('tr');
-        row.innerHTML = `<td><input type="text" placeholder="Menu..." class="w-full bg-transparent p-1 text-[11px] font-bold outline-none" value="${n}"></td><td><input type="text" class="ws-input curr-app" value="${p}" oninput="calcSt(this)"></td><td><input type="number" class="ws-input curr-comm" value="20" oninput="calcSt(this)"></td><td class="step1-out">0</td><td class="step2-out">0</td><td class="target-out text-grab-green font-black">0</td>`;
-        document.getElementById('wsTableBody').appendChild(row);
-        if(p !== "") calcSt(row.querySelector('.curr-app'));
-    }
-    function importBulk() { const area = document.getElementById('bulkArea'); const lines = area.value.split('\n'); document.getElementById('wsTableBody').innerHTML = ''; lines.forEach(l => { if(l.trim() === "") return; const pts = l.split('\t'); addWsRow(pts[0] ? pts[0].trim() : "Menu", pts[1] ? fNum(pts[1].replace(/\D/g, "")) : "0"); }); area.value = ""; }
-    function calcSt(el) {
-        const r = el.closest('tr'); const cin = r.querySelector('.curr-app'); if(el === cin) el.value = fNum(el.value);
-        const cp = pNum(cin.value); const cc = pNum(r.querySelector('.curr-comm').value); const tc = pNum(state.kPct); if(cp <= 0) return;
-        const payout = cp * (1 - (cc/100)); let target = payout / (1 - (tc/100)); if(isRounded) target = Math.ceil(target/100)*100;
-        const s1 = Math.ceil(Math.min(cp * 1.14, target)/100)*100; const s2 = Math.ceil(Math.min(s1 * 1.14, target)/100)*100;
-        r.querySelector('.step1-out').innerText = fNum(s1); r.querySelector('.step2-out').innerText = (s1 >= target) ? "-" : fNum(s2); r.querySelector('.target-out').innerText = fNum(target);
-    }
-
-    /* UI HANDLERS */
+    function setTier(t) { sTier = t; changeScheme(currentScheme); }
+    function updateTierButtons() { const h = document.getElementById('btnHem'), e = document.getElementById('btnEks'); h.className = sTier === 'hemat' ? 'tier-btn px-4 py-1.5 rounded text-[8px] font-black tier-btn-active' : 'tier-btn px-4 py-1.5 rounded text-[8px] font-black tier-btn-inactive'; e.className = sTier === 'ekstra' ? 'tier-btn px-4 py-1.5 rounded text-[8px] font-black tier-btn-active' : 'tier-btn px-4 py-1.5 rounded text-[8px] font-black tier-btn-inactive'; }
+    function renderBenefits() { document.getElementById('benefitDetailContent').innerHTML = STRATEGY_DETAILS[currentScheme].full.map(f => `<div class="flex gap-2.5"><div class="w-4 h-4 bg-emerald-500 rounded-full flex items-center justify-center flex-shrink-0 text-white text-[8px] font-black italic">✓</div><div><p class="font-black text-slate-800 text-[11px] leading-tight mb-0.5">${f.t}</p><p class="text-[10px] text-slate-500 leading-tight">${f.d}</p></div></div>`).join(''); }
+    function goToPage(p) { document.querySelectorAll('.page').forEach(pg => pg.classList.remove('active')); document.getElementById(p).classList.add('active'); if(p === 'pageJoin') initWorksheet(); window.scrollTo(0,0); }
+    function initWorksheet() { document.getElementById('wsSelectedScheme').innerText = document.getElementById('schemeTitle').innerText; document.getElementById('wsTargetComm').innerText = state.kPct + "%"; document.getElementById('wsTableBody').innerHTML = ''; addWsRow(); }
+    function addWsRow(n = "", p = "") { const tbody = document.getElementById('wsTableBody'); const row = document.createElement('tr'); row.innerHTML = `<td class="p-1"><input type="text" value="${n}" class="ws-input text-left bg-slate-50 border-slate-300" placeholder="Menu..."></td><td class="p-1"><input type="text" value="${p}" class="ws-input" placeholder="0" oninput="calcStepMarkup(this)"></td><td class="p-1"><input type="number" value="20" class="ws-input" oninput="calcStepMarkup(this)"></td><td class="p-1 text-center font-bold text-slate-600 text-[10px] step1-out">-</td><td class="p-1 text-center font-bold text-slate-600 text-[10px] step2-out">-</td><td class="p-1 text-center font-black text-emerald-600 text-[11px] target-out">-</td>`; tbody.appendChild(row); if(p !== "") calcStepMarkup(row.cells[1].querySelector('input')); }
+    function importBulk() { const area = document.getElementById('bulkArea'); area.value.split('\n').forEach(line => { if(line.trim() !== "") { const parts = line.split('\t'); addWsRow(parts[0] || "Menu", fNum(parts[1] || "0")); } }); area.value = ""; }
+    function calcStepMarkup(el) { const row = el.closest('tr'); const currP = pNum(row.cells[1].querySelector('input').value); const currC = pNum(row.cells[2].querySelector('input').value); const targetC = pNum(state.kPct); if(currP <= 0) return; const payout = currP * (1 - (currC/100)); let target = Math.ceil((payout / (1 - (targetC/100)))/100)*100; row.querySelector('.step1-out').innerText = "Rp " + fNum(Math.ceil(Math.min(currP * 1.14, target)/100)*100); row.querySelector('.step2-out').innerText = "Rp " + fNum(Math.ceil(Math.min(currP * 1.29, target)/100)*100); row.querySelector('.target-out').innerText = "Rp " + fNum(target); if(el === row.cells[1].querySelector('input')) el.value = fNum(el.value); }
     function togglePresetMenu(e) { e.stopPropagation(); document.getElementById('universalPresetMenu').classList.toggle('active'); }
     function closeOverlay() { document.getElementById('detailOverlay').classList.remove('active'); document.getElementById('modal-overlay').classList.remove('active'); }
     function closeAllPopups() { if(document.getElementById('universalPresetMenu')) document.getElementById('universalPresetMenu').classList.remove('active'); closeOverlay(); }
-    function setSubMode(m) { subMode = m; hitung(); }
-    function setTier(t) { sTier = t; changeScheme(currentScheme); }
-    function updateTierButtons() { const h = document.getElementById('btnHem'), e = document.getElementById('btnEks'); if(!h || !e) return; h.className = sTier === 'hemat' ? 'px-4 py-1.5 rounded-lg text-[9px] font-black tier-btn-active' : 'px-4 py-1.5 rounded-lg text-[9px] font-black tier-btn-inactive'; e.className = sTier === 'ekstra' ? 'px-4 py-1.5 rounded-lg text-[9px] font-black tier-btn-active' : 'px-4 py-1.5 rounded-lg text-[9px] font-black tier-btn-inactive'; }
-    function updateUI() { document.getElementById('kPct').value = state.kPct; document.getElementById('vDisk').value = state.vDisk; document.getElementById('mDisk').value = state.mDisk; document.getElementById('minO').value = state.minO; document.getElementById('mShare').value = state.mShare; hitung(); }
-    ['mainVal','subVal','kPct','vDisk','mDisk','minO','mShare'].forEach(id => { if(document.getElementById(id)) { document.getElementById(id).addEventListener('input', (e) => { if(['mainVal','subVal','mDisk','minO'].includes(id)) e.target.value = fNum(e.target.value); state[id] = e.target.value; hitung('offline'); }); } });
-    document.getElementById('resApp').addEventListener('input', (e) => { e.target.value = fNum(e.target.value); hitung('app'); });
-    
-    window.onload = () => {
-        document.getElementById('universalPresetMenu').innerHTML = EXCEL_COFUND_DATA.map((p, idx) => `<div class="p-3 border-b hover:bg-slate-50 cursor-pointer text-slate-800" onclick="applyPreset(${idx})"><p class="font-black text-[10px] uppercase">${p.name}</p><p class="text-[9px] text-slate-400 font-bold">${p.v}% OFF | ${p.s}% Share | Min Rp${fNum(p.min)}</p></div>`).join('');
-        changeScheme('normal');
-    };
+    function setSubMode(m) { subMode = m; document.getElementById('sVal').className = m==='val'?'w-7 h-4 bg-slate-800 text-white rounded text-[8px] font-black':'w-7 h-4 bg-slate-200 text-slate-500 rounded text-[8px] font-black'; document.getElementById('sPct').className = m==='pct'?'w-7 h-4 bg-slate-800 text-white rounded text-[8px] font-black':'w-7 h-4 bg-slate-200 text-slate-500 rounded text-[8px] font-black'; document.getElementById('subPrefix').innerText = m==='val'?'Rp':'%'; hitung(); }
+    ['mainVal','subVal','kPct','vDisk','mDisk','minO','mShare'].forEach(id => { if(document.getElementById(id)) { document.getElementById(id).addEventListener('input', (e) => { if(['mainVal','subVal','mDisk','minO'].includes(id)) e.target.value = fNum(e.target.value); state[id] = e.target.value; hitung(); }); } });
+    window.onload = () => { document.getElementById('universalPresetMenu').innerHTML = EXCEL_COFUND_DATA.map((p, idx) => `<div class="p-3 border-b hover:bg-slate-50 cursor-pointer text-slate-800" onclick="applyPreset(${idx})"><p class="font-black text-[10px] uppercase">${p.name}</p></div>`).join(''); changeScheme('normal'); };
 </script>
 </body>
 </html>
