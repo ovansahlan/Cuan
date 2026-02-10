@@ -5,283 +5,288 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Merchant Calculator | Grab Edition</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root { --grab-green: #00B14F; --grab-yellow: #FFD200; --grab-dark: #004d22; }
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+        body { font-family: 'Inter', sans-serif; background: linear-gradient(135deg, #004d22 0%, #00B14F 50%, #008a3d 100%); color: white; display: flex; flex-direction: column; min-height: 100vh; margin: 0; overflow-y: auto; }
         
-        body { 
-            font-family: 'Inter', sans-serif; 
-            background: linear-gradient(135deg, #004d22 0%, #00B14F 50%, #008a3d 100%);
-            color: white; 
-            display: flex; 
-            flex-direction: column; 
-            min-height: 100vh;
-            margin: 0; 
-            overflow-y: auto;
-        }
-
-        header, section { flex-shrink: 0; }
+        /* STICKY UNIT & GRADIENT DIVIDER */
+        .sticky-unit { position: sticky; top: 0; z-index: 100; box-shadow: 0 4px 20px rgba(0,0,0,0.15); }
+        .gradient-header { background: #FFFFFF; padding: 1rem 1.2rem; }
         
-        main { 
-            flex-grow: 1; 
-            padding: 0.5rem 0.75rem 3rem 0.75rem; 
-            display: flex; 
-            flex-direction: column; 
-            gap: 0.5rem; 
-        }
-
-        .gradient-header { 
-            background: #FFFFFF; 
-            padding: 1rem 1.2rem; 
-            border-bottom: 2px solid var(--grab-green); 
-            position: sticky; 
-            top: 0; 
-            z-index: 50; 
-            box-shadow: 0 2px 15px rgba(0,0,0,0.15);
-        }
-
-        .spotlight-dashboard { 
-            background: white; 
-            padding: 1.2rem 0.5rem; 
-            border-bottom: 5px solid var(--grab-yellow); 
-            color: #1a1a1a; 
-            position: sticky; 
-            top: 74px; 
-            z-index: 40; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.15); 
-        }
-
-        /* SEPARATOR DASHBOARD DIPERTEGAS */
-        .dash-separator { border-right: 2px solid #e2e8f0; }
-
-        .dash-input { background: transparent; border: none; font-weight: 900; width: 100%; text-align: center; outline: none; padding: 0; margin: 0; font-style: italic; color: #1a1a1a; }
+        /* THE GRADIENT LINE */
+        .header-divider { height: 4px; background: linear-gradient(90deg, #00B14F 0%, #008a3d 100%); width: 100%; }
         
-        .chips-panel { background: rgba(0, 0, 0, 0.2); padding: 0.6rem; border-radius: 18px; border: 1px solid rgba(255, 255, 255, 0.1); }
-        .chips-container { display: flex; gap: 0.3rem; justify-content: center; }
-        .chip { flex: 1; padding: 0.5rem 0.1rem; border-radius: 10px; background: rgba(255,255,255,0.1); color: white; font-size: 8px; font-weight: 900; text-transform: uppercase; border: 1.5px solid rgba(255,255,255,0.1); transition: 0.2s; text-align: center; }
-        .chip.active { background: white; color: var(--grab-dark); border: 2px solid var(--grab-yellow); box-shadow: 0 0 12px rgba(255, 210, 0, 0.3); }
-
-        .glass-panel { background: rgba(255, 255, 255, 0.96); backdrop-filter: blur(10px); border-radius: 16px; padding: 0.8rem; color: #1a1a1a; border: 1px solid rgba(255, 255, 255, 0.4); }
+        .spotlight-dashboard { background: white; padding: 0.8rem 0.5rem; border-bottom: 5px solid var(--grab-yellow); color: #1a1a1a; }
         
-        /* LABEL KONTRAS TINGGI */
-        .label-contrast { color: #475569; font-weight: 900; text-transform: uppercase; font-size: 8px; letter-spacing: 0.025em; }
+        .dash-separator { border-right: 2px solid #f1f5f9; }
+        .dash-input { background: transparent; border: none; font-weight: 900; width: 100%; text-align: center; outline: none; padding: 0; margin: 0; color: #1a1a1a; }
+        
+        main { flex-grow: 1; padding: 1rem 0.8rem 4rem 0.8rem; display: flex; flex-direction: column; gap: 0.5rem; }
+        .glass-panel { background: rgba(255, 255, 255, 0.98); border-radius: 18px; padding: 1rem; color: #1a1a1a; border: 1px solid rgba(255, 255, 255, 0.4); }
+        
+        .label-main { font-size: 12px; font-weight: 900; text-transform: uppercase; color: #0f172a; display: block; margin-bottom: 8px; }
+        
+        /* ALIGNMENT SYMMETRY */
+        .label-container { min-height: 22px; display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 6px; }
+        .label-sub { font-size: 10px; font-weight: 800; text-transform: uppercase; color: #64748b; line-height: 1; }
 
-        .vs-card { border: 2px solid transparent; border-radius: 14px; padding: 12px 8px; position: relative; transition: 0.4s; background: rgba(255,255,255,0.05); }
-        .vs-card.winner { background: rgba(255, 210, 0, 0.15); border-color: var(--grab-yellow); box-shadow: 0 0 20px rgba(255, 210, 0, 0.3); }
-        .winner-badge { position: absolute; top: -10px; left: 50%; transform: translateX(-50%); background: var(--grab-yellow); color: black; font-size: 8px; font-weight: 900; padding: 2px 10px; border-radius: 20px; border: 2px solid #000; display: none; z-index: 10; }
-        .vs-card.winner .winner-badge { display: block; animation: bounce 0.5s infinite alternate; }
+        .input-group { display: grid; grid-template-columns: 40px 1fr 40px; align-items: center; background: white; border: 2px solid #cbd5e1; border-radius: 12px; height: 44px; overflow: hidden; }
+        .input-pro { border: none; font-size: 1.1rem; font-weight: 800; width: 100%; text-align: center; outline: none; background: transparent; color: #0f172a; }
+        .input-side { font-weight: 900; font-size: 11px; color: #94a3b8; display: flex; justify-content: center; align-items: center; }
 
-        .input-group { display: grid; grid-template-columns: 35px 1fr 35px; align-items: center; background: white; border: 2px solid #cbd5e1; border-radius: 10px; height: 44px; }
-        .input-side { font-weight: 900; font-size: 11px; color: #64748b; display: flex; justify-content: center; align-items: center; }
-        .input-pro { border: none; font-size: 1.2rem; font-weight: 900; width: 100%; text-align: center; outline: none; background: transparent; color: #0f172a; }
-        .input-group.disabled { background: #f8fafc; opacity: 0.6; border-color: #e2e8f0; }
-
-        #detailOverlay { position: fixed; top: 120px; left: 50%; transform: translateX(-50%) translateY(20px); width: 90%; max-width: 400px; background: rgba(0, 0, 0, 0.98); backdrop-filter: blur(20px); border-radius: 24px; padding: 25px; z-index: 100; opacity: 0; pointer-events: none; transition: 0.3s ease-out; border: 1px solid rgba(255,255,255,0.2); }
-        #detailOverlay.active { opacity: 1; pointer-events: auto; transform: translateX(-50%) translateY(0); }
-
-        .label-bold { font-size: 12px; font-weight: 900; text-transform: uppercase; color: #1e293b; margin-bottom: 8px; display: flex; align-items: center; gap: 6px; }
-        @keyframes bounce { from { transform: translateX(-50%) translateY(0); } to { transform: translateX(-50%) translateY(-3px); } }
+        .chip { flex: 1; padding: 0.7rem 0.1rem; border-radius: 12px; background: rgba(255,255,255,0.1); color: white; font-size: 9px; font-weight: 900; text-transform: uppercase; border: 2px solid rgba(255,255,255,0.1); transition: 0.2s; }
+        .chip.active { background: white; color: var(--grab-dark); border: 2px solid var(--grab-yellow); box-shadow: 0 0 15px rgba(255, 210, 0, 0.4); }
+        
+        .tier-btn-active { background-color: #0f172a !important; color: white !important; font-weight: 900 !important; }
+        .tier-btn-inactive { background-color: #f1f5f9 !important; color: #94a3b8 !important; font-weight: 700 !important; }
+        
+        .bottom-modal { position: fixed; bottom: -100%; left: 0; width: 100%; background: white; border-radius: 32px 32px 0 0; z-index: 2100; transition: 0.4s cubic-bezier(0.18, 0.89, 0.32, 1.28); color: #1a1a1a; padding: 25px; box-shadow: 0 -10px 50px rgba(0,0,0,0.3); max-height: 80vh; overflow-y: auto; }
+        .bottom-modal.active { bottom: 0; }
+        .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); z-index: 2000; display: none; }
+        .modal-overlay.active { display: block; }
+        .minimal-option { padding: 12px 5px; border-bottom: 1px solid #f1f5f9; cursor: pointer; }
+        
+        #detailOverlay { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.9); width: 92%; max-width: 380px; background: #1c1c1c; border-radius: 26px; padding: 32px 28px; z-index: 2200; opacity: 0; pointer-events: none; transition: 0.25s; color: white; border: 1px solid rgba(255,255,255,0.1); }
+        #detailOverlay.active { opacity: 1; pointer-events: auto; transform: translate(-50%, -50%) scale(1); }
+        .vs-card { border: 2.5px solid transparent; border-radius: 18px; padding: 15px 10px; position: relative; transition: 0.4s; background: rgba(255,255,255,0.05); }
+        .vs-card.winner { background: rgba(255, 210, 0, 0.15); border-color: var(--grab-yellow); }
     </style>
 </head>
-<body onclick="closeOverlay()">
+<body onclick="closeAllPopups()">
 
-    <header class="gradient-header flex items-center gap-4">
-        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3eUHGPBllwPFxtkNKY7e_3T_mb2rKNWoMaRD6DON2dMI6swNt9a4Fee2k&s=10" alt="Grab" class="h-11 w-auto">
-        <div class="flex flex-col">
-            <p class="font-black text-[18px] tracking-tight uppercase text-slate-900 leading-none">MERCHANT <span class="text-[var(--grab-green)]">CALCULATOR</span></p>
-            <p class="text-[11px] font-bold text-slate-500 italic mt-0.5">All in one calculation</p>
-        </div>
-    </header>
+    <div class="sticky-unit">
+        <header class="gradient-header flex items-center gap-4">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR3eUHGPBllwPFxtkNKY7e_3T_mb2rKNWoMaRD6DON2dMI6swNt9a4Fee2k&s=10" alt="Grab" class="h-10 w-auto">
+            <div class="flex flex-col">
+                <p class="font-black text-[16px] tracking-tighter uppercase text-slate-900 leading-none">MERCHANT <span class="text-[var(--grab-green)]">CALCULATOR</span></p>
+                <p class="text-[10px] font-bold text-slate-400 mt-0.5 italic">Profit Analysis Tool</p>
+            </div>
+        </header>
+        
+        <div class="header-divider"></div>
 
-    <section class="spotlight-dashboard">
-        <div class="max-w-5xl mx-auto grid grid-cols-3 gap-0 text-center items-center">
-            <div class="dash-col dash-separator px-1">
-                <p class="text-[10px] font-black text-slate-500 uppercase tracking-tighter mb-1">App Price ✎</p>
-                <div class="flex items-center justify-center text-2xl font-black italic text-slate-900">
-                    <span class="text-sm mr-0.5">Rp</span>
-                    <input type="text" id="resApp" class="dash-input text-2xl" value="0">
+        <section class="spotlight-dashboard">
+            <div class="max-w-5xl mx-auto grid grid-cols-3 gap-0 text-center items-center">
+                <div class="dash-col dash-separator px-1">
+                    <p class="text-[10px] font-black text-slate-400 uppercase mb-1 tracking-tighter italic">App Price ✎</p>
+                    <div class="flex items-center justify-center text-xl font-black text-slate-900">
+                        <span class="text-xs mr-0.5 font-bold">Rp</span>
+                        <input type="text" id="resApp" class="dash-input text-xl" value="0">
+                    </div>
                 </div>
-                <div id="roundToggle" onclick="toggleRound(event)" class="text-[9px] font-black p-1 uppercase text-slate-400 cursor-pointer">Round ⚙️</div>
+                <div class="dash-col dash-separator px-1" onclick="showDetail(event, 'cust')">
+                    <p class="text-[10px] font-black text-slate-400 uppercase mb-1 tracking-tighter">Paid by Pax ⓘ</p>
+                    <h2 id="resTP" class="text-xl font-black text-[var(--grab-green)] leading-none tracking-tighter">Rp 0</h2>
+                </div>
+                <div class="dash-col px-1" onclick="showDetail(event, 'net')">
+                    <p class="text-[10px] font-black text-slate-400 uppercase mb-1 tracking-tighter italic">Mex Net Rev ⓘ</p>
+                    <h2 id="resNet" class="text-xl font-black text-emerald-600 leading-none tracking-tighter">Rp 0</h2>
+                </div>
             </div>
-            <div class="dash-col dash-separator px-1" onclick="showDetail(event, 'cust')">
-                <p class="text-[10px] font-black text-slate-500 uppercase tracking-tighter mb-1">Paid by Pax ⓘ</p>
-                <h2 id="resTP" class="text-2xl md:text-4xl font-black text-[var(--grab-green)] italic leading-none tracking-tight">Rp 0</h2>
-                <div class="text-[8px] font-black text-slate-400 uppercase italic mt-1">Harga Bayar</div>
-            </div>
-            <div class="dash-col px-1" onclick="showDetail(event, 'net')">
-                <p class="text-[10px] font-black text-slate-500 uppercase tracking-tighter mb-1">Net Revenue ⓘ</p>
-                <h2 id="resNet" class="text-2xl md:text-4xl font-black text-emerald-600 italic leading-none tracking-tight">Rp 0</h2>
-                <div class="text-[8px] font-black text-slate-400 uppercase italic mt-1">Mex Revenue</div>
-            </div>
+        </section>
+    </div>
+
+    <div id="modal-overlay" class="modal-overlay" onclick="closeAllPopups()"></div>
+
+    <div id="benefitModal" class="bottom-modal">
+        <div class="flex justify-between items-center mb-6 border-b pb-4">
+            <h3 id="modalSchemeTitle" class="font-black uppercase italic text-xl text-slate-800">Benefit Skema</h3>
+            <button onclick="closeBenefitModal()" class="w-10 h-10 bg-slate-100 rounded-full font-black text-2xl">×</button>
         </div>
-    </section>
+        <div id="modalBenefitContent" class="space-y-4"></div>
+    </div>
+
+    <div id="tierModal" class="bottom-modal">
+        <div class="flex justify-between items-center mb-4 border-b pb-4 sticky top-0 bg-white z-10">
+            <h3 class="font-black uppercase italic text-lg text-slate-800">Select Campaign</h3>
+            <button onclick="closeTierModal()" class="text-slate-300 font-bold text-sm uppercase">Tutup</button>
+        </div>
+        <div id="tierOptionsContainer" class="pb-10"></div>
+    </div>
 
     <div id="detailOverlay" onclick="closeOverlay()">
         <div id="overlayContent"></div>
-        <p class="text-[11px] text-center text-white/40 mt-6 uppercase font-black border-t border-white/10 pt-4">Tutup</p>
+        <p class="text-[10px] text-center text-white/30 mt-10 uppercase font-black border-t border-white/5 pt-4 tracking-widest italic">TAP MANA SAJA UNTUK TUTUP</p>
     </div>
 
     <main>
         <div class="glass-panel">
-            <label class="label-bold italic">1. Harga Offline & Subsidi</label>
-            <div class="grid grid-cols-2 gap-3 items-end">
-                <div><span class="label-contrast">Offline Basis</span><div class="input-group"><div class="input-side">Rp</div><input type="text" id="mainVal" class="input-pro" placeholder="0"><div class="input-side"></div></div></div>
-                <div>
-                    <div class="flex justify-between"><span class="label-contrast">Subsidi</span><div class="flex gap-1"><button onclick="setSubMode('val')" id="sVal" class="inner-toggle active px-1 text-[10px] font-black text-slate-400">Rp</button><button onclick="setSubMode('pct')" id="sPct" class="inner-toggle px-1 text-[10px] font-black text-slate-400">%</button></div></div>
-                    <div class="input-group border-blue-400"><div id="subPrefix" class="input-side text-blue-600">Rp</div><input type="text" id="subVal" class="input-pro text-blue-800" placeholder="0"><div class="input-side"></div></div>
+            <label class="label-main">HARGA DASAR & SUBSIDI</label>
+            <div class="grid grid-cols-2 gap-4">
+                <div class="flex flex-col">
+                    <div class="label-container"><span class="label-sub">Offline Basis</span></div>
+                    <div class="input-group"><div class="input-side">Rp</div><input type="text" id="mainVal" class="input-pro" placeholder="0"><div class="input-side"></div></div>
+                </div>
+                <div class="flex flex-col">
+                    <div class="label-container">
+                        <span class="label-sub text-blue-600 font-bold uppercase">Subsidi Toko</span>
+                        <div class="flex gap-1"><button onclick="setSubMode('val')" id="sVal" class="w-8 h-5 bg-slate-800 text-white rounded text-[8px] font-black">Rp</button><button onclick="setSubMode('pct')" id="sPct" class="w-8 h-5 bg-slate-200 text-slate-500 rounded text-[8px] font-black">%</button></div>
+                    </div>
+                    <div class="input-group border-blue-400"><div id="subPrefix" class="input-side text-blue-600 font-black">Rp</div><input type="text" id="subVal" class="input-pro text-blue-800 font-bold" placeholder="0"><div class="input-side"></div></div>
                 </div>
             </div>
         </div>
 
-        <div class="chips-panel">
-            <div class="chips-container">
-                <button onclick="selectSchema('normal', event)" id="chip-normal" class="chip active">⚖️ Normal</button>
-                <button onclick="selectSchema('puas-cuan', event)" id="chip-puas-cuan" class="chip">🔥 Cuan</button>
-                <button onclick="selectSchema('booster', event)" id="chip-booster" class="chip">🚀 Booster</button>
-                <button onclick="selectSchema('cofund', event)" id="chip-cofund" class="chip">🤝 Cofund</button>
-            </div>
+        <div class="chips-panel flex gap-1.5 p-1.5">
+            <button onclick="changeScheme('normal', event)" id="chip-normal" class="chip active">⚖️ Normal</button>
+            <button onclick="changeScheme('puas-cuan', event)" id="chip-puas-cuan" class="chip">🔥 Cuan</button>
+            <button onclick="changeScheme('booster', event)" id="chip-booster" class="chip">🚀 Booster</button>
+            <button onclick="changeScheme('cofund', event)" id="chip-cofund" class="chip">🤝 Cofund</button>
         </div>
 
-        <div class="glass-panel">
-            <div class="flex justify-between items-center mb-1">
+        <div id="cofundTierSection" class="glass-panel hidden">
+            <label class="label-main !text-blue-600 uppercase">Active Preset</label>
+            <button class="w-full bg-slate-50 border-2 border-slate-200 p-4 rounded-2xl flex justify-between items-center font-black text-slate-800 uppercase text-sm" onclick="openTierModal(event)">
+                <span id="tierLabelDisplay" class="truncate pr-4 italic">PILIH DARI DATABASE...</span>
+                <svg class="w-6 h-6 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M19 9l-7 7-7-7"></path></svg>
+            </button>
+        </div>
+
+        <div class="glass-panel cursor-pointer" onclick="openBenefitModal(event)">
+            <div class="flex justify-between items-center">
                 <div class="flex flex-col">
-                    <label class="label-contrast !text-[var(--grab-green)]">BENEFIT STRATEGI</label>
-                    <h1 id="schemeTitle" class="text-[1.1rem] font-black text-slate-900 uppercase leading-none tracking-tight">Normal Commision</h1>
+                    <span class="label-sub !text-[var(--grab-green)] uppercase tracking-tighter">Strategic Benefit ⓘ</span>
+                    <h1 id="schemeTitle" class="text-xl font-black text-slate-900 uppercase leading-none tracking-tighter">Normal Commision</h1>
                 </div>
                 <div id="tierSection" class="hidden">
-                    <div class="flex bg-slate-200 p-0.5 rounded-lg border border-slate-300">
-                        <button onclick="setTier('hemat')" id="btnHem" class="px-3 py-1 rounded-md text-[10px] font-black transition-all">HEMAT</button>
-                        <button onclick="setTier('ekstra')" id="btnEks" class="px-3 py-1 rounded-md text-[10px] font-black transition-all ml-0.5">EKSTRA</button>
+                    <div class="flex bg-slate-100 p-1 rounded-xl border border-slate-200" onclick="event.stopPropagation()">
+                        <button onclick="setTier('hemat')" id="btnHem" class="px-5 py-2 rounded-lg text-[10px] font-black transition-all">HEMAT</button>
+                        <button onclick="setTier('ekstra')" id="btnEks" class="px-5 py-2 rounded-lg text-[10px] font-black transition-all ml-1">EKSTRA</button>
                     </div>
                 </div>
             </div>
-            <div id="benefitList" class="flex flex-wrap gap-1 border-t border-slate-200 pt-2"></div>
+            <div id="benefitSummaryList" class="flex flex-wrap gap-1.5 border-t border-slate-100 pt-4 mt-3"></div>
         </div>
 
         <div class="glass-panel">
-            <label class="label-bold italic">3. Parameter Sistem</label>
-            <div class="grid grid-cols-2 gap-x-3 gap-y-2">
-                <div><span class="label-contrast">Merchant Comm %</span><div class="input-group"><div class="input-side"></div><input type="number" id="kPct" class="input-pro" value="20"><div class="input-side">%</div></div></div>
-                <div><span class="label-contrast">Promo Disc %</span><div class="input-group"><div class="input-side"></div><input type="number" id="vDisk" class="input-pro text-red-600" value="0"><div class="input-side text-red-400">%</div></div></div>
-                <div><span class="label-contrast">Max Disc Rp</span><div class="input-group"><div class="input-side">Rp</div><input type="text" id="mDisk" class="input-pro" value="0"><div class="input-side"></div></div></div>
-                <div><span class="label-contrast !text-blue-600">Cofund Mex %</span><div id="cofundGroup" class="input-group border-blue-400 disabled"><div class="input-side"></div><input type="number" id="mShare" class="input-pro text-blue-700" value="0" disabled><div class="input-side">%</div></div></div>
-                <div class="col-span-2 mt-1"><span class="label-contrast">Min Order Rp</span><div class="input-group"><div class="input-side">Rp</div><input type="text" id="minO" class="input-pro" value="0"><div class="input-side"></div></div></div>
+            <label class="label-main">PARAMETER SISTEM</label>
+            <div class="grid grid-cols-2 gap-x-4 gap-y-3">
+                <div class="flex flex-col gap-1"><span class="label-sub uppercase">Comm %</span><div class="input-group"><div class="input-side"></div><input type="number" id="kPct" class="input-pro" value="20"><div class="input-side">%</div></div></div>
+                <div class="flex flex-col gap-1"><span class="label-sub uppercase">Promo %</span><div class="input-group"><div class="input-side"></div><input type="number" id="vDisk" class="input-pro text-red-600" value="0"><div class="input-side text-red-400">%</div></div></div>
+                <div class="flex flex-col gap-1"><span class="label-sub uppercase">Max Rp</span><div class="input-group"><div class="input-side">Rp</div><input type="text" id="mDisk" class="input-pro" value="0"><div class="input-side"></div></div></div>
+                <div class="flex flex-col gap-1"><span class="label-sub !text-blue-600 font-bold uppercase">Cofund %</span><div id="cofundGroup" class="input-group border-blue-200 disabled"><div class="input-side"></div><input type="number" id="mShare" class="input-pro text-blue-700 font-black" value="0" disabled><div class="input-side">%</div></div></div>
+                <div class="col-span-2 flex flex-col gap-1">
+                    <span class="label-sub uppercase tracking-tight">Min Order Rp</span>
+                    <div class="input-group"><div class="input-side">Rp</div><input type="text" id="minO" class="input-pro" value="0"><div class="input-side"></div></div>
+                </div>
             </div>
         </div>
 
-        <div class="glass-panel !bg-black/60 !border-dashed !border-[var(--grab-yellow)] !p-3 mb-4 text-center">
-            <div id="vsTitle" class="text-[12px] font-black text-[var(--grab-yellow)] uppercase mb-3 italic tracking-widest">NORMAL VS PROMO</div>
+        <div class="glass-panel !bg-slate-900 !p-5 mb-10 text-center border-2 border-dashed border-[var(--grab-yellow)]">
+            <div id="vsTitle" class="text-[12px] font-black text-[var(--grab-yellow)] uppercase mb-4 italic tracking-widest leading-none">POLOSAN VS SKEMA</div>
             <div class="grid grid-cols-2 gap-4">
-                <div id="cardNormal" class="vs-card"><div class="winner-badge">WINNER 🏆</div><p class="text-[10px] font-black opacity-60 text-white uppercase mb-2">NORMAL</p><div class="space-y-1 text-center"><span class="text-[8px] text-white/40 uppercase">App Price</span><p id="vsAppNormal" class="text-[13px] font-black text-white/60">Rp 0</p><span class="text-[9px] text-white/80 font-bold uppercase">Paid by Pax</span><p id="vsPayNormal" class="text-lg font-black text-white">Rp 0</p></div></div>
-                <div id="cardPromo" class="vs-card"><div class="winner-badge">WINNER 🏆</div><p id="vsPromoLabel" class="text-[10px] font-black text-[var(--grab-yellow)] uppercase mb-2">PROMO</p><div class="space-y-1 text-center"><span class="text-[8px] text-white/40 uppercase">App Price</span><p id="vsAppPromo" class="text-[13px] font-black text-white/60">Rp 0</p><span class="text-[9px] text-[var(--grab-yellow)] font-bold uppercase">Paid by Pax</span><p id="vsPayPromo" class="text-xl font-black text-[var(--grab-yellow)]">Rp 0</p></div></div>
+                <div id="cardNormal" class="vs-card"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-white text-black text-[8px] font-black px-4 py-1 rounded-full hidden badge-winner uppercase">WINNER</div><p class="text-[9px] font-black opacity-60 text-white uppercase mb-2 leading-none">POLOSAN</p><p id="vsAppNormal" class="text-[13px] font-bold text-white/50">Rp 0</p><p id="vsPayNormal" class="text-lg font-black text-white mt-1">Rp 0</p></div>
+                <div id="cardPromo" class="vs-card"><div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-[var(--grab-yellow)] text-black text-[8px] font-black px-4 py-1.5 rounded-full hidden badge-winner uppercase">WINNER</div><p id="vsPromoLabel" class="text-[9px] font-black text-[var(--grab-yellow)] uppercase mb-2 leading-none">PROMO</p><p id="vsAppPromo" class="text-[13px] font-bold text-white/50">Rp 0</p><p id="vsPayPromo" class="text-2xl font-black text-[var(--grab-yellow)] mt-1">Rp 0</p></div>
             </div>
         </div>
     </main>
 
 <script>
-    let sTier = 'hemat', currentSchema = 'normal', isRounded = true, subMode = 'val';
-    const calcData = { list: 0, disc: 0, pay: 0, net: 0, mexGB: 0, mPromoCost: 0 };
+    let sTier = 'hemat', currentScheme = 'normal', isRounded = true, subMode = 'val', selectedPresetIdx = null;
     const state = { mainVal: "25.000", kPct: 20, vDisk: 0, mDisk: "0", minO: "0", subVal: "0", mShare: 0 };
+    const calcData = { list: 0, disc: 0, pay: 0, net: 0, mexGB: 0, mPromoCost: 0, appRate: 0, offRate: 0 };
 
-    const PRESETS = {
-        'normal': { name: 'Normal Commision', k: 20, v: 0, b: ['Margin Aman 100%', 'Harga Menu Stabil'], s: 0 },
-        'puas-cuan': { name: 'Diskon Puas Cuan', k: 32, v: 30, tiers: { hemat: { min: 15000, max: 45000 }, ekstra: { min: 35000, max: 80000 } }, b: ['Promo Grab Funded'], s: 0 },
-        'booster': { name: 'Diskon Puas Booster', k: 38, v: 35, tiers: { hemat: { min: 15000, max: 55000 }, ekstra: { min: 35000, max: 100000 } }, b: ['Flash Sale 55%'], s: 0 },
-        'cofund': { name: 'Skema Cofunding', k: 20, v: 40, b: ['Beban Patungan Diskon'], s: 75 }
+    const STRATEGY_DETAILS = {
+        'normal': { summary: ['Margin Aman 100%', 'Harga Stabil'], full: [{t: 'Kontrol Penuh Margin', d: 'Merchant memiliki kendali 100% atas harga menu tanpa beban promo tambahan.'},{t: 'Brand Stability', d: 'Harga menu tetap stabil, menjaga persepsi premium di mata konsumen.'}] },
+        'puas-cuan': { summary: ['Funded by Grab', 'Order Booster'], full: [{t: 'Investasi Grab Penuh', d: 'Grab mendanai seluruh diskon kampanye. Merchant hanya membayar komisi flat.'},{t: 'Rank Prioritas', d: 'Restoran muncul lebih sering di kategori promo "Diskon Gede".'},{t: 'Efek Volume', d: 'Meningkatkan frekuensi pesanan harian tanpa memotong margin kotor Anda.'}] },
+        'booster': { summary: ['Flash Sale Access', 'Top ranking'], full: [{t: 'Exposure Maksimal', d: 'Akses khusus ke slot banner Flash Sale yang trafficnya 3x lipat lebih tinggi.'},{t: 'Top 3 Search', d: 'Prioritas menempatkan merchant di urutan 3 teratas hasil pencarian.'},{t: 'User Acquisition', d: 'Strategi terbaik akuisisi ribuan pengguna baru.'}] },
+        'cofund': { summary: ['Scale Big Order', 'Join Mega Fest'], full: [{t: 'Mega Fest Access', d: 'Satu-satunya skema untuk bergabung di event raksasa seperti Brand Week.'},{t: 'Collaboration', d: 'Merchant dan Grab berkolaborasi membiayai diskon besar.'},{t: 'Flexible Sharing', d: 'Dapat disesuaikan dengan profitabilitas tiap menu.'}] }
     };
+
+    const EXCEL_COFUND_DATA = [
+        { name: "Brand Week Festival O1", v: 45, s: 55, min: 50000, max: 50000 },
+        { name: "Brand Week Festival O2", v: 50, s: 65, min: 60000, max: 50000 },
+        { name: "Flash Sale Payday", v: 50, s: 60, min: 64000, max: 40000 },
+        { name: "Mega Hedon 55%", v: 55, s: 60, min: 40000, max: 35000 },
+        { name: "Sobat Hemat Reguler", v: 25, s: 50, min: 25000, max: 15000 },
+        { name: "Pasti Diskon Elite", v: 20, s: 60, min: 0, max: 20000 }
+    ];
 
     const fNum = (n) => n.toString().replace(/\D/g, "").replace(/\B(?=(\d{3})+(?!\d))/g, ".");
     const pNum = (n) => parseFloat(n.toString().replace(/\./g, "")) || 0;
 
     function hitung(source = 'offline') {
-        const commPct = pNum(state.kPct), subRaw = pNum(state.subVal), mSharePct = pNum(state.mShare), discPct = pNum(state.vDisk);
-        const adj = subMode === 'val' ? subRaw : (pNum(state.mainVal) * subRaw / 100);
-
+        const k = pNum(state.kPct), s = pNum(state.mShare), v = pNum(state.vDisk), subRaw = pNum(state.subVal), off = pNum(state.mainVal);
+        const subConverted = subMode === 'val' ? subRaw : (off * subRaw / 100);
         if(source === 'app') {
-            const appInput = pNum(document.getElementById('resApp').value);
-            state.mainVal = fNum(Math.round((appInput * (1 - (commPct/100))) + adj));
+            const app = pNum(document.getElementById('resApp').value);
+            state.mainVal = fNum(Math.round((app * (1 - k/100)) + subConverted));
             document.getElementById('mainVal').value = state.mainVal;
         }
-
-        const off = pNum(state.mainVal);
-        let listPromo = (off - adj) / (1 - (commPct/100));
-        if (isRounded) listPromo = Math.ceil(listPromo/100)*100;
-        
-        const totalDisc = (listPromo >= pNum(state.minO)) ? Math.min(listPromo * discPct/100, pNum(state.mDisk) || Infinity) : 0;
-        const paidPax = listPromo - totalDisc;
-
-        if (currentSchema === 'cofund') {
-            const mPromoCost = (mSharePct / 100) * (discPct / 100) * listPromo;
-            const mexGB = (commPct / 100) * (listPromo - mPromoCost);
-            calcData.net = listPromo - (mexGB + mPromoCost);
-            calcData.mexGB = mexGB; calcData.mPromoCost = mPromoCost;
+        let list = (pNum(state.mainVal) - subConverted) / (1 - k/100);
+        if(isRounded) list = Math.ceil(list/100)*100;
+        const disc = (list >= pNum(state.minO)) ? Math.min(list * v/100, pNum(state.mDisk) || Infinity) : 0;
+        const pay = list - disc;
+        if (currentScheme === 'cofund') {
+            const mPromo = (s/100) * (v/100) * list;
+            calcData.mexGB = (k/100) * (list - mPromo); calcData.mPromoCost = mPromo;
+            calcData.net = list - (calcData.mexGB + mPromo);
         } else {
-            const grabComm = listPromo * (commPct / 100);
-            calcData.net = listPromo - grabComm;
-            calcData.mexGB = grabComm; calcData.mPromoCost = 0;
+            calcData.mexGB = list * (k/100); calcData.mPromoCost = 0; calcData.net = list - calcData.mexGB;
         }
-
-        calcData.list = listPromo; calcData.disc = totalDisc; calcData.pay = paidPax;
-        if(source !== 'app') document.getElementById('resApp').value = fNum(Math.round(listPromo));
-        document.getElementById('resTP').innerText = "Rp " + fNum(Math.round(paidPax));
+        calcData.list = list; calcData.disc = disc; calcData.pay = pay;
+        calcData.appRate = list > 0 ? (calcData.net / list * 100).toFixed(1) : 0;
+        calcData.offRate = off > 0 ? (calcData.net / off * 100).toFixed(1) : 0;
+        if(source !== 'app') document.getElementById('resApp').value = fNum(Math.round(list));
+        document.getElementById('resTP').innerText = "Rp " + fNum(Math.round(pay));
         document.getElementById('resNet').innerText = "Rp " + fNum(Math.round(calcData.net));
+        syncVS(subConverted, pay, list);
+    }
 
-        let listNormal = (off - adj) / (1 - (20/100));
-        if (isRounded) listNormal = Math.ceil(listNormal/100)*100;
-        const isNormalWin = listNormal < paidPax;
+    function syncVS(subVal, pay, listPromo) {
+        let listNormal = (pNum(state.mainVal) - subVal) / 0.8;
+        if(isRounded) listNormal = Math.ceil(listNormal/100)*100;
+        const vsTitle = document.getElementById('vsTitle');
+        if(vsTitle) vsTitle.innerText = `POLOSAN VS ${currentScheme.toUpperCase()}`;
         document.getElementById('vsAppNormal').innerText = "Rp " + fNum(Math.round(listNormal));
         document.getElementById('vsPayNormal').innerText = "Rp " + fNum(Math.round(listNormal));
         document.getElementById('vsAppPromo').innerText = "Rp " + fNum(Math.round(listPromo));
-        document.getElementById('vsPayPromo').innerText = "Rp " + fNum(Math.round(paidPax));
-        document.getElementById('vsTitle').innerText = `NORMAL VS ${currentSchema.toUpperCase()}`;
-        document.getElementById('cardNormal').className = `vs-card ${isNormalWin ? 'winner' : ''}`;
-        document.getElementById('cardPromo').className = `vs-card ${!isNormalWin ? 'winner' : ''}`;
+        document.getElementById('vsPayPromo').innerText = "Rp " + fNum(Math.round(pay));
+        document.querySelectorAll('.badge-winner').forEach(b => b.classList.add('hidden'));
+        const normalWin = listNormal < pay;
+        document.getElementById('cardNormal').classList.toggle('winner', normalWin);
+        document.getElementById('cardPromo').classList.toggle('winner', !normalWin);
+        if(normalWin) document.querySelector('#cardNormal .badge-winner').classList.remove('hidden');
+        else document.querySelector('#cardPromo .badge-winner').classList.remove('hidden');
     }
 
-    function selectSchema(key, e) {
+    function changeScheme(key, e) {
         if(e) e.stopPropagation();
-        currentSchema = key;
+        currentScheme = key;
         document.querySelectorAll('.chip').forEach(c => c.classList.remove('active'));
         document.getElementById(`chip-${key}`).classList.add('active');
-        const conf = PRESETS[key];
-        const ts = document.getElementById('tierSection'), cofundInput = document.getElementById('mShare'), cofundGroup = document.getElementById('cofundGroup');
-
-        if (conf.tiers) {
-            ts.classList.remove('hidden');
-            document.getElementById('btnHem').className = `px-3 py-1 rounded-md text-[10px] font-black transition-all ${sTier === 'hemat' ? 'bg-slate-800 text-white' : 'bg-transparent text-slate-500'}`;
-            document.getElementById('btnEks').className = `px-3 py-1 rounded-md text-[10px] font-black transition-all ml-0.5 ${sTier === 'ekstra' ? 'bg-slate-800 text-white' : 'bg-transparent text-slate-500'}`;
-            state.kPct = conf.k; state.vDisk = conf.v; state.minO = fNum(conf.tiers[sTier].min); state.mDisk = fNum(conf.tiers[sTier].max);
-        } else {
-            ts.classList.add('hidden');
-            state.kPct = conf.k; state.vDisk = conf.v; state.minO = "0"; state.mDisk = "0";
-        }
-
-        if (key === 'cofund') { cofundInput.disabled = false; cofundGroup.classList.remove('disabled'); state.mShare = conf.s; }
-        else { cofundInput.disabled = true; cofundGroup.classList.add('disabled'); state.mShare = 0; }
-
-        document.getElementById('schemeTitle').innerText = conf.name;
-        renderBenefits(); updateUI();
+        const conf = { 'normal': { k: 20, v: 0, tiers: null }, 'puas-cuan': { k: 32, v: 30, tiers: { hemat: { min: 15000, max: 45000 }, ekstra: { min: 35000, max: 80000 } } }, 'booster': { k: 38, v: 35, tiers: { hemat: { min: 15000, max: 55000 }, ekstra: { min: 35000, max: 100000 } } }, 'cofund': { k: 20, v: 40, tiers: null } }[key];
+        document.getElementById('cofundTierSection').classList.toggle('hidden', key !== 'cofund');
+        document.getElementById('tierSection').classList.toggle('hidden', !conf.tiers);
+        document.getElementById('cofundGroup').classList.toggle('disabled', key !== 'cofund');
+        document.getElementById('mShare').disabled = (key !== 'cofund');
+        if(conf.tiers) { state.minO = fNum(conf.tiers[sTier].min); state.mDisk = fNum(conf.tiers[sTier].max); }
+        else if(key !== 'cofund') { state.minO = "0"; state.mDisk = "0"; }
+        if(key !== 'cofund') { state.kPct = conf.k; state.vDisk = conf.v; state.mShare = 0; }
+        else { state.kPct = 20; if(selectedPresetIdx !== null) applyPreset(selectedPresetIdx); }
+        document.getElementById('schemeTitle').innerText = key === 'normal' ? 'Normal Comms' : key.replace('-',' ').toUpperCase();
+        renderShortBenefits(); updateTierButtons(); updateUI();
     }
 
-    function showDetail(e, type) {
-        e.stopPropagation();
-        const overlay = document.getElementById('detailOverlay'), content = document.getElementById('overlayContent');
-        let html = '';
-        if(type === 'cust') html = `<h3 class="text-[15px] font-black text-emerald-400 mb-4 uppercase text-center italic">Harga Bayar Detail</h3><div class="space-y-4 text-white text-[13px]"><div class="flex justify-between"><span>App Price</span><span>Rp ${fNum(Math.round(calcData.list))}</span></div><div class="flex justify-between text-red-400"><span>Total Diskon</span><span>- Rp ${fNum(Math.round(calcData.disc))}</span></div><div class="pt-4 border-t border-white/20 flex justify-between text-2xl font-black text-emerald-400"><span>PAID BY PAX</span><span>Rp ${fNum(Math.round(calcData.pay))}</span></div></div>`;
-        else html = `<h3 class="text-[15px] font-black text-emerald-500 mb-4 uppercase text-center italic">Investment Detail</h3><div class="space-y-4 text-white text-[13px]"><div class="flex justify-between"><span>Initial App Price</span><span>Rp ${fNum(Math.round(calcData.list))}</span></div><div class="flex justify-between text-orange-400"><span>Mex GB (Komisi)</span><span>- Rp ${fNum(Math.round(calcData.mexGB))}</span></div><div class="flex justify-between text-blue-400"><span>Mex Promo Cost</span><span>- Rp ${fNum(Math.round(calcData.mPromoCost))}</span></div><div class="pt-4 border-t border-white/20 flex justify-between text-2xl font-black text-emerald-500"><span>NET REVENUE</span><span>Rp ${fNum(Math.round(calcData.net))}</span></div><div class="mt-4 pt-2 text-[11px] text-white/40 italic text-center">Net Revenue = App Price - (Mex GB + Mex Promo Cost)</div></div>`;
-        content.innerHTML = html; overlay.classList.add('active');
-    }
-
-    function setTier(t) { sTier = t; selectSchema(currentSchema); }
-    function renderBenefits() { const container = document.getElementById('benefitList'); container.innerHTML = ''; PRESETS[currentSchema].b.forEach(item => { container.innerHTML += `<div class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded border border-emerald-200 text-[10px] font-black italic">✓ ${item}</div>`; }); }
-    function updateUI() { document.getElementById('mainVal').value = state.mainVal; document.getElementById('kPct').value = state.kPct; document.getElementById('vDisk').value = state.vDisk; document.getElementById('mDisk').value = state.mDisk; document.getElementById('minO').value = state.minO; document.getElementById('subVal').value = state.subVal; document.getElementById('mShare').value = state.mShare; hitung(); }
-    ['mainVal','kPct','vDisk','mDisk','minO','subVal','mShare'].forEach(id => { document.getElementById(id).addEventListener('input', (e) => { if(['mainVal','subVal','mDisk','minO'].includes(id)) e.target.value = fNum(e.target.value); state[id] = e.target.value; hitung('offline'); }); });
-    document.getElementById('resApp').addEventListener('input', (e) => { e.target.value = fNum(e.target.value); hitung('app'); });
+    function renderShortBenefits() { document.getElementById('benefitSummaryList').innerHTML = STRATEGY_DETAILS[currentScheme].summary.map(s => `<div class="bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-md text-[9px] font-black uppercase">✓ ${s}</div>`).join(''); }
+    function showDetail(e, type) { e.stopPropagation(); const content = document.getElementById('overlayContent'); if(type === 'cust') { content.innerHTML = `<h3 class="text-base font-black text-emerald-400 mb-6 uppercase text-center italic tracking-tight">Payment Detail</h3><div class="space-y-4 text-[15px]"><div class="flex justify-between text-white/70"><span>Menu Price (App)</span><span class="text-white font-bold">Rp ${fNum(Math.round(calcData.list))}</span></div><div class="flex justify-between text-red-400 font-bold"><span>Promotion</span><span>- Rp ${fNum(Math.round(calcData.disc))}</span></div><div class="pt-6 border-t border-white/10 flex justify-between text-2xl font-black text-emerald-400"><span>PAID BY PAX</span><span>Rp ${fNum(Math.round(calcData.pay))}</span></div></div>`; } else { content.innerHTML = `<h3 class="text-base font-black text-blue-400 mb-6 uppercase text-center italic tracking-tight">Revenue Analysis</h3><div class="space-y-4 text-[15px]"><div class="flex justify-between text-white/70"><span>Price in App</span><span class="text-white font-bold">Rp ${fNum(Math.round(calcData.list))}</span></div><div class="flex justify-between text-orange-400 font-bold"><span>Grab Share</span><span>- Rp ${fNum(Math.round(calcData.mexGB))}</span></div><div class="flex justify-between text-blue-300 font-bold"><span>Promo Share</span><span>- Rp ${fNum(Math.round(calcData.mPromoCost))}</span></div><div class="pt-6 border-t border-white/10 flex justify-between text-2xl font-black text-blue-400"><span>MEX NET REV</span><span>Rp ${fNum(Math.round(calcData.net))}</span></div><div class="mt-6 grid grid-cols-2 gap-3"><div class="p-3 bg-white/5 rounded-xl border border-white/10 text-center"><p class="text-[8px] text-white/40 uppercase font-black mb-1">vs App Price</p><p class="text-xl font-black text-grab-green">${calcData.appRate}%</p></div><div class="p-3 bg-white/10 rounded-xl border border-white/20 text-center shadow-lg"><p class="text-[8px] text-grab-yellow uppercase font-black mb-1">vs Offline Basis</p><p class="text-xl font-black text-grab-yellow">${calcData.offRate}%</p></div></div></div>`; } document.getElementById('detailOverlay').classList.add('active'); document.getElementById('modal-overlay').classList.add('active'); }
+    function openBenefitModal(e) { e.stopPropagation(); document.getElementById('modalSchemeTitle').innerText = document.getElementById('schemeTitle').innerText; document.getElementById('modalBenefitContent').innerHTML = STRATEGY_DETAILS[currentScheme].full.map(f => `<div class="flex gap-3"><div class="w-6 h-6 bg-[var(--grab-green)] rounded-full flex items-center justify-center flex-shrink-0 mt-1 text-[10px] font-black text-white italic">✓</div><div><p class="font-black text-slate-800 text-sm">${f.t}</p><p class="text-[11px] text-slate-500 leading-relaxed">${f.d}</p></div></div>`).join(''); document.getElementById('benefitModal').classList.add('active'); document.getElementById('modal-overlay').classList.add('active'); }
+    function closeBenefitModal() { document.getElementById('benefitModal').classList.remove('active'); }
+    function openTierModal(e) { e.stopPropagation(); document.getElementById('tierModal').classList.add('active'); document.getElementById('modal-overlay').classList.add('active'); }
+    function closeTierModal() { document.getElementById('tierModal').classList.remove('active'); }
     function closeOverlay() { document.getElementById('detailOverlay').classList.remove('active'); }
-    function toggleRound(e) { e.stopPropagation(); isRounded = !isRounded; hitung(); }
-    function setSubMode(m) { subMode = m; document.getElementById('sVal').classList.toggle('active', m === 'val'); document.getElementById('sPct').classList.toggle('active', m === 'pct'); document.getElementById('subPrefix').innerText = m === 'val' ? 'Rp' : '%'; hitance(); }
-    window.onload = () => selectSchema('normal');
+    function closeAllPopups() { closeBenefitModal(); closeTierModal(); closeOverlay(); document.getElementById('modal-overlay').classList.remove('active'); }
+    function setSubMode(m) { subMode = m; document.getElementById('sVal').className = m==='val'?'w-8 h-5 bg-slate-800 text-white rounded text-[8px] font-black':'w-8 h-5 bg-slate-200 text-slate-500 rounded text-[8px] font-black'; document.getElementById('sPct').className = m==='pct'?'w-8 h-5 bg-slate-800 text-white rounded text-[8px] font-black':'w-8 h-5 bg-slate-200 text-slate-500 rounded text-[8px] font-black'; document.getElementById('subPrefix').innerText = m==='val'?'Rp':'%'; hitung(); }
+    function setTier(t) { sTier = t; changeScheme(currentScheme); }
+    function updateTierButtons() { const h = document.getElementById('btnHem'), e = document.getElementById('btnEks'); if(!h || !e) return; if(sTier === 'hemat') { h.classList.add('tier-btn-active'); h.classList.remove('tier-btn-inactive'); e.classList.add('tier-btn-inactive'); e.classList.remove('tier-btn-active'); } else { e.classList.add('tier-btn-active'); e.classList.remove('tier-btn-inactive'); h.classList.add('tier-btn-inactive'); h.classList.remove('tier-btn-active'); } }
+    function updateUI() { document.getElementById('mainVal').value = state.mainVal; document.getElementById('kPct').value = state.kPct; document.getElementById('vDisk').value = state.vDisk; document.getElementById('mDisk').value = state.mDisk; document.getElementById('minO').value = state.minO; document.getElementById('subVal').value = state.subVal; document.getElementById('mShare').value = state.mShare; hitung(); }
+    ['mainVal','kPct','vDisk','mDisk','subVal','mShare','minO'].forEach(id => { document.getElementById(id).addEventListener('input', (e) => { if(['mainVal','subVal','mDisk','minO'].includes(id)) e.target.value = fNum(e.target.value); state[id] = e.target.value; hitance('offline'); }); });
+    function hitance(s) { hitung(s); }
+    document.getElementById('resApp').addEventListener('input', (e) => { e.target.value = fNum(e.target.value); hitung('app'); });
+    function applyPreset(idx) { const p = EXCEL_COFUND_DATA[idx]; state.vDisk = p.v; state.mShare = p.s; state.minO = fNum(p.min); state.mDisk = fNum(p.max); state.kPct = 20; document.getElementById('tierLabelDisplay').innerText = p.name; selectedPresetIdx = idx; closeAllPopups(); updateUI(); }
+    window.onload = () => { const container = document.getElementById('tierOptionsContainer'); container.innerHTML = EXCEL_COFUND_DATA.map((p, idx) => `<div class="minimal-option" onclick="applyPreset(${idx})"><div class="flex justify-between items-center mb-1"><p class="font-black text-slate-800 uppercase text-xs tracking-tighter">${p.name}</p></div><div class="flex items-center"><span class="text-[9px] font-black text-emerald-600">${p.v}% Disc</span><span class="text-[8px] font-bold text-slate-400 uppercase ml-2">${p.s}% Share</span><span class="text-[8px] font-bold text-slate-400 uppercase ml-2">Min Rp${fNum(p.min)}</span></div></div>`).join(''); changeScheme('normal'); };
 </script>
 </body>
 </html>
